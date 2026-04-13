@@ -51,6 +51,27 @@ a {
     color: blue;
 }
 
+.btn-login {
+    background-color: blue;
+    padding: 8px 20px 8px 20px;
+    border-radius: 15px;
+    transition: 0.3s;
+}
+.btn-login:hover {
+    background-color: white;
+}
+
+.btn-cadastro {
+    background-color: rgb(123, 195, 255);
+    padding: 8px 20px 8px 20px;
+    border-radius: 15px;
+    transition: 0.3s;
+}
+.btn-cadastro:hover {
+    background-color: white;
+}
+
+
 .hero {
     height: 70vh;
 
@@ -94,3 +115,4 @@ a {
     margin-bottom: 30px;
     width: 70%;
 }
+
