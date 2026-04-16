@@ -3,6 +3,7 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 a {
@@ -25,9 +26,9 @@ a {
     justify-content: space-between;
     padding: 10px 5% 10px 5%;
     border-bottom: 2px solid;
-    border-image-source: linear-gradient(to right, rgb(0,0,255), rgb(123, 195, 255));
+    border-image-source: linear-gradient(to right, rgb(0, 0, 255), rgb(123, 195, 255));
     border-image-slice: 1;
-    height: 5vh;
+    height: 9vh;
 }
 
 .navbar {
@@ -57,6 +58,14 @@ a {
     border-radius: 15px;
     transition: 0.3s;
 }
+
+.btn-login.link-ativo,
+.btn-cadastro.link-ativo {
+    background-color: white;
+    color: blue;
+    cursor: default;
+}
+
 .btn-login:hover {
     background-color: white;
 }
@@ -67,6 +76,7 @@ a {
     border-radius: 15px;
     transition: 0.3s;
 }
+
 .btn-cadastro:hover {
     background-color: white;
 }
@@ -75,7 +85,7 @@ a {
 .hero {
     height: 70vh;
 
-    background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('../assets/mercedes-hero.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('../assets/mercedes-hero.jpg');
     background-size: cover;
     background-position: center;
 
@@ -89,7 +99,7 @@ a {
     max-width: 1000px;
     color: white;
     font-family: "Poppins", sans-serif;
-    
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -102,7 +112,7 @@ a {
 }
 
 .hero-line {
-    background: linear-gradient(to right, rgb(0,0,255), rgb(123, 195, 255));
+    background: linear-gradient(to right, rgb(0, 0, 255), rgb(123, 195, 255));
     width: 700px;
     height: 4px;
     border-radius: 2px;
@@ -116,3 +126,88 @@ a {
     width: 70%;
 }
 
+
+.container {
+    background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url('../assets/turbo-background.jpg');
+    background-size: cover;
+    background-position: center;
+
+    height: 91vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-container {
+    background-color: white;
+    border-radius: 12px;
+    width: 400px;
+    padding: 40px;
+    color: black;
+}
+
+.login-container h1 {
+    margin-bottom: 10px;
+    color: black;
+    text-align: center;
+}
+
+.campo {
+    text-align: left;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.campo label {
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.campo input, .campo select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid black;
+    background-color: transparent;
+}
+
+.campo input:focus, .campo select:focus {
+    border: 1px solid blue;
+}
+
+.btn-submit {
+    width: 100%;
+    font-family: "Poppins", sans-serif;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+
+    background: linear-gradient(135deg, #0d6efd, #3da5ff);
+    color: white;
+    font-weight: 500;
+    font-size: 16px;
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(13, 110, 253, 0.4);
+    background: linear-gradient(135deg, #0b5ed7, #339af0);
+}
+
+.cadastro-link {
+    margin-top: 20px;
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+}
+
+.cadastro-link a {
+    transition: 0.3s;
+}
+
+.cadastro-link a:hover {
+    color: aqua;
+}
