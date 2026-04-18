@@ -181,11 +181,36 @@ a {
     width: 70%;
 }
 
+.sobre-intro {
+    text-align: center;
+    color: white;
+    font-family: "Poppins", sans-serif;
+    margin-bottom: 100px;
+}
+
+.sobre-intro span {
+    color: #56b6ff;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.sobre-intro h2 {
+    font-size: 42px;
+    margin: 15px 0;
+}
+
+.sobre-intro p {
+    font-size: 18px;
+    opacity: 0.85;
+    line-height: 1.8;
+}
+
 .sobre {
     padding: 80px 10%;
     background-color: #111;
 
-    background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
     background-size: 40px 40px;
 }
 
@@ -211,7 +236,7 @@ a {
     object-fit: cover;
     object-position: 50% 40%;
 
-    box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
     transition: 0.4s ease;
 }
 
@@ -223,11 +248,11 @@ a {
     color: white;
     font-family: "Poppins", sans-serif;
 
-    background: rgba(255,255,255,0.03);
+    background: rgba(255, 255, 255, 0.03);
     padding: 35px;
     border-radius: 18px;
     max-width: 50%;
-    border: 1px solid rgba(255,255,255,0.05);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .sobre-texto h2 {
@@ -241,7 +266,7 @@ a {
     height: 4px;
     margin-bottom: 10px;
     border-radius: 10px;
-    background: linear-gradient(to right, blue, rgb(123,195,255));
+    background: linear-gradient(to right, blue, rgb(123, 195, 255));
 }
 
 .sobre-texto p {
@@ -250,69 +275,75 @@ a {
     opacity: 0.9;
 }
 
-.jornada {
-    width: 100%;
-    background: linear-gradient(135deg, #001f66, #0d6efd, #56b6ff);
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
+.participe {
+    padding: 100px 10%;
     text-align: center;
     color: white;
     font-family: "Poppins", sans-serif;
-
-    box-shadow: 0 25px 50px rgba(0,0,0,0.35);
 }
 
-.jornada h2 {
+.participe-tag {
+    background: rgba(255, 255, 255, 0.12);
+    font-family: "Poppins", sans-serif;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.participe h2 {
     font-size: 42px;
     margin-bottom: 20px;
+    margin-top: 20px;
+    line-height: 1.2;
 }
 
-.jornada p {
+.participe p {
     font-size: 18px;
+    line-height: 1.7;
     max-width: 700px;
     margin: 0 auto 35px;
-    line-height: 1.7;
 }
 
-.jornada-botoes {
+
+.participe-botoes {
     display: flex;
-    gap: 15px;
     justify-content: center;
-    flex-wrap: wrap;
+    gap: 15px;
 }
 
-.btn-criar-conta,
-.btn-entrar {
+.btn-participe-criar-conta,
+.btn-participe-entrar {
     padding: 14px 28px;
     border-radius: 12px;
     font-weight: 600;
+    font-family: "Poppins", sans-serif;
     transition: 0.3s ease;
 }
 
-.btn-criar-conta {
-    background: white;
+.btn-participe-criar-conta {
+    background-color: white;
     color: #0d6efd;
 }
 
-.btn-criar-conta:hover {
-    transform: translateY(-3px);
-}
-
-.btn-entrar {
+.btn-participe-entrar {
     border: 1px solid rgba(255,255,255,0.4);
     color: white;
 }
 
-.btn-entrar:hover {
-    background: rgba(255,255,255,0.08);
+.btn-participe-criar-conta:hover {
+    transform: translateY(-3px);
 }
+
+.btn-participe-entrar:hover {
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-3px);
+}
+
 
 .footer {
     background-color: #0d0d0d;
-    margin-top: 20px;
     border-top: 2px solid blue;
     height: 150px;
     color: #fff;
@@ -326,4 +357,3 @@ a {
 .footer .container {
     text-align: center;
 }
-
