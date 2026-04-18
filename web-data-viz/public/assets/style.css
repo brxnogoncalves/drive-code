@@ -182,8 +182,11 @@ a {
 }
 
 .sobre {
-    background-color: #111;
     padding: 80px 10%;
+    background-color: #111;
+
+    background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
 }
 
 .sobre-bloco {
