@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drive & Code - Login</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+    <!-- <div class="header">
+    <h1 class="logo-drive-code">Drive <span>&lt;Code/&gt;</span></h1>
+
+    <ul class="navbar">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="#">Do Motor ao Código</a></li>
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="login.html" class="btn-login link-ativo">Login</a></li>
+      <li><a href="cadastro.html" class="btn-cadastro">Cadastro</a></li>
+    </ul>
+  </div> -->
+
+    <div class="login-page">
+        <div class="login-card">
+            <div class="login-card-header">
+                <div>
+                    <a href="index.html"><span class="login-tag">Drive & Code</span></a>
+                </div>
+                <div>
+                    <h2>Bem-vindo de volta</h2>
+                    <p>Acesse sua conta para continuar sua jornada automotiva e tecnológica.</p>
+                </div>
+            </div>
+
+            <div class="login-form">
+                <div class="campo">
+                    <label>E-mail</label>
+                    <input type="email" id="ipt_email" placeholder="Digite seu e-mail">
+                </div>
+
+                <div class="campo">
+                    <label>Senha</label>
+                    <input type="password" id="ipt_senha" placeholder="Digite sua senha">
+                </div>
+
+                <button class="btn-entrar" id="btn_entrar" onclick="entrar()">
+                    <span id="texto_btn">Entrar</span>
+                    <span id="loading_btn" class="loading" style="display: none;"></span>
+                </button>
+
+                <p class="login-cadastro">
+                    Ainda não tem uma conta?
+                    <a href="cadastro.html">Cadastre-se</a>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</body>
+<script>
+    function entrar() {
+        let emailValue = ipt_email.value;
+        let senhaValue = ipt_senha.value;
+
+        if (emailValue.trim() == "" || senhaValue.trim() == "") {
+            return;
+        }
+
+        btn_entrar.disabled = true;
+        texto_btn.innerHTML = "Entrando";
+        loading_btn.style.display = "inline-block";
+
+        fetch("/usuarios/logar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: emailValue,
+                senhaServer: senhaValue
+            })
+        }).then(function (resposta) {
+            console.log("Estou no then do entrar...");
+
+            if (resposta.ok) {
+                resposta.json().then(json => {
+                    sessionStorage.EMAIL_USUARIO = json.email;
+                    sessionStorage.NOME_USUARIO = json.nome;
+                    sessionStorage.ID_USUARIO = json.id;
+
+                    window.location = "./index.html";
+                });
+            } else {
+                btn_entrar.disabled = false;
+                texto_btn.innerHTML = "Entrar";
+                loading_btn.style.display = "none";
+            }
+        }).catch(function (erro) {
+            console.log(erro);
+
+            btn_entrar.disabled = false;
+            texto_btn.innerHTML = "Entrar";
+            loading_btn.style.display = "none";
+        });
+    }
+</script>
+
+</html>

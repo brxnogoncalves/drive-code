@@ -238,6 +238,7 @@ a {
 
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
     transition: 0.4s ease;
+    border: 1px solid rgb(123, 195, 255);
 }
 
 .sobre-video video:hover {
@@ -328,7 +329,7 @@ a {
 }
 
 .btn-participe-entrar {
-    border: 1px solid rgba(255,255,255,0.4);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     color: white;
 }
 
@@ -337,7 +338,7 @@ a {
 }
 
 .btn-participe-entrar:hover {
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.08);
     transform: translateY(-3px);
 }
 
@@ -356,4 +357,260 @@ a {
 
 .footer .container {
     text-align: center;
+}
+
+.login-page {
+    min-height: 100vh;
+    background:
+        linear-gradient(rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.9)),
+        url('../img/mercedes-hero.jpg');
+
+    background-size: cover;
+    background-position: center;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 5%;
+}
+
+.login-card {
+    width: 430px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(123, 195, 255, 0.4);
+    border-radius: 22px;
+    padding: 45px 40px;
+    color: white;
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+}
+
+.login-card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 5px;
+}
+
+.login-tag {
+    background: rgba(255, 255, 255, 0.12);
+    color: rgb(123, 195, 255);
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 13px;
+    letter-spacing: 1px;
+}
+
+.login-card h2 {
+    font-size: 34px;
+    margin-bottom: 12px;
+}
+
+.login-card p {
+    font-size: 15px;
+    opacity: 0.85;
+    line-height: 1.6;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.campo {
+    text-align: left;
+}
+
+.campo label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: rgb(123, 195, 255);
+}
+
+.campo input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(123, 195, 255, 0.35);
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    font-family: "Poppins", sans-serif;
+    outline: none;
+    transition: 0.3s;
+}
+
+.campo input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.campo input:focus {
+    border-color: rgb(123, 195, 255);
+    box-shadow: 0 0 12px rgba(123, 195, 255, 0.35);
+}
+
+.btn-entrar {
+    margin-top: 10px;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(to right, blue, rgb(123, 195, 255));
+    color: white;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn-entrar:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 255, 0.35);
+}
+
+.loading {
+    display: none;
+    width: 18px;
+    height: 18px;
+    border: 3px solid #ffffff;
+    border-top: 3px solid transparent;
+    border-radius: 50%;
+    animation: girar 0.8s linear infinite;
+}
+
+.btn-entrar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+@keyframes girar {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+.login-cadastro {
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+.login-cadastro a {
+    color: rgb(123, 195, 255);
+    font-weight: 600;
+}
+
+.login-cadastro a:hover {
+    color: white;
+}
+
+.cadastro-card {
+    width: 620px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(123, 195, 255, 0.4);
+    border-radius: 22px;
+    padding: 42px 40px;
+    color: white;
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+}
+
+.cadastro-tag {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.12);
+    color: rgb(123, 195, 255);
+    padding: 8px 18px;
+    border-radius: 30px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin-bottom: 18px;
+}
+
+.cadastro-card h2 {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.cadastro-card p {
+    font-size: 15px;
+    opacity: 0.85;
+    line-height: 1.6;
+    margin-bottom: 28px;
+}
+
+.cadastro-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.campo-duplo {
+    display: flex;
+    gap: 15px;
+}
+
+.campo-duplo .campo {
+    width: 100%;
+}
+
+.campo select {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(123, 195, 255, 0.35);
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    font-family: "Poppins", sans-serif;
+    outline: none;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.campo select:focus {
+    border-color: rgb(123, 195, 255);
+    box-shadow: 0 0 12px rgba(123, 195, 255, 0.35);
+}
+
+.btn-cadastrar {
+    margin-top: 8px;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(to right, blue, rgb(123, 195, 255));
+    color: white;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn-cadastrar:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 255, 0.35);
+}
+
+.cadastro-login {
+    margin-bottom: 0 !important;
+    font-size: 14px !important;
+}
+
+.cadastro-login a {
+    color: rgb(123, 195, 255);
+    font-weight: 600;
+}
+
+.cadastro-login a:hover {
+    color: white;
 }
