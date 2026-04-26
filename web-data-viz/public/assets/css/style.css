@@ -577,6 +577,10 @@ a {
     cursor: pointer;
 }
 
+.campo select option {
+    color: black;
+}
+
 .campo select:focus {
     border-color: rgb(123, 195, 255);
     box-shadow: 0 0 12px rgba(123, 195, 255, 0.35);

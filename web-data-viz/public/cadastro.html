@@ -8,19 +8,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
-<body>
-    <!-- <div class="header">
-    <h1 class="logo-drive-code">Drive <span>&lt;Code/&gt;</span></h1>
-
-    <ul class="navbar">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="#">Do Motor ao Código</a></li>
-      <li><a href="#">Dashboard</a></li>
-      <li><a href="login.html" class="btn-login">Login</a></li>
-      <li><a href="cadastro.html" class="btn-cadastro link-ativo">Cadastro</a></li>
-    </ul>
-  </div> -->
-
+<body onload="listarCarros()">
     <div class="login-page">
         <div class="cadastro-card">
 
@@ -38,41 +26,42 @@
 
                 <div class="campo">
                     <label>Nome</label>
-                    <input type="text" placeholder="Digite seu nome">
+                    <input type="text" placeholder="Digite seu nome" id="ipt_nome">
                 </div>
 
                 <div class="campo">
                     <label>E-mail</label>
-                    <input type="email" placeholder="Digite seu e-mail">
+                    <input type="email" placeholder="Digite seu e-mail" id="ipt_email">
                 </div>
 
                 <div class="campo-duplo">
                     <div class="campo">
                         <label>Senha</label>
-                        <input type="password" placeholder="Digite sua senha">
+                        <input type="password" placeholder="Digite sua senha" id="ipt_senha">
                     </div>
 
                     <div class="campo">
                         <label>Confirmar senha</label>
-                        <input type="password" placeholder="Confirme sua senha">
+                        <input type="password" placeholder="Confirme sua senha" id="ipt_confirm_senha">
                     </div>
                 </div>
 
                 <div class="campo-duplo">
                     <div class="campo">
                         <label>Data de nascimento</label>
-                        <input type="date">
+                        <input type="date" id="ipt_data_nascimento">
                     </div>
 
                     <div class="campo">
                         <label>Carro preferido</label>
-                        <select>
+                        <select id="select_carro">
+                            <option value="">Selecione um carro</option>
                             <!-- OPÇÕES VAO VIR DO JS -->
                         </select>
                     </div>
                 </div>
 
-                <button class="btn-cadastrar">Cadastrar</button>
+                <button class="btn-cadastrar" onclick="cadastrar()">Cadastrar</button>
 
                 <p class="cadastro-login">
                     Já tem uma conta?
@@ -85,5 +74,79 @@
     </div>
 
 </body>
+<script>
+    function listarCarros() {
+        const selectCarro = document.getElementById("select_carro");
+
+        fetch("/carros/listar", {
+            method: "GET"
+        }).then(function (resposta) {
+            console.log("Estou no then do listar carros...");
+
+            if (resposta.ok) {
+                resposta.json().then(function (carros) {
+                    for (let i = 0; i < carros.length; i++) {
+                        let option = document.createElement("option");
+
+                        option.value = carros[i].id_carro;
+                        option.textContent = carros[i].nome_carro + " (" + carros[i].marca + ")";
+
+                        selectCarro.appendChild(option);
+                    }
+                });
+            } else {
+                console.log("Erro ao buscar carros");
+            }
+        }).catch(function (erro) {
+            console.log("Erro na requisição:", erro);
+        });
+    }
+
+    function cadastrar() {
+        let nomeValue = ipt_nome.value;
+        let emailValue = ipt_email.value;
+        let senhaValue = ipt_senha.value;
+        let confirmSenhaValue = ipt_confirm_senha.value;
+        let dtNascimentoValue = ipt_data_nascimento.value;
+        let fkCarroPreferidoValue = select_carro.value;
+
+        if (nomeValue == "" || emailValue == "" || senhaValue == "" || confirmSenhaValue == "" || dtNascimentoValue == "" || fkCarroPreferidoValue == "") {
+            // MENSAGEM DE ERRO CAMPO VAZIO
+            return;
+        }
+
+
+        if (senhaValue != confirmSenhaValue) {
+            // MENSAGEM DE ERRO SENHA NAO BATE
+            return;
+        }
+
+        fetch("/usuarios/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nomeServer: nomeValue,
+                emailServer: emailValue,
+                senhaServer: senhaValue,
+                dtNascimentoServer: dtNascimentoValue,
+                fkCarroPreferidoServer: fkCarroPreferidoValue
+            })
+        }).then(function (resposta) {
+            console.log("Estou no then do cadastrar...");
+
+            if (resposta.ok) {
+                alert("Cadastro realizado com sucesso!");
+                window.location = "login.html";
+            } else {
+                throw "Houve um erro ao tentar realizar o cadastro!";
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+    }
+
+</script>
 
 </html>
