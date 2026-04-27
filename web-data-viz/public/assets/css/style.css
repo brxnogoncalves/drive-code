@@ -404,6 +404,14 @@ a {
     letter-spacing: 1px;
 }
 
+.tag-login {
+    transition: 0.3s;
+}
+
+.tag-login:hover {
+    transform: translateY(-3px);
+}
+
 .login-card h2 {
     font-size: 34px;
     margin-bottom: 12px;
