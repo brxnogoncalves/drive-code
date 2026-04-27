@@ -107,6 +107,27 @@ a {
     color: blue;
 }
 
+.usuario-logado {
+    color: white;
+    font-family: "Poppins", sans-serif;
+}
+
+.btn-logout {
+    background-color: red;
+    padding: 8px 20px 8px 20px;
+    border-radius: 15px;
+    transition: 0.3s;
+    
+    color: white;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+}
+
+.btn-logout:hover {
+    background-color: #80180d;
+    cursor: pointer;
+}
+
 .btn-login {
     background-color: blue;
     padding: 8px 20px 8px 20px;
@@ -501,6 +522,7 @@ a {
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }
