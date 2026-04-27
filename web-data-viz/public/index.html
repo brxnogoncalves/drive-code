@@ -97,6 +97,20 @@
 <script src="./assets/js/utils.js"></script>
 <script>
   alterarNavBar() // utils
+  if (sessionStorage.getItem('ID_USUARIO')) {
+    const container = document.querySelector('.participe');
+    const tag = `<span class="participe-tag">Drive & Code</span>`;
+    const div = document.querySelector('.participe-botoes');
+
+    div.innerHTML = `<a href="dashboard.html" class="btn-participe-criar-conta">Ir para a dashboard</a>`
+
+    container.innerHTML = `
+      ${tag}
+      <h2>Seja bem-vindo de volta ${sessionStorage.getItem('NOME_USUARIO')}!</h2> <br>
+      ${div.innerHTML}
+    `
+  }
+
 </script>
 
 </html>
