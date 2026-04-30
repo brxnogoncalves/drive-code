@@ -14,10 +14,12 @@ Além de ser informativo, o website permite que usuários se cadastrem e compart
 
 1. Clone o repositório:
    `git clone https://github.com/brxnogoncalves/drive-code`
-2. Instale as dependências:
+2. Entre no diretório da API Web-Data-Viz
+   `cd web-data-viz`
+3. Instale as dependências:
    `npm install` || `npm i`
-3. Configure o banco de dados MySQL
-4. Inicie o servidor:
+4. Configure o banco de dados MySQL no arquivo .env
+5. Inicie o servidor:
    `npm start`
-5. Acesse no navegador:
+6. Acesse no navegador:
    `http://localhost:3000`
