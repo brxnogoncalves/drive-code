@@ -8,10 +8,9 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
-<body onload="listarCarros()">
+<body>
     <div class="login-page">
         <div class="cadastro-card">
-
             <div class="login-card-header">
                 <div class="tag-login">
                     <a href="index.html"><span class="login-tag">Drive & Code</span></a>
@@ -21,7 +20,7 @@
                     <p>Cadastre-se para participar do quiz e acessar sua dashboard automotiva.</p>
                 </div>
             </div>
-            
+
             <div id="status_message" style="display: none;"></div>
 
             <div class="cadastro-form">
@@ -55,11 +54,8 @@
                     </div>
 
                     <div class="campo">
-                        <label>Carro preferido</label>
-                        <select id="select_carro">
-                            <option value="">Selecione um carro</option>
-                            <!-- OPÇÕES VAO VIR DO JS -->
-                        </select>
+                        <label>Nome do seu carro</label>
+                        <input type="text" id="ipt_nome_carro" placeholder="Ex: Relâmpago Azul">
                     </div>
                 </div>
 
@@ -77,32 +73,32 @@
 
 </body>
 <script>
-    function listarCarros() {
-        const selectCarro = document.getElementById("select_carro");
+    // function listarCarros() {
+    //     const selectCarro = document.getElementById("select_carro");
 
-        fetch("/carros/listar", {
-            method: "GET"
-        }).then(function (resposta) {
-            console.log("Estou no then do listar carros...");
+    //     fetch("/carros/listar", {
+    //         method: "GET"
+    //     }).then(function (resposta) {
+    //         console.log("Estou no then do listar carros...");
 
-            if (resposta.ok) {
-                resposta.json().then(function (carros) {
-                    for (let i = 0; i < carros.length; i++) {
-                        let option = document.createElement("option");
+    //         if (resposta.ok) {
+    //             resposta.json().then(function (carros) {
+    //                 for (let i = 0; i < carros.length; i++) {
+    //                     let option = document.createElement("option");
 
-                        option.value = carros[i].id_carro;
-                        option.textContent = carros[i].nome_carro + " (" + carros[i].marca + ")";
+    //                     option.value = carros[i].id_carro;
+    //                     option.textContent = carros[i].nome_carro + " (" + carros[i].marca + ")";
 
-                        selectCarro.appendChild(option);
-                    }
-                });
-            } else {
-                console.log("Erro ao buscar carros");
-            }
-        }).catch(function (erro) {
-            console.log("Erro na requisição:", erro);
-        });
-    }
+    //                     selectCarro.appendChild(option);
+    //                 }
+    //             });
+    //         } else {
+    //             console.log("Erro ao buscar carros");
+    //         }
+    //     }).catch(function (erro) {
+    //         console.log("Erro na requisição:", erro);
+    //     });
+    // }
 
     function cadastrar() {
         let nomeValue = ipt_nome.value;
@@ -110,11 +106,11 @@
         let senhaValue = ipt_senha.value;
         let confirmSenhaValue = ipt_confirm_senha.value;
         let dtNascimentoValue = ipt_data_nascimento.value;
-        let fkCarroPreferidoValue = select_carro.value;
+        let nomeCarroValue = ipt_nome_carro.value;
 
         const status_msg_div = document.getElementById("status_message");
 
-        if (nomeValue.trim() == "" || emailValue == "" || senhaValue == "" || confirmSenhaValue == "" || dtNascimentoValue == "" || fkCarroPreferidoValue == "") {
+        if (nomeCarroValue.trim() == "" || nomeValue.trim() == "" || emailValue == "" || senhaValue == "" || confirmSenhaValue == "" || dtNascimentoValue == "" ) {
             status_msg_div.style.color = "red";
             status_msg_div.style.display = "block";
             status_msg_div.innerHTML = "Todos os campos devem ser preenchidos!";
@@ -139,7 +135,7 @@
                 emailServer: emailValue,
                 senhaServer: senhaValue,
                 dtNascimentoServer: dtNascimentoValue,
-                fkCarroPreferidoServer: fkCarroPreferidoValue
+                nomeCarroServer: nomeCarroValue
             })
         }).then(function (resposta) {
             console.log("Estou no then do cadastrar...");

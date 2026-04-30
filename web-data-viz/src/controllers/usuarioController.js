@@ -23,6 +23,10 @@ function logar(req, res) {
                             id: resultadoLogar[0].id,
                             nome: resultadoLogar[0].nome,
                             email: resultadoLogar[0].email,
+                            nome_carro: resultadoLogar[0].nome_carro,
+                            nivel_carro: resultadoLogar[0].nivel,
+                            xp_carro: resultadoLogar[0].xp,
+                            cor_carro: resultadoLogar[0].cor_carro
                         })
                     } else if (resultadoLogar.length == 0) {
                         res.status(403).send("Email e/ou senha inválido(s)");
@@ -46,7 +50,7 @@ function cadastrar(req, res) {
     let email = req.body.emailServer;
     let senha = req.body.senhaServer;
     let dtNascimento = req.body.dtNascimentoServer;
-    let fkCarroPreferido = req.body.fkCarroPreferidoServer;
+    let nomeCarro = req.body.nomeCarroServer;
 
     if (nome == undefined) {
         res.status(400).send("Seu nome está undefined!");
@@ -56,13 +60,21 @@ function cadastrar(req, res) {
         res.status(400).send("Sua senha está undefined!");
     } else if (dtNascimento == undefined) {
         res.status(400).send("Sua data de nascimento está undefined!");
-    } else if (fkCarroPreferido == undefined) {
-        res.status(400).send("Seu carro preferido está undefined!");
+    } else if (nomeCarro == undefined) {
+        res.status(400).send("Seu carro está undefined!");
     } else {
-        usuarioModel.cadastrar(nome, email, senha, dtNascimento, fkCarroPreferido)
+        usuarioModel.cadastrar(nome, email, senha, dtNascimento, nomeCarro)
             .then(function (resultado) {
-                res.json(resultado);
-            }).catch(function (erro) {
+                let idUsuario = resultado.insertId;
+                return usuarioModel.cadastrarCarroUsuario(nomeCarro, idUsuario);
+            })
+            .then(function (resultadoCarro) {
+                res.json({
+                    mensagem: "Usuário e carro cadastrados com sucesso!",
+                    carro: resultadoCarro
+                });
+            })
+            .catch(function (erro) {
                 console.log(erro);
                 console.log(
                     "\nHouve um erro ao realizar o cadastro! Erro: ",

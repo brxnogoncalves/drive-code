@@ -14,6 +14,7 @@ function alterarNavBar() {
       <hr>
       <li><a href="#" class="link-ativo">Home</a></li>
       <li><a href="#">Do Motor ao Código</a></li>
+      <li><a href="#">Games</a></li>
       <li><a href="dashboard.html">Dashboard</a></li>
       <li class='btn-logout' onclick='logout()'>Sair</li>
     `;
