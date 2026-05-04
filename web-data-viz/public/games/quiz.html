@@ -43,13 +43,6 @@
     <script>
         alterarNavBar() // utils
 
-        function converterLetraParaIndex(letra) {
-            if (letra == "A") return 0;
-            if (letra == "B") return 1;
-            if (letra == "C") return 2;
-            if (letra == "D") return 3;
-        }
-
         let perguntas = [];
         let perguntaAtual = 0;
         let pontos = 0;
@@ -67,15 +60,38 @@
                         for (let i = 0; i < dados.length; i++) {
                             let p = dados[i];
 
+                            let opcoes = [
+                                { texto: p.alternativa_a, correta: p.alternativa_correta == "A" },
+                                { texto: p.alternativa_b, correta: p.alternativa_correta == "B" },
+                                { texto: p.alternativa_c, correta: p.alternativa_correta == "C" },
+                                { texto: p.alternativa_d, correta: p.alternativa_correta == "D" }
+                            ]
+
+                            // embaralha opcoes
+                            for (let i = opcoes.length - 1; i > 0; i--) {
+                                let j = Math.floor(Math.random() * (i + 1));
+                                let temp = opcoes[i];
+                                opcoes[i] = opcoes[j];
+                                opcoes[j] = temp;
+                            }
+
+                            let indiceCorreto = 0;
+                            for (let i = 0; i < opcoes.length; i++) {
+                                if (opcoes[i].correta) {
+                                    indiceCorreto = i;
+                                    break;
+                                }
+                            }
+
                             let perguntaObj = {
                                 pergunta: p.pergunta,
                                 opcoes: [
-                                    p.alternativa_a,
-                                    p.alternativa_b,
-                                    p.alternativa_c,
-                                    p.alternativa_d
+                                    opcoes[0].texto,
+                                    opcoes[1].texto,
+                                    opcoes[2].texto,
+                                    opcoes[3].texto
                                 ],
-                                correta: converterLetraParaIndex(p.alternativa_correta),
+                                correta: indiceCorreto,
                                 tema: p.tema
                             };
 
@@ -165,7 +181,31 @@
             resultado_quiz.classList.add("none");
             btn_proxima.classList.add("none");
 
-            // adicionarXP(xpGanho);
+            adicionarXP(xpGanho);
+        }
+
+        function adicionarXP(xpGanho) {
+            fetch("/games/adicionarXP", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    idUsuarioServer: sessionStorage.ID_USUARIO,
+                    idGameServer: 1,
+                    xpGanhoServer: xpGanho
+                })
+            })
+                .then(function (resposta) {
+                    if (resposta.ok) {
+                        resposta.json().then(function (json) {
+                            sessionStorage.XP_CARRO = json.xp;
+                            sessionStorage.NIVEL_CARRO = json.nivel;
+
+                            console.log("XP atualizado:", json);
+                        });
+                    }
+                })
         }
     </script>
 

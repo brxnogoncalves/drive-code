@@ -17,6 +17,26 @@ function listarPerguntasQuiz(req, res) {
     }
 }
 
+function adicionarXP(req, res) {
+    let idUsuario = req.body.idUsuarioServer;
+    let idGame = req.body.idGameServer;
+    let xpGanho = req.body.xpGanhoServer;
+
+    if (idUsuario == undefined || xpGanho == undefined) {
+        res.status(400).send("Dados inválidos!");
+    } else {
+        gamesModel.adicionarXP(idUsuario, idGame, xpGanho)
+            .then(function (resultado) {
+                res.json(resultado);
+            })
+            .catch(function (erro) {
+                console.log(erro);
+                res.status(500).json(erro.sqlMessage);
+            });
+    }
+}
+
 module.exports = {
-    listarPerguntasQuiz
+    listarPerguntasQuiz,
+    adicionarXP
 }
