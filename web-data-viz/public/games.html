@@ -2,31 +2,81 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Drive & Code - Games</title>
-  <link rel="stylesheet" href="assets/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drive & Code - Games</title>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
-  <div class="header">
-    <h1 class="logo-drive-code">Drive <span>&lt;Code/&gt;</span></h1>
-    <ul class="navbar">
-      <li><a href="#" class="link-ativo">Home</a></li>
-      <li><a href="#">Do Motor ao Código</a></li>
-    </ul>
-  </div>
-
-  <div class="footer">
-    <div class="container">
-      <h4>Feito com amor por Bruno Rafael &hearts; SPTech &copy; 2026</h4>
+    <div class="header">
+        <h1 class="logo-drive-code">Drive <span>&lt;Code/&gt;</span></h1>
+        <ul class="navbar">
+            <li><a href="#" class="link-ativo">Home</a></li>
+            <li><a href="#">Do Motor ao Código</a></li>
+        </ul>
     </div>
-  </div>
+
+    <div class="games-page">
+        <div class="games-intro">
+            <span>Drive & Code</span>
+            <h2>Garagem de Games</h2>
+            <p>
+                Jogue minigames sobre carros, tecnologia e programação para ganhar XP
+                e evoluir o seu carro
+            </p>
+        </div>
+
+        <div class="carro-status">
+            <div>
+                <span>Seu carro</span>
+                <h3 id="nome_carro">Carro do usuário</h3>
+            </div>
+
+            <div class="status-info">
+                <p>Nível: <b id="nivel_carro">1</b></p>
+                <div class="xp-container">
+                    <span>XP</span>
+                    <div class="xp-bar">
+                        <div id="xp_fill"></div>
+                    </div>
+                    <small id="xp_text">0 / 100</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="games-cards">
+            <div class="game-card">
+                <div class="game-icon">🧠</div>
+                <h3>Quiz Automotivo</h3>
+                <p>Responda perguntas sobre tecnologia automotiva e evolua seu carro.</p>
+                <span class="xp-tag">+50 XP</span>
+                <a href="./games/quiz.html" class="btn-jogar">Jogar</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <h4>Feito com amor por Bruno Rafael &hearts; SPTech &copy; 2026</h4>
+        </div>
+    </div>
 
 </body>
 <script src="./assets/js/utils.js"></script>
 <script>
-  alterarNavBar() // utils
+    alterarNavBar() // utils
+
+    let xp = Number(sessionStorage.XP_CARRO) || 0;
+    let xpMax = 100;
+
+    let porcentagem = (xp / xpMax) * 100;
+
+    xp_fill.style.width = porcentagem + "%";
+    xp_text.innerHTML = xp + " / " + xpMax;
+
+    nome_carro.innerHTML = sessionStorage.NOME_CARRO || "Seu carro";
+    nivel_carro.innerHTML = sessionStorage.NIVEL_CARRO || "1";
 </script>
 
 </html>

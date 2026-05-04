@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drive & Code - Quiz</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+
+    <div class="header">
+        <h1 class="logo-drive-code">Drive <span>&lt;Code/&gt;</span></h1>
+        <ul class="navbar">
+            <!-- LINKS SÃO COLOCADOS VIA JS -->
+        </ul>
+    </div>
+
+    <div class="quiz-page">
+
+        <div class="quiz-card">
+            <span id="contador_pergunta" class="quiz-tag">Quiz Automotivo</span>
+
+            <h2 id="pergunta">Carregando pergunta...</h2>
+
+            <div class="quiz-info">
+                <span id="pontos_quiz">0 pontos</span>
+            </div>
+
+            <div class="opcoes" id="opcoes"></div>
+
+            <div id="resultado_quiz" class="resultado-quiz none"></div>
+
+            <button id="btn_proxima" class="btn-proxima none" onclick="proximaPergunta()">
+                Próxima
+            </button>
+        </div>
+
+    </div>
+    <script src="../assets/js/utils.js"></script>
+    <script>
+        alterarNavBar() // utils
+
+        fetch("/games/quiz/perguntas/1")
+            .then(function (resposta) {
+                if (resposta.ok) {
+                    resposta.json().then(function (dados) {
+                        console.log(dados);
+                    });
+                }
+            }) 
+    </script>
+
+</body>
+
+</html>

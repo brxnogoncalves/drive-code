@@ -10,7 +10,7 @@ body {
     background-color: #0d0d0d;
 }
 
-.none {
+.none { 
     display: none;
 }
 
@@ -117,7 +117,7 @@ a {
     padding: 8px 20px 8px 20px;
     border-radius: 15px;
     transition: 0.3s;
-    
+
     color: white;
     font-weight: bold;
     font-family: 'Poppins', sans-serif;
@@ -647,4 +647,205 @@ a {
 
 .cadastro-login a:hover {
     color: white;
+}
+
+.games-page {
+    min-height: 91vh;
+    padding: 80px 10%;
+    background-color: #111;
+
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+
+    font-family: "Poppins", sans-serif;
+    color: white;
+}
+
+.games-intro {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.games-intro span {
+    color: rgb(123, 195, 255);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.games-intro h2 {
+    font-size: 42px;
+    margin: 15px 0;
+}
+
+.games-intro p {
+    width: 500px;
+    margin: auto;
+    font-size: 18px;
+    color: #a3a3a3;
+}
+
+.carro-status {
+    max-width: 900px;
+    margin: 0 auto 50px;
+    padding: 25px 35px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(123, 195, 255, 0.35);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.carro-status span {
+    color: rgb(123, 195, 255);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.carro-status h3 {
+    font-size: 28px;
+    margin-top: 5px;
+}
+
+.status-info {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.status-info p {
+    font-size: 16px;
+}
+
+.status-info b {
+    color: rgb(123, 195, 255);
+}
+
+.xp-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.xp-container span {
+    font-size: 14px;
+    color: rgb(123, 195, 255);
+}
+
+.xp-bar {
+    width: 180px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+#xp_fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(to right, blue, rgb(123, 195, 255));
+    transition: width 0.5s ease;
+}
+
+#xp_text {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.games-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 50px;
+} 
+
+.game-card {
+    min-height: 360px;
+    padding: 35px 28px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgb(123, 195, 255);
+    text-align: center;
+    transition: 0.3s ease;
+}
+
+.game-card.played {
+    border: 1px solid rgba(14, 255, 155, 0.911);
+}
+
+.game-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 255, 0.2);
+}
+.game-card.played:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(6, 255, 201, 0.2);
+}
+
+.game-icon {
+    font-size: 42px;
+    margin-bottom: 20px;
+}
+
+.game-card h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.game-card p {
+    font-size: 15px;
+    line-height: 1.6;
+    opacity: 0.85;
+    margin-bottom: 20px;
+}
+
+.xp-tag {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 30px;
+    background: rgba(123, 195, 255, 0.15);
+    color: rgb(123, 195, 255);
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.btn-jogar {
+    display: block;
+    padding: 13px;
+    border-radius: 12px;
+    background: linear-gradient(to right, blue, rgb(123, 195, 255));
+    color: white;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-jogar:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 255, 0.35);
+}
+
+.btn-jogar.played {
+    background: linear-gradient(to right, rgb(89, 116, 98), rgb(77, 139, 108));
+    pointer-events: none;
+}
+
+/* QUIZ GAME */
+.quiz-page {
+    min-height: 91vh;
+    padding: 80px 10%;
+    background-color: #111;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    font-family: "Poppins", sans-serif;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
