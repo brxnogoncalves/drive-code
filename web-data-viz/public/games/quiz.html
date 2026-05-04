@@ -25,6 +25,7 @@
             <h2 id="pergunta">Carregando pergunta...</h2>
 
             <div class="quiz-info">
+                <span id="tema_pergunta"></span>
                 <span id="pontos_quiz">0 pontos</span>
             </div>
 
@@ -42,14 +43,130 @@
     <script>
         alterarNavBar() // utils
 
+        function converterLetraParaIndex(letra) {
+            if (letra == "A") return 0;
+            if (letra == "B") return 1;
+            if (letra == "C") return 2;
+            if (letra == "D") return 3;
+        }
+
+        let perguntas = [];
+        let perguntaAtual = 0;
+        let pontos = 0;
+        let respondeu = false;
+
+        // BUSCA PERGUNTAS NO BANCO
         fetch("/games/quiz/perguntas/1")
             .then(function (resposta) {
                 if (resposta.ok) {
                     resposta.json().then(function (dados) {
                         console.log(dados);
+
+                        perguntas = []; // limpa perguntas antigas
+
+                        for (let i = 0; i < dados.length; i++) {
+                            let p = dados[i];
+
+                            let perguntaObj = {
+                                pergunta: p.pergunta,
+                                opcoes: [
+                                    p.alternativa_a,
+                                    p.alternativa_b,
+                                    p.alternativa_c,
+                                    p.alternativa_d
+                                ],
+                                correta: converterLetraParaIndex(p.alternativa_correta),
+                                tema: p.tema
+                            };
+
+                            perguntas.push(perguntaObj);
+                        }
+
+                        carregarPergunta();
                     });
                 }
-            }) 
+            })
+
+        function carregarPergunta() {
+            respondeu = false;
+
+            let perguntaObj = perguntas[perguntaAtual];
+
+            pergunta.innerHTML = perguntaObj.pergunta;
+            contador_pergunta.innerHTML = "Pergunta " + (perguntaAtual + 1) + " de " + perguntas.length;
+            tema_pergunta.innerHTML = "Tema: " + perguntaObj.tema;
+            pontos_quiz.innerHTML = "Pontos ganhos: " + pontos + " pontos";
+
+            resultado_quiz.classList.add("none");
+            btn_proxima.classList.add("none");
+
+            opcoes.innerHTML = ""; // limpa opcoes da pergunta anterior
+
+            for (let i = 0; i < perguntaObj.opcoes.length; i++) { // percorre todas as opções para renderizar uma a uma no html
+                opcoes.innerHTML += `
+                    <button class="opcao-btn" onclick="responder(${i})">
+                        ${perguntaObj.opcoes[i]}
+                    </button>
+                `;
+            }
+        }
+
+        function responder(indice) {
+            if (respondeu) return;
+
+            respondeu = true;
+
+            let perguntaObj = perguntas[perguntaAtual];
+            let botoesOpcoes = document.querySelectorAll(".opcao-btn");
+
+            if (indice == perguntaObj.correta) {
+                pontos += 10;
+                botoesOpcoes[indice].classList.add("opcao-correta");
+
+                resultado_quiz.innerHTML = "Resposta correta!";
+                resultado_quiz.className = "resultado-quiz resultado-correto";
+            } else {
+                botoesOpcoes[indice].classList.add("opcao-errada");
+                botoesOpcoes[perguntaObj.correta].classList.add("opcao-correta");
+
+                resultado_quiz.innerHTML = "Resposta errada!";
+                resultado_quiz.className = "resultado-quiz resultado-errado";
+            }
+
+            pontos_quiz.innerHTML = pontos + " pontos";
+            btn_proxima.classList.remove("none");
+        }
+
+        function proximaPergunta() {
+            perguntaAtual++;
+
+            if (perguntaAtual < perguntas.length) {
+                carregarPergunta();
+            } else {
+                finalizarQuiz();
+            }
+        }
+
+        function finalizarQuiz() {
+            let xpGanho = pontos;
+
+            pergunta.innerHTML = "Quiz finalizado!";
+            contador_pergunta.innerHTML = "Resultado final";
+            pontos_quiz.innerHTML = pontos + " pontos";
+
+            opcoes.innerHTML = `
+            <div class="quiz-final">
+                <h3>Você ganhou ${xpGanho} XP!</h3>
+                <p>Seu carro será atualizado com essa pontuação.</p>
+                <a href="../games.html" class="btn-jogar">Voltar</a>
+            </div>
+            `;
+
+            resultado_quiz.classList.add("none");
+            btn_proxima.classList.add("none");
+
+            // adicionarXP(xpGanho);
+        }
     </script>
 
 </body>
