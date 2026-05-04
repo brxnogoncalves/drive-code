@@ -36,7 +36,25 @@ function adicionarXP(req, res) {
     }
 }
 
+function listarComStatus(req, res) {
+    let idUsuario = req.params.idUsuario;
+
+    if (idUsuario == undefined) {
+        res.status(400).send("idUsuario está undefined!");
+    } else {
+        gamesModel.listarComStatus(idUsuario)
+            .then(function (resultado) {
+                res.json(resultado);
+            })
+            .catch(function (erro) {
+                console.log(erro);
+                res.status(500).json(erro.sqlMessage);
+            });
+    }
+}
+
 module.exports = {
+    listarComStatus,
     listarPerguntasQuiz,
     adicionarXP
 }

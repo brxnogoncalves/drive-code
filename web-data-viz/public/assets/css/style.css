@@ -980,3 +980,19 @@ a {
     display: inline-block;
     padding: 13px 28px;
 }
+
+.game-bloqueado {
+    opacity: 0.45;
+    filter: grayscale(1);
+}
+
+.game-bloqueado .btn-jogar {
+    background: #555;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.game-bloqueado:hover {
+    transform: none;
+    box-shadow: none;
+}

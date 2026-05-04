@@ -49,7 +49,7 @@ function adicionarXP(idUsuario, idGame, xpGanho) {
         .then(() => database.executar(instrucao3))
         .then(resultado => {
             // faz level up se necessário
-            
+
             let xp = resultado[0].xp;
             let nivel = resultado[0].nivel;
 
@@ -72,7 +72,30 @@ function adicionarXP(idUsuario, idGame, xpGanho) {
         })
 }
 
+function listarComStatus(idUsuario) {
+    let instrucaoSql = `
+        SELECT 
+            g.id_game,
+            g.nome,
+            g.descricao,
+            g.xp_recompensa,
+            CASE 
+                WHEN EXISTS (
+                    SELECT 1
+                    FROM historico_xp hx
+                    WHERE hx.fk_game = g.id_game
+                      AND hx.fk_usuario = ${idUsuario}
+                ) THEN 1
+                ELSE 0
+            END AS ja_jogou
+        FROM game g;
+    `;
+
+    console.log("Executando SQL:\n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
 module.exports = {
+    listarComStatus,
     listarPerguntasQuiz,
     adicionarXP
 };

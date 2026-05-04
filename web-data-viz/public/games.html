@@ -45,14 +45,14 @@
             </div>
         </div>
 
-        <div class="games-cards">
-            <div class="game-card">
+        <div class="games-cards" id="games_cards">
+            <!-- <div class="game-card">
                 <div class="game-icon">🧠</div>
                 <h3>Quiz Automotivo</h3>
                 <p>Responda perguntas sobre tecnologia automotiva e evolua seu carro.</p>
                 <span class="xp-tag">+50 XP</span>
                 <a href="./games/quiz.html" class="btn-jogar">Jogar</a>
-            </div>
+            </div> -->
         </div>
     </div>
 
@@ -77,6 +77,54 @@
 
     nome_carro.innerHTML = sessionStorage.NOME_CARRO || "Seu carro";
     nivel_carro.innerHTML = sessionStorage.NIVEL_CARRO || "1";
+
+    function listarGames() {
+        let idUsuario = sessionStorage.ID_USUARIO;
+
+        fetch("/games/listar/" + idUsuario, {
+            method: "GET"
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(function (games) {
+                    games_cards.innerHTML = "";
+
+                    for (let i = 0; i < games.length; i++) {
+                        let game = games[i];
+
+                        let link = "#";
+                        let icone = "🎮";
+                        let classeBloqueado = "";
+                        let textoBotao = "Jogar";
+
+                        if (game.id_game == 1) {
+                            link = "./games/quiz.html";
+                            icone = "🧠";
+                        }
+
+                        if (game.ja_jogou) {
+                            classeBloqueado = "game-bloqueado";
+                            link = "#";
+                            textoBotao = "Já jogado";
+                        }
+
+                        games_cards.innerHTML += `
+                        <div class="game-card ${classeBloqueado}">
+                            <div class="game-icon">${icone}</div>
+                            <h3>${game.nome}</h3>
+                            <p>${game.descricao}</p>
+                            <span class="xp-tag">+${game.xp_recompensa} XP</span>
+                            <a href="${link}" class="btn-jogar">${textoBotao}</a>
+                        </div>
+                    `;
+                    }
+                });
+            }
+        }).catch(function (erro) {
+            console.log("Erro ao listar games:", erro);
+        });
+    }
+
+    listarGames();
 </script>
 
 </html>

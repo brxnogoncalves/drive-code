@@ -11,4 +11,8 @@ router.post("/adicionarXP", function (req, res) {
     gamesController.adicionarXP(req, res);
 }) 
 
+router.get("/listar/:idUsuario", function (req, res) {
+    gamesController.listarComStatus(req, res);
+});
+
 module.exports = router;
