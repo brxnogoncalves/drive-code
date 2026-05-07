@@ -83,7 +83,7 @@ a {
     border-bottom: 2px solid;
     border-image-source: linear-gradient(to right, rgb(0, 0, 255), rgb(123, 195, 255));
     border-image-slice: 1;
-    height: 9vh;
+    min-height: 9vh;
 }
 
 .navbar {
@@ -995,4 +995,142 @@ a {
 .game-bloqueado:hover {
     transform: none;
     box-shadow: none;
+}
+
+.dashboard-page {
+    min-height: 91vh; /* header ocupa 9vh */
+    padding: 70px 10%;
+    background-color: #111;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+    color: white;
+    font-family: "Poppins", sans-serif;
+}
+
+.dashboard-intro {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.dashboard-intro span {
+    color: rgb(123, 195, 255);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.dashboard-intro h2 {
+    font-size: 42px;
+    margin: 15px 0;
+}
+
+.dashboard-intro p {
+    font-size: 18px;
+}
+
+.dashboard-topo {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 22px;
+    margin-bottom: 35px;
+}
+
+.carro-dashboard-card {
+    min-height: 300px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(123, 195, 255, 0.35);
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+
+.carro-dashboard-card span {
+    color: rgb(123, 195, 255);
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+.carro-dashboard-card h3 {
+    font-size: 32px;
+    margin-top: 8px;
+    margin-bottom: 20px;
+}
+
+.carro-modelo-area {
+    height: 360px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px dashed rgba(123, 195, 255, 0.35);
+    overflow: hidden;
+}
+
+.carro-modelo-area model-viewer {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+
+.dashboard-topo .dashboard-kpis {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-bottom: 0;
+}
+
+.kpi-card,
+.chart-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(123, 195, 255, 0.35);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+
+.kpi-card span {
+    color: rgb(123, 195, 255);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.kpi-card h3 {
+    font-size: 28px;
+    margin-top: 8px;
+}
+
+.dashboard-topo .kpi-card h3 {
+    font-size: 28px;
+}
+
+.dashboard-topo .kpi-card p {
+    margin-top: 8px;
+    color: rgb(123, 195, 255);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.customizacao-carro {
+    margin-top: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.customizacao-carro label {
+    color: rgb(123, 195, 255);
+    font-size: 14px;
+}
+
+#input_cor_carro {
+    width: 100%;
+    height: 45px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: transparent;
+    cursor: pointer;
 }

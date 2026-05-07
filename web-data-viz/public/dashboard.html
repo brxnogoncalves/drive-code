@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drive & Code - Dashboard</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.2.0/model-viewer.min.js"></script>
+</head>
+
+<body onload="renderizarKPIS()">
+    <div class="header">
+        <h1 class="logo-drive-code">Drive <span>&lt;Code/&gt;</span></h1>
+        <ul class="navbar">
+            <!-- LINKS VIA JS -->
+        </ul>
+    </div>
+
+    <div class="dashboard-page">
+        <div class="dashboard-intro">
+            <span>Drive & Code</span>
+            <h2>Dashboard do Piloto</h2>
+            <p>Acompanhe sua evolução nos games e o progresso do seu carro.</p>
+        </div>
+
+        <div class="dashboard-topo">
+            <div class="carro-dashboard-card">
+                <span>Seu carro</span>
+                <h3 id="nome_carro">Carro do usuário</h3>
+
+                <div class="carro-modelo-area">
+                    <model-viewer id="modelo_carro" src="./assets/lamborghini-gallardo.glb" camera-controls auto-rotate
+                        shadow-intensity="1" camera-orbit="0deg 70deg 8m" field-of-view="20deg" scale="0.2 0.2 0.2">
+                    </model-viewer>
+
+                </div>
+                <div class="customizacao-carro">
+                    <label>Cor do carro</label>
+                    <input type="color" id="input_cor_carro" value="#0066ff" onchange="alterarCorCarro()">
+                </div>
+            </div>
+
+            <div class="dashboard-kpis">
+                <div class="kpi-card">
+                    <span>Progresso</span>
+                    <h3>Nível <b id="kpi_nivel">1</b></h3>
+                    <p id="kpi_xp">0 / 100 XP</p>
+                </div>
+
+                <div class="kpi-card">
+                    <span>Games jogados</span>
+                    <h3 id="kpi_games">0</h3>
+                </div>
+
+                <div class="kpi-card">
+                    <span>Ranking</span>
+                    <h3 id="kpi_ranking">#--</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="assets/js/utils.js"></script>
+<script>
+    alterarNavBar();
+
+    // KPIS
+    function renderizarKPIS() {
+        document.getElementById('kpi_nivel').innerHTML = sessionStorage.NIVEL_CARRO;
+        kpi_xp.innerHTML = sessionStorage.XP_CARRO + ' / 100 XP';
+
+        // PEGA QUANTIDADE DE GAMES JOGADOS NO BANCO
+        fetch("/usuarios/quantidadeGamesJogados/" + sessionStorage.ID_USUARIO, {
+            method: "GET"
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                console.log(resposta);
+                resposta.json().then(function (quantidade) {
+                    console.log(quantidade[0].qtd_games_jogados);
+                    document.getElementById('kpi_games').innerHTML = quantidade[0].qtd_games_jogados;
+                })
+            }
+        }).catch(function (erro) {
+            console.log("Erro ao listar games:", erro);
+        });
+
+        // PEGA RANKING DO USUARIO
+        fetch("/usuarios/ranking/" + sessionStorage.ID_USUARIO, {
+            method: "GET"
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                console.log(resposta);
+                resposta.json().then(function (ranking) {
+                    console.log(ranking[0].posicao);
+                    document.getElementById('kpi_ranking').innerHTML = "#" + ranking[0].posicao;
+                })
+            }
+        }).catch(function (erro) {
+            console.log("Erro ao buscar ranking:", erro);
+        });
+    }
+
+    // MODELO CARRO
+    const modeloCarro = document.getElementById("modelo_carro");
+    modeloCarro.addEventListener("load", () => {
+
+        let corCarro = sessionStorage.COR_CARRO || "#0066ff";
+
+        input_cor_carro.value = corCarro;
+
+        aplicarCorCarro(corCarro);
+    });
+
+    function alterarCorCarro() {
+
+        let novaCor = input_cor_carro.value;
+        sessionStorage.COR_CARRO = novaCor;
+
+        fetch("/usuarios/alterarCorCarro", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idUsuarioServer: sessionStorage.ID_USUARIO,
+                novaCorServer: novaCor
+            })
+        }).then(function (resposta) {
+            console.log("Estou no then do alterarCorCarro...");
+
+            if (resposta.ok) {
+                console.log(resposta);
+            } else {
+                throw "Houve um erro ao tentar realizar a alteração de cor!";
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+
+        aplicarCorCarro(novaCor);
+    }
+
+    function aplicarCorCarro(cor) {
+
+        const materiais = modeloCarro.model.materials;
+
+        for (let i = 0; i < materiais.length; i++) {
+
+            let material = materiais[i];
+
+            material.pbrMetallicRoughness.setBaseColorFactor(
+                hexToRgb(cor)
+            );
+
+            material.pbrMetallicRoughness.setMetallicFactor(1);
+
+            material.pbrMetallicRoughness.setRoughnessFactor(0.15);
+        }
+    }
+
+    function hexToRgb(hex) {
+
+        hex = hex.replace("#", "");
+
+        let r = parseInt(hex.substring(0, 2), 16) / 255;
+        let g = parseInt(hex.substring(2, 4), 16) / 255;
+        let b = parseInt(hex.substring(4, 6), 16) / 255;
+
+        return [r, g, b, 1];
+    }
+</script>
+
+</html>

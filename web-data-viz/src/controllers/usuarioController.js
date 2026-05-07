@@ -85,8 +85,72 @@ function cadastrar(req, res) {
     }
 }
 
+function alterarCorCarro(req, res) {
+    let novaCor = req.body.novaCorServer;
+    let idUsuario = req.body.idUsuarioServer;
+
+    if (novaCor == undefined) {
+        res.status(400).send("Nova cor está undefined!");
+    } else if (idUsuario == undefined) {
+        res.status(400).send("Id usuário está undefined!");
+    }
+    else {
+        usuarioModel.alterarCorCarro(novaCor, idUsuario)
+            .then(function (resultado) {
+                res.json({
+                    mensagem: "Cor alterada com sucesso!",
+                    novaCor: novaCor
+                });
+            })
+            .catch(function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao realizar a alteração da cor! Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            })
+    }
+}
+
+function quantidadeGamesJogados(req, res) {
+    let idUsuario = req.params.idUsuario;
+
+    if (idUsuario == undefined) {
+        res.status(400).send("idUsuario está undefined!");
+    } else {
+        usuarioModel.quantidadeGamesJogados(idUsuario)
+            .then(function (resultado) {
+                res.json(resultado);
+            })
+            .catch(function (erro) {
+                console.log(erro);
+                res.status(500).json(erro.sqlMessage);
+            });
+    }
+}
+
+function ranking (req, res) {
+    let idUsuario = req.params.idUsuario;
+
+    if (idUsuario == undefined) {
+        res.status(400).send("idUsuario está undefined!");
+    } else {
+        usuarioModel.ranking(idUsuario)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage);
+        })
+    }
+}
 
 module.exports = {
     logar,
-    cadastrar
+    cadastrar,
+    alterarCorCarro,
+    quantidadeGamesJogados,
+    ranking
 }

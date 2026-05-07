@@ -49,8 +49,50 @@ function cadastrarCarroUsuario(nomeCarro, fkUsuario) {
     return database.executar(instrucaoSql);
 }
 
+function alterarCorCarro(novaCor, idUsuario) {
+    console.log("ACESSEI O USUARIO MODEL alterarCorCarro():", novaCor, idUsuario);
+
+    var instrucaoSql = `
+        UPDATE carro_usuario SET cor = '${novaCor}' WHERE fk_usuario = ${idUsuario}
+    `
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function quantidadeGamesJogados(idUsuario) {
+    var instrucaoSql = `
+            SELECT COUNT(g.id_game) as qtd_games_jogados FROM game g WHERE EXISTS (
+                    SELECT id_historico_xp FROM historico_xp hx
+                    WHERE hx.fk_game = g.id_game AND hx.fk_usuario = ${idUsuario}
+            );
+        `;
+
+    console.log("Executando SQL:\n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function ranking(idUsuario) {
+    var instrucaoSql = `
+    SELECT * from (
+        SELECT 
+            fk_usuario,
+            nome_carro,
+            xp,
+            ROW_NUMBER() OVER (ORDER BY ((nivel * 100) + xp) DESC) as posicao
+            FROM carro_usuario) as ranking
+    WHERE fk_usuario = ${idUsuario};
+    `
+
+    console.log("Executando SQL:\n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     logar,
     cadastrar,
-    cadastrarCarroUsuario
+    cadastrarCarroUsuario,
+    alterarCorCarro,
+    quantidadeGamesJogados,
+    ranking
 };
