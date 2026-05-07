@@ -60,10 +60,21 @@ function alterarCorCarro(novaCor, idUsuario) {
     return database.executar(instrucaoSql);
 }
 
+function alterarModeloCarro(novoModelo, idUsuario) {
+    console.log("ACESSEI O USUARIO MODEL alterarCorCarro():", novoModelo, idUsuario);
+
+    var instrucaoSql = `
+        UPDATE carro_usuario SET modelo_carro = '${novoModelo}' WHERE fk_usuario = ${idUsuario}
+    `
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 function quantidadeGamesJogados(idUsuario) {
     var instrucaoSql = `
             SELECT COUNT(g.id_game) as qtd_games_jogados FROM game g WHERE EXISTS (
-                    SELECT id_historico_xp FROM historico_xp hx
+                    SELECT id_historico_xp FROM historico_xp hxcl
                     WHERE hx.fk_game = g.id_game AND hx.fk_usuario = ${idUsuario}
             );
         `;
@@ -93,6 +104,7 @@ module.exports = {
     cadastrar,
     cadastrarCarroUsuario,
     alterarCorCarro,
+    alterarModeloCarro,
     quantidadeGamesJogados,
     ranking
 };

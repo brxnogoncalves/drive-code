@@ -31,14 +31,24 @@
                 <h3 id="nome_carro">Carro do usuário</h3>
 
                 <div class="carro-modelo-area">
-                    <model-viewer id="modelo_carro" src="./assets/lamborghini-gallardo.glb" camera-controls auto-rotate
-                        shadow-intensity="1" camera-orbit="0deg 70deg 8m" field-of-view="20deg" scale="0.2 0.2 0.2">
+                    <model-viewer id="modelo_carro" src="./assets/glb/lamborghini-gallardo.glb" camera-controls
+                        auto-rotate shadow-intensity="1" camera-orbit="0deg 70deg 8m" field-of-view="20deg"
+                        scale="0.2 0.2 0.2">
                     </model-viewer>
 
                 </div>
                 <div class="customizacao-carro">
                     <label>Cor do carro</label>
                     <input type="color" id="input_cor_carro" value="#0066ff" onchange="alterarCorCarro()">
+                </div>
+                <div class="customizacao-carro">
+                    <label>Modelo de carro</label>
+                    <select id="select_modelo_carro" onchange="alterarModeloCarro()">
+                        <option value="./assets/glb/lamborghini-gallardo.glb">Lamborghini Gallardo</option>
+                        <option value="./assets/glb/lamborghini-aventador.glb">Lamborghini Aventador</option>
+                        <option value="./assets/glb/batmobil.glb">Bat móvel</option>
+                        <option value="./assets/glb/merc_hover.glb">Merc Hover</option>
+                    </select>
                 </div>
             </div>
 
@@ -107,11 +117,45 @@
     modeloCarro.addEventListener("load", () => {
 
         let corCarro = sessionStorage.COR_CARRO || "#0066ff";
-
         input_cor_carro.value = corCarro;
+        modeloCarro.src = sessionStorage.MODELO_CARRO;
+
+        const selectModelo = document.getElementById("select_modelo_carro");
+
+        if (sessionStorage.MODELO_CARRO) {
+            selectModelo.value = sessionStorage.MODELO_CARRO;
+        }
 
         aplicarCorCarro(corCarro);
     });
+
+    function alterarModeloCarro() {
+        let novoModelo = select_modelo_carro.value;
+        modeloCarro.src = novoModelo;
+        
+        sessionStorage.MODELO_CARRO = novoModelo;
+
+        fetch("/usuarios/alterarModeloCarro", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idUsuarioServer: sessionStorage.ID_USUARIO,
+                novoModeloServer: novoModelo
+            })
+        }).then(function (resposta) {
+            console.log("Estou no then do alterarModeloCarro...");
+
+            if (resposta.ok) {
+                console.log(resposta);
+            } else {
+                throw "Houve um erro ao tentar realizar a alteração do modelo!";
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+    }
 
     function alterarCorCarro() {
 

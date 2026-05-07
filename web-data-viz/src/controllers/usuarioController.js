@@ -113,6 +113,35 @@ function alterarCorCarro(req, res) {
     }
 }
 
+function alterarModeloCarro(req, res) {
+    let novoModelo = req.body.novoModeloServer;
+    let idUsuario = req.body.idUsuarioServer;
+
+    if (novoModelo == undefined) {
+        res.status(400).send("Novo modelo está undefined!");
+    } else if (idUsuario == undefined) {
+        res.status(400).send("Id usuário está undefined!");
+    }
+    else {
+        usuarioModel.alterarModeloCarro(novoModelo, idUsuario)
+            .then(function (resultado) {
+                res.json({
+                    mensagem: "Modelo alterado com sucesso!",
+                    novoModelo: novoModelo
+                });
+            })
+            .catch(function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao realizar a alteração do modelo! Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            })
+    }
+}
+
+
 function quantidadeGamesJogados(req, res) {
     let idUsuario = req.params.idUsuario;
 
@@ -151,6 +180,7 @@ module.exports = {
     logar,
     cadastrar,
     alterarCorCarro,
+    alterarModeloCarro,
     quantidadeGamesJogados,
     ranking
 }

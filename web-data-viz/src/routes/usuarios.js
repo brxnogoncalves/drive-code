@@ -15,6 +15,10 @@ router.post("/alterarCorCarro", function (req, res) {
     usuarioController.alterarCorCarro(req, res);
 })
 
+router.post("/alterarModeloCarro", function (req, res) {
+    usuarioController.alterarModeloCarro(req, res);
+})
+
 router.get("/quantidadeGamesJogados/:idUsuario", function(req,res) {
     usuarioController.quantidadeGamesJogados(req, res);
 })
