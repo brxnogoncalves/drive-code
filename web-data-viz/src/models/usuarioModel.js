@@ -74,7 +74,7 @@ function alterarModeloCarro(novoModelo, idUsuario) {
 function quantidadeGamesJogados(idUsuario) {
     var instrucaoSql = `
             SELECT COUNT(g.id_game) as qtd_games_jogados FROM game g WHERE EXISTS (
-                    SELECT id_historico_xp FROM historico_xp hxcl
+                    SELECT id_historico_xp FROM historico_xp hx
                     WHERE hx.fk_game = g.id_game AND hx.fk_usuario = ${idUsuario}
             );
         `;
