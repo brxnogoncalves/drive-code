@@ -11,7 +11,8 @@ function logar(email, senha) {
             c.nome_carro,
             c.nivel,
             c.xp,
-            c.cor as cor_carro
+            c.cor as cor_carro,
+            c.textura_carro
         FROM usuario u
         JOIN carro_usuario c 
             ON c.fk_usuario = u.id_usuario
@@ -60,16 +61,28 @@ function alterarCorCarro(novaCor, idUsuario) {
     return database.executar(instrucaoSql);
 }
 
-function alterarModeloCarro(novoModelo, idUsuario) {
-    console.log("ACESSEI O USUARIO MODEL alterarCorCarro():", novoModelo, idUsuario);
+// function alterarModeloCarro(novoModelo, idUsuario) {
+//     console.log("ACESSEI O USUARIO MODEL alterarCorCarro():", novoModelo, idUsuario);
+
+//     var instrucaoSql = `
+//         UPDATE carro_usuario SET modelo_carro = '${novoModelo}' WHERE fk_usuario = ${idUsuario}
+//     `
+
+//     console.log("Executando a instrução SQL: \n" + instrucaoSql);
+//     return database.executar(instrucaoSql);
+// }
+
+function alterarTexturaCarro(novaTextura, idUsuario) {
+    console.log("ACESSEI O USUARIO MODEL alterarTextura():", novaTextura, idUsuario);
 
     var instrucaoSql = `
-        UPDATE carro_usuario SET modelo_carro = '${novoModelo}' WHERE fk_usuario = ${idUsuario}
+        UPDATE carro_usuario SET textura_carro = '${novaTextura}' WHERE fk_usuario = ${idUsuario}
     `
 
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
+
 
 function quantidadeGamesJogados(idUsuario) {
     var instrucaoSql = `
@@ -104,7 +117,8 @@ module.exports = {
     cadastrar,
     cadastrarCarroUsuario,
     alterarCorCarro,
-    alterarModeloCarro,
+    // alterarModeloCarro,
+    alterarTexturaCarro,
     quantidadeGamesJogados,
     ranking
 };

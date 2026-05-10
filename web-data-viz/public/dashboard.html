@@ -44,10 +44,11 @@
                 <div class="customizacao-carro">
                     <label>Textura do carro</label>
                     <select id="select_textura_carro" onchange="alterarTexturaCarro()">
-                        <option value="">Sem textura</option>
+                        <option value="nenhuma">Sem textura</option>
                         <option value="./assets/glb/textures/texture_glitter.jpg">Textura Glitter</option>
                         <option value="./assets/glb/textures/texture_carbon.jpg">Textura Carbono</option>
                         <option value="./assets/glb/textures/texture_rgb.jpg">Textura RGB</option>
+                        <option value="./assets/glb/textures/texture_liquid.jpg">Textura Liquido</option>
                     </select>
                 </div>
             </div>
@@ -78,12 +79,14 @@
     alterarNavBar();
 
     let cliquesEasterEgg = 0;
+    let easterEggAtivado = false;
     easter_carro.addEventListener("click", function () {
 
         cliquesEasterEgg++;
 
-        if (cliquesEasterEgg == 5) {
+        if (cliquesEasterEgg == 5 && !easterEggAtivado) {
             ativarEasterEggCarro();
+            easterEggAtivado = true;
             cliquesEasterEgg = 0;
         }
     });
@@ -131,15 +134,23 @@
         let corCarro = sessionStorage.COR_CARRO || "#0066ff";
         input_cor_carro.value = corCarro;
 
-        // modeloCarro.src = sessionStorage.MODELO_CARRO;
+        let nomeCarro = sessionStorage.NOME_CARRO;
+        nome_carro.innerHTML = nomeCarro;
 
-        // const selectModelo = document.getElementById("select_modelo_carro");
-
-        if (sessionStorage.NOME_CARRO) {
-            nome_carro.innerHTML = sessionStorage.NOME_CARRO;
-        }
+        let texturaCarro = sessionStorage.TEXTURA_CARRO;
 
         aplicarCorCarro(corCarro);
+
+        if (texturaCarro && texturaCarro != "nenhuma") {
+            select_textura_carro.value = texturaCarro;
+            aplicarTexturaCarro(texturaCarro);
+        } else {
+            select_textura_carro.value = "nenhuma";
+        }
+        
+        // modeloCarro.src = sessionStorage.MODELO_CARRO;
+        // const selectModelo = document.getElementById("select_modelo_carro");
+
     });
 
     // function alterarModeloCarro() {
@@ -209,21 +220,45 @@
         );
     }
 
-    async function alterarTexturaCarro() {
+    function alterarTexturaCarro() {
 
         let texturaSelecionada = select_textura_carro.value;
 
-        sessionStorage.TEXTURA_CARRO = texturaSelecionada;
+        fetch("/usuarios/alterarTexturaCarro", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idUsuarioServer: sessionStorage.ID_USUARIO,
+                novaTexturaServer: texturaSelecionada
+            })
+        }).then(function (resposta) {
+            console.log("Estou no then do alterarTexturaCarro...");
 
-        if (texturaSelecionada == "") {
-            aplicarCorCarro(sessionStorage.COR_CARRO || "#0066ff");
+            if (resposta.ok) {
+                console.log(resposta);
+            } else {
+                throw "Houve um erro ao tentar realizar a alteração da textura!";
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+
+        aplicarTexturaCarro(texturaSelecionada);
+    }
+
+    async function aplicarTexturaCarro(texturaSelecionada) {
+        sessionStorage.TEXTURA_CARRO = texturaSelecionada;
+        const material = modeloCarro.model.materials[0];
+
+        if (texturaSelecionada == "nenhuma") {
+            material.pbrMetallicRoughness.baseColorTexture.setTexture(null);
+            aplicarCorCarro(sessionStorage.COR_CARRO);
             return;
         }
 
         const textura = await modeloCarro.createTexture(texturaSelecionada);
-
-        const material = modeloCarro.model.materials[0];
-
         material.pbrMetallicRoughness.baseColorTexture.setTexture(textura);
     }
 

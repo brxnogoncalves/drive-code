@@ -26,7 +26,8 @@ function logar(req, res) {
                             nome_carro: resultadoLogar[0].nome_carro,
                             nivel_carro: resultadoLogar[0].nivel,
                             xp_carro: resultadoLogar[0].xp,
-                            cor_carro: resultadoLogar[0].cor_carro
+                            cor_carro: resultadoLogar[0].cor_carro,
+                            textura_carro: resultadoLogar[0].textura_carro
                         })
                     } else if (resultadoLogar.length == 0) {
                         res.status(403).send("Email e/ou senha inválido(s)");
@@ -113,27 +114,55 @@ function alterarCorCarro(req, res) {
     }
 }
 
-function alterarModeloCarro(req, res) {
-    let novoModelo = req.body.novoModeloServer;
+// function alterarModeloCarro(req, res) {
+//     let novoModelo = req.body.novoModeloServer;
+//     let idUsuario = req.body.idUsuarioServer;
+
+//     if (novoModelo == undefined) {
+//         res.status(400).send("Novo modelo está undefined!");
+//     } else if (idUsuario == undefined) {
+//         res.status(400).send("Id usuário está undefined!");
+//     }
+//     else {
+//         usuarioModel.alterarModeloCarro(novoModelo, idUsuario)
+//             .then(function (resultado) {
+//                 res.json({
+//                     mensagem: "Modelo alterado com sucesso!",
+//                     novoModelo: novoModelo
+//                 });
+//             })
+//             .catch(function (erro) {
+//                 console.log(erro);
+//                 console.log(
+//                     "\nHouve um erro ao realizar a alteração do modelo! Erro: ",
+//                     erro.sqlMessage
+//                 );
+//                 res.status(500).json(erro.sqlMessage);
+//             })
+//     }
+// }
+
+function alterarTexturaCarro(req, res) {
+    let novaTextura = req.body.novaTexturaServer;
     let idUsuario = req.body.idUsuarioServer;
 
-    if (novoModelo == undefined) {
-        res.status(400).send("Novo modelo está undefined!");
+    if (novaTextura == undefined) {
+        res.status(400).send("Nova textura está undefined!");
     } else if (idUsuario == undefined) {
         res.status(400).send("Id usuário está undefined!");
     }
     else {
-        usuarioModel.alterarModeloCarro(novoModelo, idUsuario)
+        usuarioModel.alterarTexturaCarro(novaTextura, idUsuario)
             .then(function (resultado) {
                 res.json({
-                    mensagem: "Modelo alterado com sucesso!",
-                    novoModelo: novoModelo
+                    mensagem: "Textura alterada com sucesso!",
+                    novaTextura: novaTextura
                 });
             })
             .catch(function (erro) {
                 console.log(erro);
                 console.log(
-                    "\nHouve um erro ao realizar a alteração do modelo! Erro: ",
+                    "\nHouve um erro ao realizar a alteração da textura! Erro: ",
                     erro.sqlMessage
                 );
                 res.status(500).json(erro.sqlMessage);
@@ -180,7 +209,8 @@ module.exports = {
     logar,
     cadastrar,
     alterarCorCarro,
-    alterarModeloCarro,
+    // alterarModeloCarro,
+    alterarTexturaCarro,
     quantidadeGamesJogados,
     ranking
 }
