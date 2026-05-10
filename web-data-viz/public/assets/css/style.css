@@ -1406,3 +1406,19 @@ a {
     line-height: 1.7;
     opacity: 0.85;
 }
+
+.terminal-can {
+    margin: 20px 0;
+    padding: 18px;
+    border-radius: 14px;
+    background-color: #05080d;
+    border: 1px solid rgba(123, 195, 255, 0.35);
+    color: #7bc3ff;
+    font-family: monospace;
+    text-align: left;
+    box-shadow: 0 0 20px rgba(0, 102, 255, 0.15);
+}
+
+.terminal-can p {
+    margin: 6px 0;
+}

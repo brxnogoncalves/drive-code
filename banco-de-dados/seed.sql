@@ -64,7 +64,8 @@ CREATE TABLE resposta_quiz (
 INSERT INTO game (nome, descricao, xp_recompensa) VALUES
 ('Quiz Automotivo', 'Perguntas sobre carros, tecnologia embarcada e programação.', 120),
 ('Corrida Lógica', 'Responda perguntas de lógica e avance com seu carro.', 40),
-('Oficina de Debug', 'Encontre erros em códigos e conserte problemas.', 60);
+('Oficina de Debug', 'Encontre erros em códigos e conserte problemas.', 60),
+('CAN Hacker', 'Resolva desafios simples sobre rede CAN, módulos automotivos e tecnologia dos carros modernos.', 80);
 
 INSERT INTO pergunta_quiz 
 (pergunta, alternativa_a, alternativa_b, alternativa_c, alternativa_d, alternativa_correta, tema, fk_game)
