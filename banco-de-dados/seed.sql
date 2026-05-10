@@ -15,13 +15,10 @@ CREATE TABLE carro_usuario (
     cor CHAR(7) DEFAULT '#000000', -- ARMAZENA HEX DA COR
     nivel INT DEFAULT 1,
     xp INT DEFAULT 0,
+    textura_carro VARCHAR(255) DEFAULT 'nenhuma'
     fk_usuario INT UNIQUE,
     CONSTRAINT fkCarroUsuario FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
 );
-
-ALTER TABLE carro_usuario MODIFY COLUMN modelo_carro VARCHAR(255) DEFAULT './assets/glb/lamborghini-gallardo.glb';
-ALTER TABLE carro_usuario ADD COLUMN textura_carro VARCHAR(255) DEFAULT 'nenhuma';
-DESC carro_usuario;
 
 CREATE TABLE game (
 	id_game INT PRIMARY KEY AUTO_INCREMENT,
@@ -65,10 +62,7 @@ CREATE TABLE resposta_quiz (
 );
 
 INSERT INTO game (nome, descricao, xp_recompensa) VALUES
-('Quiz Automotivo', 'Perguntas sobre carros, tecnologia embarcada e programação.', 50);
-
-UPDATE game set xp_recompensa = 120 WHERE id_game = 1;
-INSERT INTO game (nome, descricao, xp_recompensa) VALUES
+('Quiz Automotivo', 'Perguntas sobre carros, tecnologia embarcada e programação.', 120),
 ('Corrida Lógica', 'Responda perguntas de lógica e avance com seu carro.', 40),
 ('Oficina de Debug', 'Encontre erros em códigos e conserte problemas.', 60);
 
@@ -185,35 +179,35 @@ VALUES
  'Tecnologia',
  1);
  
-SELECT 
-    g.id_game,
-    g.nome,
-    g.descricao,
-    g.xp_recompensa,
-    CASE 
-        WHEN EXISTS (
-            SELECT 1
-            FROM historico_xp hx
-            WHERE hx.fk_game = g.id_game
-              AND hx.fk_usuario = 1
-        ) THEN 1
-        ELSE 0
-    END AS ja_jogou
-FROM game g;
+-- SELECT 
+--     g.id_game,
+--     g.nome,
+--     g.descricao,
+--     g.xp_recompensa,
+--     CASE 
+--         WHEN EXISTS (
+--             SELECT 1
+--             FROM historico_xp hx
+--             WHERE hx.fk_game = g.id_game
+--               AND hx.fk_usuario = 1
+--         ) THEN 1
+--         ELSE 0
+--     END AS ja_jogou
+-- FROM game g;
 
-SELECT COUNT(g.id_game) as qtd_games_jogados FROM game g WHERE EXISTS (
-		SELECT id_historico_xp FROM historico_xp hx
-		WHERE hx.fk_game = g.id_game AND hx.fk_usuario = 1
-);
+-- SELECT COUNT(g.id_game) as qtd_games_jogados FROM game g WHERE EXISTS (
+-- 		SELECT id_historico_xp FROM historico_xp hx
+-- 		WHERE hx.fk_game = g.id_game AND hx.fk_usuario = 1
+-- );
 
-SELECT * from (
-	SELECT 
-		fk_usuario,
-        nome_carro,
-        xp,
-        ROW_NUMBER() OVER (ORDER BY ((nivel * 100) + xp) DESC) as posicao
-        FROM carro_usuario) as ranking
-WHERE fk_usuario = 2;
+-- SELECT * from (
+-- 	SELECT 
+-- 		fk_usuario,
+--         nome_carro,
+--         xp,
+--         ROW_NUMBER() OVER (ORDER BY ((nivel * 100) + xp) DESC) as posicao
+--         FROM carro_usuario) as ranking
+-- WHERE fk_usuario = 2;
 
     
 
