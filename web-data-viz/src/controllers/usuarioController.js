@@ -201,6 +201,20 @@ function ranking(req, res) {
         });
 }
 
+function historicoXP(req, res) {
+    let idUsuario = req.params.idUsuario;
+
+    usuarioModel.historicoXP(idUsuario)
+        .then(function (resultado) {
+            res.json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+
+}
+
 module.exports = {
     logar,
     cadastrar,
@@ -208,5 +222,6 @@ module.exports = {
     // alterarModeloCarro,
     alterarTexturaCarro,
     quantidadeGamesJogados,
-    ranking
+    ranking,
+    historicoXP
 }

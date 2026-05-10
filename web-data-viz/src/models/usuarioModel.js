@@ -117,20 +117,40 @@ function ranking(idUsuario) {
     } else {
         instrucaoSql = `
             SELECT 
-                fk_usuario,
-                nome_carro,
-                nivel,
-                xp,
+                c.fk_usuario,
+                u.nome as nome_usuario,
+                c.nome_carro,
+                c.nivel,
+                c.xp,
                 ROW_NUMBER() OVER (
-                    ORDER BY ((nivel * 100) + xp) DESC
+                    ORDER BY ((c.nivel * 100) + c.xp) DESC
                 ) AS posicao
-            FROM carro_usuario
+            FROM carro_usuario c
+            JOIN usuario u
+                ON c.fk_usuario = u.id_usuario
             ORDER BY posicao
             LIMIT 5;
         `;
     }
 
     console.log("Executando SQL:\n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+function historicoXP(idUsuario) {
+
+    var instrucaoSql = `
+        SELECT 
+            DATE(data_ganho) as dia,
+            SUM(xp_ganho) as xp_total
+        FROM historico_xp
+        WHERE fk_usuario = ${idUsuario}
+        GROUP BY DATE(data_ganho)
+        ORDER BY dia;
+    `;
+
+    console.log("Executando SQL:\n" + instrucaoSql);
+
     return database.executar(instrucaoSql);
 }
 
@@ -142,5 +162,6 @@ module.exports = {
     // alterarModeloCarro,
     alterarTexturaCarro,
     quantidadeGamesJogados,
-    ranking
+    ranking,
+    historicoXP
 };

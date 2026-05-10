@@ -10,7 +10,7 @@
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.2.0/model-viewer.min.js"></script>
 </head>
 
-<body onload="renderizarKPIS()">
+<body onload="renderizarKPIS(); renderizarGraficoRanking(); renderizarGraficoXP()">
     <div class="header">
         <h1 class="logo-drive-code">Drive <span>&lt;Code/&gt;</span></h1>
         <ul class="navbar">
@@ -71,6 +71,38 @@
                 </div>
             </div>
         </div>
+
+        <div class="graficos-dashboard">
+
+            <div class="ranking-grafico-card">
+                <div class="ranking-grafico-header">
+                    <div>
+                        <span>Competição</span>
+                        <h3>Top 5 pilotos</h3>
+                    </div>
+                    <p>Ranking por nível + XP</p>
+                </div>
+
+                <div class="ranking-canvas-area">
+                    <canvas id="grafico_ranking"></canvas>
+                </div>
+            </div>
+
+            <div class="ranking-grafico-card">
+                <div class="ranking-grafico-header">
+                    <div>
+                        <span>Progresso</span>
+                        <h3>Histórico de XP</h3>
+                    </div>
+                    <p>Evolução do piloto</p>
+                </div>
+
+                <div class="ranking-canvas-area">
+                    <canvas id="grafico_xp"></canvas>
+                </div>
+            </div>
+
+        </div>
     </div>
 </body>
 <script src="assets/js/utils.js"></script>
@@ -127,6 +159,138 @@
         });
     }
 
+    // graficos
+    function renderizarGraficoRanking() {
+        fetch("/usuarios/ranking", {
+            method: "GET"
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                resposta.json().then(function (ranking) {
+
+                    let nomes = [];
+                    let pontuacoes = [];
+
+                    for (let i = 0; i < ranking.length; i++) {
+                        if (ranking[i].posicao == 1) {
+                            nomes.push("🥇 " + ranking[i].nome_carro + " ( " + ranking[i].nome_usuario + " )");
+                        } else if (ranking[i].posicao == 2) {
+                            nomes.push("🥈 " + ranking[i].nome_carro + " ( " + ranking[i].nome_usuario + " )");
+                        } else if (ranking[i].posicao == 3) {
+                            nomes.push("🥉 " + ranking[i].nome_carro + " ( " + ranking[i].nome_usuario + " )");
+                        } else {
+                            nomes.push(ranking[i].nome_carro + " ( " + ranking[i].nome_usuario + " )");
+                        }
+                        pontuacoes.push((ranking[i].nivel * 100) + ranking[i].xp);
+                    }
+
+                    const ctx = document.getElementById("grafico_ranking");
+
+                    new Chart(ctx, {
+                        type: "bar",
+                        data: {
+                            labels: nomes,
+                            datasets: [{
+                                label: "Pontuação",
+                                data: pontuacoes,
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            indexAxis: "y",
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                });
+            }
+        }).catch(function (erro) {
+            console.log("Erro ao carregar gráfico de ranking:", erro);
+        });
+    }
+
+    function renderizarGraficoXP() {
+
+        fetch("/usuarios/historicoXP/" + sessionStorage.ID_USUARIO, {
+            method: "GET"
+        }).then(function (resposta) {
+
+            if (resposta.ok) {
+
+                resposta.json().then(function (dados) {
+
+                    let dias = [];
+                    let xp = [];
+
+                    for (let i = 0; i < dados.length; i++) {
+                        dias.push(dados[i].dia);
+                        xp.push(dados[i].xp_total);
+                    }
+
+                    const ctx = document.getElementById("grafico_xp");
+
+                    new Chart(ctx, {
+                        type: "line",
+                        data: {
+                            labels: dias,
+                            datasets: [{
+                                label: "XP ganho",
+                                data: xp,
+                                tension: 0.4,
+                                fill: true,
+                                borderWidth: 3,
+                                backgroundColor: "rgba(0, 102, 255, 0.15)",
+                                borderColor: "rgba(123, 195, 255, 1)"
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    ticks: {
+                                        color: "#aaa"
+                                    },
+                                    grid: {
+                                        color: "rgba(255,255,255,0.05)"
+                                    }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        color: "#aaa"
+                                    },
+                                    grid: {
+                                        color: "rgba(255,255,255,0.05)"
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                });
+
+            }
+
+        }).catch(function (erro) {
+            console.log("Erro histórico XP:", erro);
+        });
+
+    }
+    
     // MODELO CARRO
     const modeloCarro = document.getElementById("modelo_carro");
     modeloCarro.addEventListener("load", () => {
@@ -147,7 +311,7 @@
         } else {
             select_textura_carro.value = "nenhuma";
         }
-        
+
         // modeloCarro.src = sessionStorage.MODELO_CARRO;
         // const selectModelo = document.getElementById("select_modelo_carro");
 
