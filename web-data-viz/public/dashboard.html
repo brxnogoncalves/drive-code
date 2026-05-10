@@ -302,6 +302,21 @@
     const modeloCarro = document.getElementById("modelo_carro");
     modeloCarro.addEventListener("load", () => {
 
+        if (sessionStorage.ID_USUARIO == 2) {
+            modeloCarro.src = "./assets/glb/barbie_car.glb";
+            nome_carro.innerHTML = "Barbie da Man";
+
+            input_cor_carro.disabled = true;
+            input_cor_carro.value = 'pink';
+            select_textura_carro.disabled = true;
+
+
+            ativarTemaPinkEdition();
+
+
+            return;
+        }
+
         let corCarro = sessionStorage.COR_CARRO || "#0066ff";
         input_cor_carro.value = corCarro;
 
