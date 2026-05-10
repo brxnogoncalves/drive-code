@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drive & Code - Do Motor ao Código</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body>
+
+    <div class="header">
+        <h1 class="logo-drive-code">Drive <span>&lt;Code/&gt;</span></h1>
+        <ul class="navbar">
+            <!-- LINKS VIA JS -->
+        </ul>
+    </div>
+
+    <section class="sobre motor-codigo-page">
+
+        <div class="sobre-intro">
+            <span>Minha jornada</span>
+            <h2>Como carros me ensinaram tecnologia</h2>
+            <p>
+                A curiosidade por motores, módulos eletrônicos e funcionamento dos carros
+                acabou se transformando em interesse por programação, dados e sistemas embarcados.
+            </p>
+        </div>
+
+        <div class="sobre-bloco">
+            <div class="sobre-video">
+                <img src="assets/img/rede-can-cobli.png" alt="Rede CAN automotiva">
+            </div>
+
+            <div class="sobre-texto">
+                <div class="sobre-texto-line"></div>
+                <h2>O que é rede CAN?</h2>
+                <p>
+                    A rede CAN é uma comunicação usada nos veículos para que os módulos eletrônicos
+                    troquem informações entre si, como sensores, botões, rotação, velocidade e comandos.
+                    Ela mostra como um carro moderno também é feito de dados e tecnologia.
+                </p>
+            </div>
+        </div>
+
+        <div class="sobre-bloco reverse motor-espaco">
+            <div class="sobre-video">
+                <img src="assets/img/keep_start.jpg" alt="Projeto de firmware automotivo">
+            </div>
+
+            <div class="sobre-texto">
+                <div class="sobre-texto-line"></div>
+                <h2>Projetos que desenvolvi</h2>
+                <p>
+                    Desenvolvi projetos envolvendo firmware, leitura de mensagens CAN,
+                    simulações. Esses projetos me ajudaram a entender como
+                    programação pode sair da tela e interagir com o mundo real.
+                </p>
+            </div>
+        </div>
+
+        <div class="projetos-motor-grid">
+            <div class="projeto-motor-card">
+                <h3>Keep Start</h3>
+                <p>
+                    Projeto de firmware automotivo desenvolvido para desativar automaticamente
+                    o sistema Start/Stop de veículos. Utiliza leitura de mensagens da rede CAN,
+                    lógica embarcada e comunicação entre módulos para identificar o estado do carro
+                    e executar comandos automaticamente.
+                </p>
+            </div>
+
+            <div class="projeto-motor-card">
+                <h3>BPower Pedal</h3>
+                <p>
+                    Módulo automotivo criado para melhorar a resposta do acelerador eletrônico,
+                    reduzindo atrasos na aceleração e proporcionando uma sensação de maior
+                    desempenho ao dirigir. O projeto utiliza firmware embarcado e integração
+                    eletrônica com o sistema do pedal.
+                </p>
+            </div>
+
+            <div class="projeto-motor-card">
+                <h3>Fiat/Stellantis/Mopar Dash Pulse Abarth</h3>
+                <p>
+                    Projeto automotivo desenvolvido para leitura de informações do veículo através
+                    de requisições OBD utilizando PIDs padrões da norma automotiva. O módulo realiza
+                    consultas em tempo real para obter dados como rotação, velocidade, temperatura
+                    e outros parâmetros do carro, exibindo essas informações em uma interface dedicada.
+                </p>
+            </div>
+        </div>
+
+    </section>
+
+    <script src="assets/js/utils.js"></script>
+    <script>
+        alterarNavBar();
+    </script>
+
+</body>
+
+</html>

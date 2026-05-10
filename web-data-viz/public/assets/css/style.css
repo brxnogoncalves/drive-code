@@ -1355,3 +1355,54 @@ a {
     font-size: 0.95rem;
     line-height: 1.6;
 }
+
+.motor-codigo-page .sobre-video img {
+    width: 600px;
+    height: 400px;
+    border-radius: 18px;
+    object-fit: cover;
+    object-position: center;
+
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+    transition: 0.4s ease;
+    border: 1px solid rgb(123, 195, 255);
+}
+
+.motor-codigo-page .sobre-video img:hover {
+    transform: scale(1.02);
+}
+
+.motor-espaco {
+    margin-top: 90px;
+}
+
+.projetos-motor-grid {
+    margin-top: 90px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.projeto-motor-card {
+    color: white;
+    font-family: "Poppins", sans-serif;
+
+    background: rgba(255, 255, 255, 0.03);
+    padding: 30px;
+    border-radius: 18px;
+
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 3px solid var(--cor-primaria);
+}
+
+.projeto-motor-card h3 {
+    font-size: 24px;
+    margin-bottom: 12px;
+}
+
+.projeto-motor-card p {
+    font-size: 16px;
+    line-height: 1.7;
+    opacity: 0.85;
+}
