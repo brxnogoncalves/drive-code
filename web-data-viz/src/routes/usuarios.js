@@ -27,7 +27,7 @@ router.get("/quantidadeGamesJogados/:idUsuario", function(req,res) {
     usuarioController.quantidadeGamesJogados(req, res);
 })
 
-router.get("/ranking/:idUsuario", function (req, res) {
+router.get("/ranking/:idUsuario?", function (req, res) {
     usuarioController.ranking(req, res);
 })
 

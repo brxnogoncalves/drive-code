@@ -97,16 +97,38 @@ function quantidadeGamesJogados(idUsuario) {
 }
 
 function ranking(idUsuario) {
-    var instrucaoSql = `
-    SELECT * from (
-        SELECT 
-            fk_usuario,
-            nome_carro,
-            xp,
-            ROW_NUMBER() OVER (ORDER BY ((nivel * 100) + xp) DESC) as posicao
-            FROM carro_usuario) as ranking
-    WHERE fk_usuario = ${idUsuario};
-    `
+    let instrucaoSql = "";
+
+    if (idUsuario) {
+        instrucaoSql = `
+            SELECT * FROM (
+                SELECT 
+                    fk_usuario,
+                    nome_carro,
+                    nivel,
+                    xp,
+                    ROW_NUMBER() OVER (
+                        ORDER BY ((nivel * 100) + xp) DESC
+                    ) AS posicao
+                FROM carro_usuario
+            ) AS ranking
+            WHERE fk_usuario = ${idUsuario};
+        `;
+    } else {
+        instrucaoSql = `
+            SELECT 
+                fk_usuario,
+                nome_carro,
+                nivel,
+                xp,
+                ROW_NUMBER() OVER (
+                    ORDER BY ((nivel * 100) + xp) DESC
+                ) AS posicao
+            FROM carro_usuario
+            ORDER BY posicao
+            LIMIT 5;
+        `;
+    }
 
     console.log("Executando SQL:\n" + instrucaoSql);
     return database.executar(instrucaoSql);

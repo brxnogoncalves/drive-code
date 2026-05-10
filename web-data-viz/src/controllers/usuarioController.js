@@ -188,21 +188,17 @@ function quantidadeGamesJogados(req, res) {
     }
 }
 
-function ranking (req, res) {
+function ranking(req, res) {
     let idUsuario = req.params.idUsuario;
 
-    if (idUsuario == undefined) {
-        res.status(400).send("idUsuario está undefined!");
-    } else {
-        usuarioModel.ranking(idUsuario)
+    usuarioModel.ranking(idUsuario)
         .then(function (resultado) {
             res.json(resultado);
         })
         .catch(function (erro) {
             console.log(erro);
             res.status(500).json(erro.sqlMessage);
-        })
-    }
+        });
 }
 
 module.exports = {
