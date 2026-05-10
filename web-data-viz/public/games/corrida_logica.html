@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drive & Code - Corrida Lógica</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+
+<body>
+
+    <div class="header">
+        <h1 class="logo-drive-code">Drive <span>&lt;Code/&gt;</span></h1>
+        <ul class="navbar">
+            <!-- LINKS SÃO COLOCADOS VIA JS -->
+        </ul>
+    </div>
+
+    <div class="quiz-page">
+
+        <div class="quiz-card">
+            <span id="contador_pergunta" class="quiz-tag">Corrida Lógica</span>
+
+            <h2 id="pergunta">Preparando largada...</h2>
+
+            <div class="quiz-info">
+                <span id="tema_pergunta">Tema: Lógica</span>
+                <span id="pontos_quiz">0 pontos</span>
+            </div>
+
+            <div class="opcoes" id="opcoes"></div>
+
+            <div id="resultado_quiz" class="resultado-quiz none"></div>
+
+            <button id="btn_proxima" class="btn-proxima none" onclick="proximaPergunta()">
+                Próxima
+            </button>
+        </div>
+
+    </div>
+
+    <script src="../assets/js/utils.js"></script>
+    <script>
+        alterarNavBar();
+
+        let perguntas = [
+            {
+                pergunta: "Qual estrutura é usada para repetir comandos várias vezes?",
+                opcoes: ["if", "for", "alert", "return"],
+                correta: 1,
+                tema: "Repetição"
+            },
+            {
+                pergunta: "Qual operador verifica se dois valores são iguais em JavaScript?",
+                opcoes: ["=", "==", "+", "!="],
+                correta: 1,
+                tema: "Operadores"
+            },
+            {
+                pergunta: "O que acontece dentro de um if?",
+                opcoes: [
+                    "Uma condição é testada",
+                    "Uma imagem é carregada",
+                    "Um banco é criado",
+                    "Uma página é apagada"
+                ],
+                correta: 0,
+                tema: "Condição"
+            },
+            {
+                pergunta: "Qual comando exibe uma mensagem no console?",
+                opcoes: ["console.log()", "innerHTML()", "fetch()", "JSON.stringify()"],
+                correta: 0,
+                tema: "JavaScript"
+            },
+            {
+                pergunta: "Qual valor representa verdadeiro?",
+                opcoes: ["false", "null", "true", "undefined"],
+                correta: 2,
+                tema: "Booleano"
+            }
+        ];
+
+        let perguntaAtual = 0;
+        let pontos = 0;
+        let respondeu = false;
+
+        carregarPergunta();
+
+        function carregarPergunta() {
+            respondeu = false;
+
+            let perguntaObj = perguntas[perguntaAtual];
+
+            pergunta.innerHTML = perguntaObj.pergunta;
+            contador_pergunta.innerHTML = "Volta " + (perguntaAtual + 1) + " de " + perguntas.length;
+            tema_pergunta.innerHTML = "Tema: " + perguntaObj.tema;
+            pontos_quiz.innerHTML = "Pontos ganhos: " + pontos + " pontos";
+
+            resultado_quiz.classList.add("none");
+            btn_proxima.classList.add("none");
+
+            opcoes.innerHTML = "";
+
+            for (let i = 0; i < perguntaObj.opcoes.length; i++) {
+                opcoes.innerHTML += `
+                    <button class="opcao-btn" onclick="responder(${i})">
+                        ${perguntaObj.opcoes[i]}
+                    </button>
+                `;
+            }
+        }
+
+        function responder(indice) {
+            if (respondeu) return;
+
+            respondeu = true;
+
+            let perguntaObj = perguntas[perguntaAtual];
+            let botoesOpcoes = document.querySelectorAll(".opcao-btn");
+
+            if (indice == perguntaObj.correta) {
+                pontos += 10;
+                botoesOpcoes[indice].classList.add("opcao-correta");
+
+                resultado_quiz.innerHTML = "Resposta correta!";
+                resultado_quiz.className = "resultado-quiz resultado-correto";
+
+            } else {
+                botoesOpcoes[indice].classList.add("opcao-errada");
+                botoesOpcoes[perguntaObj.correta].classList.add("opcao-correta");
+
+                resultado_quiz.innerHTML = "Resposta errada!";
+                resultado_quiz.className = "resultado-quiz resultado-errado";
+            }
+
+            pontos_quiz.innerHTML = "Pontos ganhos: " + pontos + " pontos";
+            btn_proxima.classList.remove("none");
+        }
+
+        function proximaPergunta() {
+            perguntaAtual++;
+
+            if (perguntaAtual < perguntas.length) {
+                carregarPergunta();
+            } else {
+                finalizarCorrida();
+            }
+        }
+
+        function finalizarCorrida() {
+            let xpGanho = pontos;
+
+            pergunta.innerHTML = "Corrida finalizada!";
+            contador_pergunta.innerHTML = "Resultado final";
+            pontos_quiz.innerHTML = pontos + " pontos";
+
+            opcoes.innerHTML = `
+                <div class="quiz-final">
+                    <h3>Você ganhou ${xpGanho} XP!</h3>
+                    <p>Seu carro recebeu essa pontuação pela corrida lógica.</p>
+                    <a href="../games.html" class="btn-jogar">Voltar</a>
+                </div>
+            `;
+
+            resultado_quiz.classList.add("none");
+            btn_proxima.classList.add("none");
+
+            adicionarXP(xpGanho);
+        }
+
+        function adicionarXP(xpGanho) {
+            fetch("/games/adicionarXP", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    idUsuarioServer: sessionStorage.ID_USUARIO,
+                    idGameServer: 2,
+                    xpGanhoServer: xpGanho
+                })
+            })
+                .then(function (resposta) {
+                    if (resposta.ok) {
+                        resposta.json().then(function (json) {
+                            sessionStorage.XP_CARRO = json.xp;
+                            sessionStorage.NIVEL_CARRO = json.nivel;
+
+                            console.log("XP atualizado:", json);
+                        });
+                    }
+                });
+        }
+    </script>
+
+</body>
+
+</html>

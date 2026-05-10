@@ -92,7 +92,7 @@
                 <div class="ranking-grafico-header">
                     <div>
                         <span>Progresso</span>
-                        <h3>Histórico de XP</h3>
+                        <h3>Histórico de XP Ganho</h3>
                     </div>
                     <p>Evolução do piloto</p>
                 </div>
@@ -231,7 +231,14 @@
                     let xp = [];
 
                     for (let i = 0; i < dados.length; i++) {
-                        dias.push(dados[i].dia);
+                        let data = new Date(dados[i].dia);
+
+                        let diaFormatado =
+                            data.getDate().toString().padStart(2, "0") + "/" +
+                            (data.getMonth() + 1).toString().padStart(2, "0") + "/" +
+                            data.getFullYear();
+
+                        dias.push(diaFormatado);
                         xp.push(dados[i].xp_total);
                     }
 
@@ -290,7 +297,7 @@
         });
 
     }
-    
+
     // MODELO CARRO
     const modeloCarro = document.getElementById("modelo_carro");
     modeloCarro.addEventListener("load", () => {

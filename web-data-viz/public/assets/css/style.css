@@ -1301,8 +1301,8 @@ a {
     padding: 30px;
     border-radius: 24px;
     background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(123, 195, 255, 0.3);
-    box-shadow: 0 0 25px rgba(0, 102, 255, 0.12);
+    border: 1px solid var(--cor-borda-fraca);
+    box-shadow: 0 0 25px var(--cor-glow);;
 }
 
 .ranking-grafico-header {
@@ -1313,7 +1313,7 @@ a {
 }
 
 .ranking-grafico-header span {
-    color: #7bc3ff;
+    color: var(--cor-primaria);
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -1337,4 +1337,21 @@ a {
 #grafico_ranking {
     width: 100%;
     height: 100%;
+}
+
+.corrida-area {
+    margin: 25px 0;
+}
+
+.codigo-debug {
+    margin: 20px 0;
+    padding: 20px;
+    border-radius: 14px;
+    background: #0b0f17;
+    border: 1px solid rgba(123, 195, 255, 0.3);
+    color: #7bc3ff;
+    text-align: left;
+    overflow-x: auto;
+    font-size: 0.95rem;
+    line-height: 1.6;
 }

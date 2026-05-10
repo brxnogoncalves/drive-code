@@ -78,6 +78,28 @@
     nome_carro.innerHTML = sessionStorage.NOME_CARRO || "Seu carro";
     nivel_carro.innerHTML = sessionStorage.NIVEL_CARRO || "1";
 
+    function retira_acentos(str) {
+
+        let com_acento = "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝŔÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿŕ";
+        let sem_acento = "AAAAAAACEEEEIIIIDNOOOOOOUUUUYRsBaaaaaaaceeeeiiiionoooooouuuuybyr";
+
+        let novastr = "";
+        for (i = 0; i < str.length; i++) {
+            troca = false;
+            for (a = 0; a < com_acento.length; a++) {
+                if (str.substr(i, 1) == com_acento.substr(a, 1)) {
+                    novastr += sem_acento.substr(a, 1);
+                    troca = true;
+                    break;
+                }
+            }
+            if (troca == false) {
+                novastr += str.substr(i, 1);
+            }
+        }
+        return novastr;
+    }
+
     function listarGames() {
         let idUsuario = sessionStorage.ID_USUARIO;
 
@@ -96,10 +118,11 @@
                         let classeBloqueado = "";
                         let textoBotao = "Jogar";
 
-                        if (game.id_game == 1) {
-                            link = "./games/quiz.html";
-                            icone = "🧠";
-                        }
+                        let nomeArquivo = retira_acentos(game.nome)
+                            .toLowerCase()
+                            .replaceAll(" ", "_");
+
+                        link = `./games/${nomeArquivo}.html`;
 
                         if (game.ja_jogou) {
                             classeBloqueado = "game-bloqueado";
