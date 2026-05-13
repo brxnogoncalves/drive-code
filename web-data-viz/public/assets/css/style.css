@@ -1102,22 +1102,117 @@ a {
 
 .carro-modelo-area {
     height: 360px;
-
     border-radius: 18px;
-
     background: rgba(255, 255, 255, 0.035);
-
     border: 1px dashed var(--cor-borda-fraca);
-
     overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.carro-modelo-area model-viewer {
+/* .carro-modelo-area model-viewer {
     width: 100%;
     height: 100%;
 
     background: transparent;
+} */
+
+.carro-container {
+    width: 360px;
+    height: 180px;
+    position: relative;
 }
+
+.carro-roof {
+    position: absolute;
+    width: 180px;
+    height: 70px;
+    left: 90px;
+    top: 30px;
+    background: #0066ff;
+    border-radius: 80px 80px 10px 10px;
+}
+
+.carro-body {
+    position: absolute;
+    width: 320px;
+    height: 75px;
+    left: 20px;
+    top: 85px;
+    background: #0066ff;
+    border-radius: 45px 65px 25px 25px;
+}
+
+.janela {
+    position: absolute;
+    top: 42px;
+    width: 65px;
+    height: 42px;
+    background: #111;
+    border: 2px solid rgba(255,255,255,0.4);
+}
+
+.janela-esq {
+    left: 110px;
+    border-radius: 40px 5px 5px 5px;
+}
+
+.janela-dir {
+    left: 185px;
+    border-radius: 5px 40px 5px 5px;
+}
+
+.roda {
+    position: absolute;
+    top: 132px;
+    width: 58px;
+    height: 58px;
+    background: #111;
+    border-radius: 50%;
+    border: 6px solid #333;
+    z-index: 5;
+}
+
+.roda::after {
+    content: "";
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background: #aaa;
+    border-radius: 50%;
+    top: 12px;
+    left: 12px;
+}
+
+.roda-esq {
+    left: 70px;
+}
+
+.roda-dir {
+    right: 70px;
+}
+
+.farol {
+    position: absolute;
+    top: 108px;
+    width: 28px;
+    height: 15px;
+    background: #ffd966;
+    border-radius: 20px;
+    z-index: 6;
+}
+
+.farol-esq {
+    left: 25px;
+}
+
+.farol-dir {
+    right: 25px;
+    background: #ff3b3b;
+}
+
 
 .dashboard-topo .dashboard-kpis {
     display: grid;

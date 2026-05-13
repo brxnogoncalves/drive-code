@@ -10,7 +10,7 @@
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.2.0/model-viewer.min.js"></script>
 </head>
 
-<body onload="renderizarKPIS(); renderizarGraficoRanking(); renderizarGraficoXP()">
+<body>
     <div class="header">
         <h1 class="logo-drive-code">Drive <span>&lt;Code/&gt;</span></h1>
         <ul class="navbar">
@@ -31,11 +31,16 @@
                 <h3 id="nome_carro">Carro do usuário</h3>
 
                 <div class="carro-modelo-area">
-                    <model-viewer id="modelo_carro" src="./assets/glb/lamborghini-gallardo.glb" camera-controls
-                        auto-rotate camera-orbit="0deg 70deg 8m" field-of-view="20deg" scale="0.2 0.2 0.2"
-                        environment-image="neutral" exposure="1.35" shadow-intensity="1.5">
-                    </model-viewer>
-
+                    <div class="carro-container">
+                        <div class="carro-roof"></div>
+                        <div class="janela janela-esq"></div>
+                        <div class="janela janela-dir"></div>
+                        <div class="carro-body"></div>
+                        <div class="farol farol-esq"></div>
+                        <div class="farol farol-dir"></div>
+                        <div class="roda roda-esq"></div>
+                        <div class="roda roda-dir"></div>
+                    </div>
                 </div>
                 <div class="customizacao-carro">
                     <label>Cor do carro</label>
@@ -110,18 +115,27 @@
 <script>
     alterarNavBar();
 
-    let cliquesEasterEgg = 0;
-    let easterEggAtivado = false;
-    easter_carro.addEventListener("click", function () {
+    window.onload = function () {
 
-        cliquesEasterEgg++;
+        // KPIS E GRAFICOS
+        renderizarKPIS();
+        renderizarGraficoRanking();
+        renderizarGraficoXP();
 
-        if (cliquesEasterEgg == 5 && !easterEggAtivado) {
-            ativarEasterEggCarro();
-            easterEggAtivado = true;
-            cliquesEasterEgg = 0;
-        }
-    });
+        // NOME DO CARRO
+        let nomeCarro = sessionStorage.NOME_CARRO || "Carro do usuário";
+        document.getElementById("nome_carro").innerHTML = nomeCarro;
+
+        // COR
+        let corSalva = sessionStorage.COR_CARRO || "#0066ff";
+        input_cor_carro.value = corSalva;
+        aplicarCorCarro(corSalva);
+
+        // TEXTURA
+        let texturaSalva = sessionStorage.TEXTURA_CARRO || "nenhuma";
+        select_textura_carro.value = texturaSalva;
+        aplicarTexturaCarro(texturaSalva);
+    }
 
     // KPIS
     function renderizarKPIS() {
@@ -298,78 +312,10 @@
 
     }
 
-    // MODELO CARRO
-    const modeloCarro = document.getElementById("modelo_carro");
-    modeloCarro.addEventListener("load", () => {
-
-        if (sessionStorage.ID_USUARIO == 2) {
-            modeloCarro.src = "./assets/glb/barbie_car.glb";
-            nome_carro.innerHTML = "Barbie da Man";
-
-            input_cor_carro.disabled = true;
-            input_cor_carro.value = 'pink';
-            select_textura_carro.disabled = true;
-
-
-            ativarTemaPinkEdition();
-
-
-            return;
-        }
-
-        let corCarro = sessionStorage.COR_CARRO || "#0066ff";
-        input_cor_carro.value = corCarro;
-
-        let nomeCarro = sessionStorage.NOME_CARRO;
-        nome_carro.innerHTML = nomeCarro;
-
-        let texturaCarro = sessionStorage.TEXTURA_CARRO;
-
-        aplicarCorCarro(corCarro);
-
-        if (texturaCarro && texturaCarro != "nenhuma") {
-            select_textura_carro.value = texturaCarro;
-            aplicarTexturaCarro(texturaCarro);
-        } else {
-            select_textura_carro.value = "nenhuma";
-        }
-
-        // modeloCarro.src = sessionStorage.MODELO_CARRO;
-        // const selectModelo = document.getElementById("select_modelo_carro");
-
-    });
-
-    // function alterarModeloCarro() {
-    //     let novoModelo = select_modelo_carro.value;
-    //     modeloCarro.src = novoModelo;
-
-    //     sessionStorage.MODELO_CARRO = novoModelo;
-
-    //     fetch("/usuarios/alterarModeloCarro", {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify({
-    //             idUsuarioServer: sessionStorage.ID_USUARIO,
-    //             novoModeloServer: novoModelo
-    //         })
-    //     }).then(function (resposta) {
-    //         console.log("Estou no then do alterarModeloCarro...");
-
-    //         if (resposta.ok) {
-    //             console.log(resposta);
-    //         } else {
-    //             throw "Houve um erro ao tentar realizar a alteração do modelo!";
-    //         }
-    //     }).catch(function (resposta) {
-    //         console.log(`#ERRO: ${resposta}`);
-    //     });
-    // }
-
     function alterarCorCarro() {
 
         let novaCor = input_cor_carro.value;
+
         sessionStorage.COR_CARRO = novaCor;
 
         fetch("/usuarios/alterarCorCarro", {
@@ -382,6 +328,7 @@
                 novaCorServer: novaCor
             })
         }).then(function (resposta) {
+
             console.log("Estou no then do alterarCorCarro...");
 
             if (resposta.ok) {
@@ -389,6 +336,7 @@
             } else {
                 throw "Houve um erro ao tentar realizar a alteração de cor!";
             }
+
         }).catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
         });
@@ -398,17 +346,18 @@
 
     function aplicarCorCarro(cor) {
 
-        const materiais = modeloCarro.model.materials;
-        // console.log(materiais);
+        let carroBody = document.querySelector(".carro-body");
+        let carroRoof = document.querySelector(".carro-roof");
 
-        materiais[0].pbrMetallicRoughness.setBaseColorFactor(
-            hexToRgb(cor)
-        );
+        carroBody.style.backgroundColor = cor;
+        carroRoof.style.backgroundColor = cor;
     }
 
     function alterarTexturaCarro() {
 
         let texturaSelecionada = select_textura_carro.value;
+
+        sessionStorage.TEXTURA_CARRO = texturaSelecionada;
 
         fetch("/usuarios/alterarTexturaCarro", {
             method: "POST",
@@ -434,29 +383,43 @@
         aplicarTexturaCarro(texturaSelecionada);
     }
 
-    async function aplicarTexturaCarro(texturaSelecionada) {
-        sessionStorage.TEXTURA_CARRO = texturaSelecionada;
-        const material = modeloCarro.model.materials[0];
+    function aplicarTexturaCarro(texturaSelecionada) {
 
-        if (texturaSelecionada == "nenhuma") {
-            material.pbrMetallicRoughness.baseColorTexture.setTexture(null);
-            aplicarCorCarro(sessionStorage.COR_CARRO);
+        sessionStorage.TEXTURA_CARRO = texturaSelecionada;
+
+        let carroBody = document.querySelector(".carro-body");
+        let carroRoof = document.querySelector(".carro-roof");
+
+        let cor = sessionStorage.COR_CARRO || "#0066ff";
+
+        if (texturaSelecionada == "nenhuma" || texturaSelecionada == "") {
+
+            carroBody.style.background = cor;
+            carroRoof.style.background = cor;
+
             return;
         }
 
-        const textura = await modeloCarro.createTexture(texturaSelecionada);
-        material.pbrMetallicRoughness.baseColorTexture.setTexture(textura);
-    }
+        let backgroundFinal = `
+        linear-gradient(
+            rgba(0,0,0,0.25),
+            rgba(0,0,0,0.25)
+        ),
+        linear-gradient(
+            ${cor}cc,
+            ${cor}cc
+        ),
+        url(${texturaSelecionada})
+    `;
 
-    function hexToRgb(hex) {
+        carroBody.style.background = backgroundFinal;
+        carroRoof.style.background = backgroundFinal;
 
-        hex = hex.replace("#", "");
+        carroBody.style.backgroundSize = "cover";
+        carroRoof.style.backgroundSize = "cover";
 
-        let r = parseInt(hex.substring(0, 2), 16) / 255;
-        let g = parseInt(hex.substring(2, 4), 16) / 255;
-        let b = parseInt(hex.substring(4, 6), 16) / 255;
-
-        return [r, g, b, 1];
+        carroBody.style.backgroundBlendMode = "overlay";
+        carroRoof.style.backgroundBlendMode = "overlay";
     }
 </script>
 
