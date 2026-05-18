@@ -21,6 +21,18 @@ function listarPerguntasQuiz(idGame) {
     return database.executar(instrucaoSql);
 }
 
+function salvarResposta(idUsuario, idPergunta, acertou, tempoResposta) {
+    // console.log("ACESSEI O GAME MODEL salvarResposta():");
+
+    var instrucaoSql = `
+        INSERT INTO resposta_quiz (fk_usuario, fk_pergunta, acertou, tempo_resposta) VALUES
+        (${idUsuario}, ${idPergunta}, ${acertou}, ${tempoResposta});
+    `;
+
+    console.log("Executando SQL:\n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 function adicionarXP(idUsuario, idGame, xpGanho) {
     console.log("Adicionando XP:", idUsuario, xpGanho);
 
@@ -54,8 +66,9 @@ function adicionarXP(idUsuario, idGame, xpGanho) {
             let nivel = resultado[0].nivel;
 
             if (xp >= 100) {
-                let novoNivel = nivel + 1;
-                let novoXP = xp - 100;
+                let niveisGanhos = Math.floor(xp / 100);
+                let novoNivel = nivel + niveisGanhos;
+                let novoXP = xp % 100;
 
                 let instrucao4 = `
                     UPDATE carro_usuario
@@ -97,5 +110,6 @@ function listarComStatus(idUsuario) {
 module.exports = {
     listarComStatus,
     listarPerguntasQuiz,
-    adicionarXP
+    adicionarXP,
+    salvarResposta
 };

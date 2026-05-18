@@ -7,6 +7,10 @@ router.get("/quiz/perguntas/:idGame", function (req, res) {
     gamesController.listarPerguntasQuiz(req, res);
 })
 
+router.post("/quiz/salvarResposta", function (req, res) {
+    gamesController.salvarResposta(req, res);
+});
+
 router.post("/adicionarXP", function (req, res) {
     gamesController.adicionarXP(req, res);
 }) 
@@ -14,5 +18,7 @@ router.post("/adicionarXP", function (req, res) {
 router.get("/listar/:idUsuario", function (req, res) {
     gamesController.listarComStatus(req, res);
 });
+
+
 
 module.exports = router;

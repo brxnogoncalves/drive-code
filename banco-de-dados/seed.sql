@@ -61,6 +61,8 @@ CREATE TABLE resposta_quiz (
     CONSTRAINT fkRespostaPergunta FOREIGN KEY (fk_pergunta) REFERENCES pergunta_quiz(id_pergunta)
 );
 
+SELECT * from resposta_quiz;
+
 INSERT INTO game (nome, descricao, xp_recompensa) VALUES
 ('Quiz Automotivo', 'Perguntas sobre carros, tecnologia embarcada e programação.', 120),
 ('Corrida Lógica', 'Responda perguntas de lógica e avance com seu carro.', 40),
@@ -180,35 +182,6 @@ VALUES
  'Tecnologia',
  1);
  
--- SELECT 
---     g.id_game,
---     g.nome,
---     g.descricao,
---     g.xp_recompensa,
---     CASE 
---         WHEN EXISTS (
---             SELECT 1
---             FROM historico_xp hx
---             WHERE hx.fk_game = g.id_game
---               AND hx.fk_usuario = 1
---         ) THEN 1
---         ELSE 0
---     END AS ja_jogou
--- FROM game g;
-
--- SELECT COUNT(g.id_game) as qtd_games_jogados FROM game g WHERE EXISTS (
--- 		SELECT id_historico_xp FROM historico_xp hx
--- 		WHERE hx.fk_game = g.id_game AND hx.fk_usuario = 1
--- );
-
--- SELECT * from (
--- 	SELECT 
--- 		fk_usuario,
---         nome_carro,
---         xp,
---         ROW_NUMBER() OVER (ORDER BY ((nivel * 100) + xp) DESC) as posicao
---         FROM carro_usuario) as ranking
--- WHERE fk_usuario = 2;
 
     
 

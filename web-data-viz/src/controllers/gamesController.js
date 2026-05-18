@@ -17,6 +17,24 @@ function listarPerguntasQuiz(req, res) {
     }
 }
 
+function salvarResposta(req, res) {
+    let idUsuario = req.body.fk_usuarioServer;
+    let idPergunta = req.body.fk_perguntaServer;
+    let acertou = req.body.acertouServer;
+    let tempoResposta = req.body.tempoRespostaServer;
+
+    gamesModel.salvarResposta(idUsuario, idPergunta, acertou, tempoResposta)
+        .then(function (resultado) {
+            res.json({
+                message: "Cadastrado resposta com sucesso!"
+            });
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            res.status(500).json(erro.sqlMessage);
+        })
+}
+
 function adicionarXP(req, res) {
     let idUsuario = req.body.idUsuarioServer;
     let idGame = req.body.idGameServer;
@@ -56,5 +74,6 @@ function listarComStatus(req, res) {
 module.exports = {
     listarComStatus,
     listarPerguntasQuiz,
-    adicionarXP
+    adicionarXP,
+    salvarResposta
 }

@@ -20,7 +20,10 @@
     <div class="quiz-page">
 
         <div class="quiz-card">
-            <span id="contador_pergunta" class="quiz-tag">Quiz Automotivo</span>
+            <div class="status-pergunta">
+                <span id="contador_pergunta" class="quiz-tag">Quiz Automotivo</span>
+                <span id="timer_pergunta" class="quiz-tag">0:00</span>
+            </div>
 
             <h2 id="pergunta">Carregando pergunta...</h2>
 
@@ -42,6 +45,30 @@
     <script src="../assets/js/utils.js"></script>
     <script>
         alterarNavBar() // utils
+
+        let timerId;
+        let tempoDecorrido = 0;
+
+        function formatarSegundos(segundosTotais) {
+            let minutos = Math.floor(segundosTotais / 60);
+            let segundos = segundosTotais % 60;
+            return `${minutos}:${segundos.toString().padStart(2, '0')}`;
+        };
+
+        function iniciarTimer() {
+            clearInterval(timerId); // evita multiplios timers
+
+            tempoDecorrido = 0;
+
+            timerId = setInterval(() => {
+                tempoDecorrido++;
+                atualizarValorTimerPergunta();
+            }, 1000);
+        }
+
+        function atualizarValorTimerPergunta() {
+            document.getElementById('timer_pergunta').innerText = formatarSegundos(tempoDecorrido);
+        }
 
         let perguntas = [];
         let perguntaAtual = 0;
@@ -84,6 +111,7 @@
                             }
 
                             let perguntaObj = {
+                                id_pergunta: p.id_pergunta,
                                 pergunta: p.pergunta,
                                 opcoes: [
                                     opcoes[0].texto,
@@ -125,6 +153,8 @@
                     </button>
                 `;
             }
+
+            iniciarTimer();
         }
 
         function responder(indice) {
@@ -151,9 +181,31 @@
 
             pontos_quiz.innerHTML = pontos + " pontos";
             btn_proxima.classList.remove("none");
+
+            let respostaJson = {
+                fk_usuarioServer: sessionStorage.ID_USUARIO,
+                fk_perguntaServer: perguntaObj.id_pergunta,
+                acertouServer: (indice == perguntaObj.correta) ? 1 : 0,
+                tempoRespostaServer: tempoDecorrido
+            }
+
+            fetch("/games/quiz/salvarResposta", {
+                method: "POST",
+                headers: {
+                    "Content-Type": 'application/json'
+                },
+                body: JSON.stringify(respostaJson)
+            }).then((resposta) => {
+                if (resposta.ok) {
+                    console.log("Resposta salva com sucesso!");
+                }
+            })
         }
 
         function proximaPergunta() {
+            tempoDecorrido = 0;
+            atualizarValorTimerPergunta();
+
             perguntaAtual++;
 
             if (perguntaAtual < perguntas.length) {

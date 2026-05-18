@@ -861,6 +861,12 @@ a {
     box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
 }
 
+.status-pergunta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .quiz-tag {
     display: inline-block;
     background: rgba(123, 195, 255, 0.15);
