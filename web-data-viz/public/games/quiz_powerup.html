@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drive & Code - Quiz PowerUps</title>
+    <link rel="stylesheet" href="./games.css">
+</head>
+
+<body>
+    <div class="header">
+        <h1 class="logo-drive-code">Drive <span>&lt;Code/&gt;</span></h1>
+    </div>
+
+    <div class="quiz-page">
+        <div class="quiz-card">
+            <div class="status-pergunta">
+                <span id="contador_pergunta" class="quiz-tag">Quiz PowerUps</span>
+                <span id="timer_pergunta" class="quiz-tag">0:10</span>
+            </div>
+
+            <h2 id="pergunta">Carregando pergunta...</h2>
+
+            <div class="quiz-info">
+                <span id="tema_pergunta"></span>
+                <span id="pontos_quiz">0 pontos</span>
+            </div>
+
+            <div class="powerups">
+                <button id="btn_tempo" onclick="usarTempoExtra()">⏱ +5s</button>
+                <button id="btn_eliminar" onclick="usarEliminar()">❌ Eliminar 2</button>
+                <button id="btn_pular" onclick="usarPular()">⏭ Pular</button>
+                <button id="btn_dobro" onclick="usarDobroXP()">⚡ XP x2</button>
+            </div>
+
+            <div class="opcoes" id="opcoes"></div>
+
+            <div id="resultado_quiz" class="resultado-quiz none"></div>
+
+            <button id="btn_proxima" class="btn-proxima none" onclick="proximaPergunta()">
+                Próxima
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let timerId;
+        let tempoLimite = 10;
+        let tempoRestante = 10;
+        let tempoDecorrido = 0;
+
+        let perguntas = [];
+        let perguntaAtual = 0;
+        let pontos = 0;
+        let respondeu = false;
+        let multiplicadorXP = 1;
+
+        let powerups = {
+            tempoExtra: 1,
+            eliminar: 1,
+            pular: 1,
+            dobroXP: 1
+        };
+
+        function atualizarValorTimerPergunta() {
+            timer_pergunta.innerText = `0:${tempoRestante.toString().padStart(2, '0')}`;
+        }
+
+        function iniciarTimer() {
+            clearInterval(timerId);
+
+            tempoRestante = tempoLimite;
+            tempoDecorrido = 0;
+
+            atualizarValorTimerPergunta();
+
+            timerId = setInterval(() => {
+                tempoRestante--;
+                tempoDecorrido++;
+
+                atualizarValorTimerPergunta();
+
+                if (tempoRestante <= 0) {
+                    clearInterval(timerId);
+                    responder(-1);
+                }
+            }, 1000);
+        }
+
+        function atualizarPowerupsNaTela() {
+            btn_tempo.innerText = `⏱ +5s (${powerups.tempoExtra})`;
+            btn_eliminar.innerText = `❌ Eliminar 2 (${powerups.eliminar})`;
+            btn_pular.innerText = `⏭ Pular (${powerups.pular})`;
+            btn_dobro.innerText = `⚡ XP x2 (${powerups.dobroXP})`;
+
+            btn_tempo.disabled = powerups.tempoExtra <= 0;
+            btn_eliminar.disabled = powerups.eliminar <= 0;
+            btn_pular.disabled = powerups.pular <= 0;
+            btn_dobro.disabled = powerups.dobroXP <= 0;
+        }
+
+        fetch("/games/quiz/perguntas/2")
+            .then((resposta) => {
+                if (resposta.ok) {
+                    resposta.json()
+                        .then((perguntasRecebidas) => {
+                            perguntas = [];
+
+                            for (let i = 0; i < perguntasRecebidas.length; i++) {
+                                let p = perguntasRecebidas[i];
+
+                                let opcoes = [
+                                    { texto: p.alternativa_a, correta: p.alternativa_correta == "A" },
+                                    { texto: p.alternativa_b, correta: p.alternativa_correta == "B" },
+                                    { texto: p.alternativa_c, correta: p.alternativa_correta == "C" },
+                                    { texto: p.alternativa_d, correta: p.alternativa_correta == "D" }
+                                ];
+
+                                // randomiza alternativas
+                                for (let i = opcoes.length - 1; i > 0; i--) {
+                                    let j = Math.floor(Math.random() * (i + 1));
+                                    let temp = opcoes[i];
+                                    opcoes[i] = opcoes[j];
+                                    opcoes[j] = temp;
+                                }
+
+                                let indiceCorreto = 0;
+
+                                for (let i = 0; i < opcoes.length; i++) {
+                                    if (opcoes[i].correta) {
+                                        indiceCorreto = i;
+                                        break;
+                                    }
+                                }
+
+                                perguntas.push({
+                                    id_pergunta: p.id_pergunta,
+                                    pergunta: p.pergunta,
+                                    opcoes: [
+                                        opcoes[0].texto,
+                                        opcoes[1].texto,
+                                        opcoes[2].texto,
+                                        opcoes[3].texto
+                                    ],
+                                    correta: indiceCorreto,
+                                    tema: p.tema
+                                });
+                            }
+
+                            atualizarPowerupsNaTela();
+                            carregarPergunta();
+                        })
+                }
+            })
+
+        function carregarPergunta() {
+            respondeu = false;
+            multiplicadorXP = 1;
+
+            let perguntaObj = perguntas[perguntaAtual];
+
+            pergunta.innerHTML = perguntaObj.pergunta;
+            contador_pergunta.innerHTML = "Pergunta " + (perguntaAtual + 1) + " de " + perguntas.length;
+            tema_pergunta.innerHTML = "Tema: " + perguntaObj.tema;
+            pontos_quiz.innerHTML = "Pontos ganhos: " + pontos + " pontos";
+
+            resultado_quiz.classList.add("none");
+            btn_proxima.classList.add("none");
+
+            opcoes.innerHTML = "";
+
+            for (let i = 0; i < perguntaObj.opcoes.length; i++) {
+                opcoes.innerHTML += `
+                    <button class="opcao-btn" onclick="responder(${i})">
+                        ${perguntaObj.opcoes[i]}
+                    </button>
+                `;
+            }
+
+            atualizarPowerupsNaTela();
+            iniciarTimer();
+        }
+
+        function responder(indice) {
+            if (respondeu) return;
+
+            clearInterval(timerId);
+            respondeu = true;
+
+            let perguntaObj = perguntas[perguntaAtual];
+            let botoesOpcoes = document.querySelectorAll(".opcao-btn");
+
+            let acertou = (indice == perguntaObj.correta);
+
+            if (acertou) {
+                pontos += 10 * multiplicadorXP;
+
+                botoesOpcoes[indice].classList.add("opcao-correta");
+
+                if (multiplicadorXP == 2) {
+                    resultado_quiz.innerHTML = "Resposta correta! XP dobrado!";
+                } else {
+                    resultado_quiz.innerHTML = "Resposta correta!";
+                }
+
+                resultado_quiz.className = "resultado-quiz resultado-correto";
+            } else {
+                if (indice >= 0) {
+                    botoesOpcoes[indice].classList.add("opcao-errada");
+                }
+
+                botoesOpcoes[perguntaObj.correta].classList.add("opcao-correta");
+
+                if (indice == -1) {
+                    resultado_quiz.innerHTML = "Tempo esgotado!";
+                } else {
+                    resultado_quiz.innerHTML = "Resposta errada!";
+                }
+
+                resultado_quiz.className = "resultado-quiz resultado-errado";
+            }
+
+
+            for (let i = 0; i < botoesOpcoes.length; i++) {
+                botoesOpcoes[i].disabled = true;
+            }
+
+            multiplicadorXP = 1;
+
+            pontos_quiz.innerHTML = pontos + " pontos";
+            btn_proxima.classList.remove("none");
+
+
+            fetch("/games/quiz/salvarResposta", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    fk_usuarioServer: sessionStorage.ID_USUARIO,
+                    fk_perguntaServer: perguntaObj.id_pergunta,
+                    acertouServer: acertou ? 1 : 0,
+                    tempoRespostaServer: tempoDecorrido
+                })
+            }).then(function (resposta) {
+                if (resposta.ok) {
+                    console.log("Resposta salva com sucesso!");
+                }
+            });
+        }
+
+        function proximaPergunta() {
+            tempoDecorrido = 0;
+            atualizarValorTimerPergunta();
+
+            perguntaAtual++;
+
+            if (perguntaAtual < perguntas.length) {
+                carregarPergunta();
+            } else {
+                finalizarQuiz();
+            }
+        }
+
+        function usarTempoExtra() {
+            if (powerups.tempoExtra <= 0 || respondeu) return;
+
+            tempoRestante += 5;
+            powerups.tempoExtra--;
+
+            atualizarValorTimerPergunta();
+            atualizarPowerupsNaTela();
+        }
+
+        function usarEliminar() {
+            if (powerups.eliminar <= 0 || respondeu) return;
+
+            let perguntaObj = perguntas[perguntaAtual];
+            let botoesOpcoes = document.querySelectorAll(".opcao-btn");
+
+            let removidas = 0;
+
+            for (let i = 0; i < botoesOpcoes.length; i++) {
+                if (i != perguntaObj.correta && removidas < 2) {
+                    botoesOpcoes[i].disabled = true;
+                    botoesOpcoes[i].style.opacity = "0.3";
+                    botoesOpcoes[i].style.cursor = "not-allowed";
+                    removidas++;
+                }
+            }
+
+            powerups.eliminar--;
+            atualizarPowerupsNaTela();
+        }
+
+        function usarPular() {
+            if (powerups.pular <= 0 || respondeu) return;
+
+            clearInterval(timerId);
+
+            powerups.pular--;
+            atualizarPowerupsNaTela();
+
+            perguntaAtual++;
+
+            if (perguntaAtual < perguntas.length) {
+                carregarPergunta();
+            } else {
+                finalizarQuiz();
+            }
+        }
+
+        function usarDobroXP() {
+            if (powerups.dobroXP <= 0 || respondeu) return;
+
+            multiplicadorXP = 2;
+            powerups.dobroXP--;
+
+            btn_dobro.classList.add("powerup-ativo");
+            atualizarPowerupsNaTela();
+        }
+
+        function finalizarQuiz() {
+            clearInterval(timerId);
+
+            let xpGanho = pontos;
+
+            pergunta.innerHTML = "Quiz PowerUps finalizado!";
+            contador_pergunta.innerHTML = "Resultado final";
+            timer_pergunta.innerHTML = "Fim";
+            tema_pergunta.innerHTML = "";
+            pontos_quiz.innerHTML = pontos + " pontos";
+
+            opcoes.innerHTML = `
+                <div class="quiz-final">
+                    <h3>Você ganhou ${xpGanho} XP!</h3>
+                    <p>Seu carro será atualizado com essa pontuação.</p>
+                    <a href="../games.html" class="btn-jogar">Voltar</a>
+                </div>
+            `;
+
+            resultado_quiz.classList.add("none");
+            btn_proxima.classList.add("none");
+
+            document.querySelector(".powerups").classList.add("none");
+
+            adicionarXP(xpGanho);
+        }
+
+        function adicionarXP(xpGanho) {
+            fetch("/games/adicionarXP", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    idUsuarioServer: sessionStorage.ID_USUARIO,
+                    idGameServer: 2,
+                    xpGanhoServer: xpGanho
+                })
+            })
+                .then(function (resposta) {
+                    if (resposta.ok) {
+                        resposta.json().then(function (json) {
+                            sessionStorage.XP_CARRO = json.xp;
+                            sessionStorage.NIVEL_CARRO = json.nivel;
+
+                            console.log("XP atualizado:", json);
+                        });
+                    }
+                });
+        }
+    </script>
+</body>
+
+</html>

@@ -15,7 +15,7 @@ CREATE TABLE carro_usuario (
     cor CHAR(7) DEFAULT '#000000', -- ARMAZENA HEX DA COR
     nivel INT DEFAULT 1,
     xp INT DEFAULT 0,
-    textura_carro VARCHAR(255) DEFAULT 'nenhuma'
+    textura_carro VARCHAR(255) DEFAULT 'nenhuma',
     fk_usuario INT UNIQUE,
     CONSTRAINT fkCarroUsuario FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
 );
@@ -60,8 +60,6 @@ CREATE TABLE resposta_quiz (
     CONSTRAINT fkRespostaUsuario FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario),
     CONSTRAINT fkRespostaPergunta FOREIGN KEY (fk_pergunta) REFERENCES pergunta_quiz(id_pergunta)
 );
-
-SELECT * from resposta_quiz;
 
 INSERT INTO game (nome, descricao, xp_recompensa) VALUES
 ('Quiz Automotivo', 'Perguntas sobre carros, tecnologia embarcada e programação.', 120),
@@ -182,6 +180,5 @@ VALUES
  'Tecnologia',
  1);
  
-
     
 
