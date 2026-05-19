@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drive & Code - Dashboard</title>
+    <link rel="stylesheet" href="./dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="header">
+        <h1 class="logo-drive-code">Drive <span>&lt;Code/&gt;</span></h1>
+        <ul class="navbar"></ul>
+    </div>
+
+    <div class="dashboard-page">
+        <div class="dashboard-tabs">
+            <button class="aba-ativa" onclick="abrirAba('aba_geral', this)">Visão geral</button>
+            <button onclick="abrirAba('aba_ranking', this)">Ranking</button>
+            <button onclick="abrirAba('aba_loja', this)">Lojinha</button>
+            <button onclick="abrirAba('aba_garagem', this)">Garagem</button>
+        </div>
+
+        <div id="aba_geral" class="dashboard-aba">
+            visao geral
+        </div>
+
+        <div id="aba_ranking" class="dashboard-aba none">
+            ranking
+        </div>
+
+        <div id="aba_loja" class="dashboard-aba none">
+            loja
+        </div>
+
+        <div id="aba_garagem" class="dashboard-aba none">
+            garagem
+        </div>
+    </div>
+</body>
+<script src="assets/js/utils.js"></script>
+<script>
+    alterarNavBar();
+    function alterarNavBar() {
+        const navbar = document.querySelector('.navbar');
+        const idUsuario = sessionStorage.getItem("ID_USUARIO");
+        const nomeUsuario = sessionStorage.getItem("NOME_USUARIO");
+
+        let location = window.location.toString();
+
+        if (idUsuario) {
+            navbar.innerHTML = `
+                <li class='usuario-logado'>Olá, ${nomeUsuario}</li>
+                <hr>
+                <li><a href="../index.html" ${(location.includes('index.html') ? 'class = "link-ativo"' : '')}>Home</a></li>
+                <li><a href="../motor_codigo.html" ${(location.includes('motor_codigo.html') ? 'class = "link-ativo"' : '')}>Do Motor ao Código</a></li>
+                <li><a href="../games.html" ${(location.includes('games') ? 'class = "link-ativo"' : '')}>Games</a></li>
+                <li><a href="dashboard.html" ${(location.includes('dashboard') ? 'class = "link-ativo"' : '')}>Dashboard</a></li>
+                <li class='btn-logout' onclick='logout()'>Sair</li>
+            `;
+        }
+    }
+
+
+    function abrirAba(idAba, botao) {
+
+        let abas = document.querySelectorAll(".dashboard-aba");
+
+        for (let i = 0; i < abas.length; i++) {
+            abas[i].classList.add("none");
+        }
+
+        document.getElementById(idAba).classList.remove("none");
+
+        let botoes = document.querySelectorAll(".dashboard-tabs button");
+
+        for (let i = 0; i < botoes.length; i++) {
+            botoes[i].classList.remove("aba-ativa");
+        }
+
+        botao.classList.add("aba-ativa");
+    }
+</script>
+
+</html>

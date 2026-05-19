@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --cor-primaria: rgb(123, 195, 255);
+    --cor-primaria-solid: #3498db;
+    --cor-secundaria: #7bc3ff;
+    --cor-glow: rgba(123, 195, 255, 0.35);
+    --cor-card: rgba(255, 255, 255, 0.04);
+    --cor-borda-fraca: rgba(123, 195, 255, 0.35);
+    --cor-grid: rgba(255, 255, 255, 0.02);
+    --cor-background: #111;
+    --cor-texto: white;
+}
+
+body {
+    background-color: #0d0d0d;
+}
+
+
+.none {
+    display: none;
+}
+
+
+a {
+    text-decoration: none;
+}
+
+.logo-drive-code {
+    font-family: "Poppins", sans-serif;
+    color: white;
+}
+
+.logo-drive-code span {
+    color: var(--cor-primaria);
+}
+
+
+.header {
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 5% 10px 5%;
+    border-bottom: 2px solid;
+    border-image-source: linear-gradient(to right,
+            var(--cor-primaria-solid),
+            var(--cor-secundaria));
+    border-image-slice: 1;
+    min-height: 9vh;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    list-style: none;
+}
+
+.navbar a {
+    color: white;
+    font-family: "Poppins", sans-serif;
+    transition: 0.4s;
+}
+
+.navbar a.link-ativo {
+    border-bottom: 1px solid var(--cor-primaria);
+}
+
+.navbar a:hover {
+    color: var(--cor-primaria);
+}
+
+.usuario-logado {
+    color: white;
+    font-family: "Poppins", sans-serif;
+}
+
+.btn-logout {
+    background-color: red;
+    padding: 8px 20px 8px 20px;
+    border-radius: 15px;
+    transition: 0.3s;
+
+    color: white;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+}
+
+.btn-logout:hover {
+    background-color: #80180d;
+    cursor: pointer;
+}
+
+.dashboard-page {
+    min-height: 91vh;
+    padding: 70px 10%;
+    background-color: var(--cor-background);
+    background-image:
+        linear-gradient(var(--cor-grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--cor-grid) 1px, transparent 1px);
+    background-size: 40px 40px;
+    color: var(--cor-texto);
+    font-family: "Poppins", sans-serif;
+}
+
+.dashboard-tabs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 35px;
+    padding: 12px;
+    border-radius: 18px;
+    background: rgba(19, 19, 19, 0.856);
+    border: 1px solid rgba(123, 195, 255, 0.15);
+}
+
+.dashboard-tabs button {
+    padding: 14px 22px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: #dcdcdc;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.dashboard-tabs button:hover {
+    background: rgba(123, 195, 255, 0.12);
+    color: rgb(123, 195, 255);
+    transform: translateY(-2px);
+}
+
+.dashboard-tabs button.aba-ativa {
+    background: linear-gradient(to right,rgba(0, 89, 255, 0.85),rgba(123, 195, 255, 0.85));
+    color: white;
+    box-shadow: 0 10px 25px rgba(0, 89, 255, 0.25);
+}

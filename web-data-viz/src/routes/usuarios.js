@@ -31,8 +31,8 @@ router.get("/ranking/:idUsuario?", function (req, res) {
     usuarioController.ranking(req, res);
 })
 
-router.get("/historicoXP/:idUsuario", function(req, res) {
-    usuarioController.historicoXP(req, res);
+router.get("/desempenhoPorTema/:idUsuario", function(req, res) {
+    usuarioController.desempenhoPorTema(req, res);
 });
 
 module.exports = router;

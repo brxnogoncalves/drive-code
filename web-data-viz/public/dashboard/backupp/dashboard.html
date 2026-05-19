@@ -94,14 +94,13 @@
             <div class="ranking-grafico-card">
                 <div class="ranking-grafico-header">
                     <div>
-                        <span>Progresso</span>
-                        <h3>Histórico de XP Ganho</h3>
+                        <h3>Radar de habilidades</h3>
+                        <p>Desempenho por tema do quiz</p>
                     </div>
-                    <p>Evolução do piloto</p>
                 </div>
 
                 <div class="ranking-canvas-area">
-                    <canvas id="grafico_xp"></canvas>
+                    <canvas id="grafico_radar"></canvas>
                 </div>
             </div>
 
@@ -118,7 +117,7 @@
         // KPIS E GRAFICOS
         renderizarKPIS();
         renderizarGraficoRanking();
-        renderizarGraficoXP();
+        renderizarGraficoRadar();
 
         // NOME DO CARRO
         let nomeCarro = sessionStorage.NOME_CARRO || "Carro do usuário";
@@ -229,84 +228,75 @@
         });
     }
 
-    function renderizarGraficoXP() {
-
-        fetch("/usuarios/historicoXP/" + sessionStorage.ID_USUARIO, {
+    function renderizarGraficoRadar() {
+        fetch("/usuarios/desempenhoPorTema/" + sessionStorage.ID_USUARIO, {
             method: "GET"
         }).then(function (resposta) {
-
             if (resposta.ok) {
                 resposta.json().then(function (dados) {
 
-                    let dias = [];
-                    let xp = [];
+                    let temas = [];
+                    let desempenhos = [];
 
                     for (let i = 0; i < dados.length; i++) {
-                        let data = new Date(dados[i].dia);
-
-                        let diaFormatado =
-                            data.getDate().toString().padStart(2, "0") + "/" +
-                            (data.getMonth() + 1).toString().padStart(2, "0") + "/" +
-                            data.getFullYear();
-
-                        dias.push(diaFormatado);
-                        xp.push(dados[i].xp_total);
+                        temas.push(dados[i].tema);
+                        desempenhos.push(dados[i].taxa_acerto);
                     }
 
-                    const ctx = document.getElementById("grafico_xp");
+                    const ctx = document.getElementById("grafico_radar");
 
                     new Chart(ctx, {
-                        type: "line",
+                        type: "radar",
                         data: {
-                            labels: dias,
+                            labels: temas,
                             datasets: [{
-                                label: "XP ganho",
-                                data: xp,
-                                tension: 0.4,
-                                fill: true,
+                                label: "Taxa de acerto (%)",
+                                data: desempenhos,
                                 borderWidth: 3,
-                                backgroundColor: "rgba(0, 102, 255, 0.15)",
-                                borderColor: "rgba(123, 195, 255, 1)"
+                                backgroundColor: "rgba(123, 195, 255, 0.15)",
+                                borderColor: "rgba(123, 195, 255, 1)",
+                                pointBackgroundColor: "rgba(123, 195, 255, 1)"
                             }]
                         },
                         options: {
                             responsive: true,
                             maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    display: false
+                            scales: {
+                                r: {
+                                    suggestedMin: 0,
+                                    suggestedMax: 100,
+                                    ticks: {
+                                        backdropColor: "transparent",
+                                        color: "#aaa"
+                                    },
+                                    grid: {
+                                        color: "rgba(255,255,255,0.08)"
+                                    },
+                                    angleLines: {
+                                        color: "rgba(255,255,255,0.08)"
+                                    },
+                                    pointLabels: {
+                                        color: "#ddd",
+                                        font: {
+                                            size: 13
+                                        }
+                                    }
                                 }
                             },
-                            scales: {
-                                x: {
-                                    ticks: {
-                                        color: "#aaa"
-                                    },
-                                    grid: {
-                                        color: "rgba(255,255,255,0.05)"
-                                    }
-                                },
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        color: "#aaa"
-                                    },
-                                    grid: {
-                                        color: "rgba(255,255,255,0.05)"
+                            plugins: {
+                                legend: {
+                                    labels: {
+                                        color: "#ddd"
                                     }
                                 }
                             }
                         }
                     });
-
                 });
-
             }
-
         }).catch(function (erro) {
-            console.log("Erro histórico XP:", erro);
+            console.log("Erro radar desempenho:", erro);
         });
-
     }
 
     function alterarCorCarro() {
@@ -420,4 +410,4 @@
     }
 </script>
 
-</html> 
+</html>

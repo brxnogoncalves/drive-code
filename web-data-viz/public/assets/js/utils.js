@@ -17,7 +17,7 @@ function alterarNavBar() {
         <li><a href="index.html" ${(location.includes('index.html') ? 'class = "link-ativo"' : '')}>Home</a></li>
         <li><a href="motor_codigo.html" ${(location.includes('motor_codigo.html') ? 'class = "link-ativo"' : '')}>Do Motor ao Código</a></li>
         <li><a href="games.html" ${(location.includes('games') ? 'class = "link-ativo"' : '')}>Games</a></li>
-        <li><a href="dashboard.html" ${(location.includes('dashboard') ? 'class = "link-ativo"' : '')}>Dashboard</a></li>
+        <li><a href="./dashboard/dashboard.html" ${(location.includes('dashboard') ? 'class = "link-ativo"' : '')}>Dashboard</a></li>
         <li class='btn-logout' onclick='logout()'>Sair</li>
     `;
     } else {

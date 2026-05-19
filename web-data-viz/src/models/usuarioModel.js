@@ -23,8 +23,6 @@ function logar(email, senha) {
     return database.executar(instrucaoSql);
 }
 
-
-
 function cadastrar(nome, email, senha, dtNascimento, fkCarroPreferido) {
     console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, email, senha, dtNascimento, fkCarroPreferido);
 
@@ -83,7 +81,6 @@ function alterarTexturaCarro(novaTextura, idUsuario) {
     return database.executar(instrucaoSql);
 }
 
-
 function quantidadeGamesJogados(idUsuario) {
     var instrucaoSql = `
             SELECT COUNT(g.id_game) as qtd_games_jogados FROM game g WHERE EXISTS (
@@ -137,16 +134,19 @@ function ranking(idUsuario) {
     return database.executar(instrucaoSql);
 }
 
-function historicoXP(idUsuario) {
+function desempenhoPorTema(idUsuario) {
 
     var instrucaoSql = `
         SELECT 
-            DATE(data_ganho) as dia,
-            SUM(xp_ganho) as xp_total
-        FROM historico_xp
-        WHERE fk_usuario = ${idUsuario}
-        GROUP BY DATE(data_ganho)
-        ORDER BY dia;
+            pq.tema,
+            ROUND(AVG(rq.acertou) * 100, 2) AS taxa_acerto
+        FROM pergunta_quiz pq
+
+        LEFT JOIN resposta_quiz rq 
+            ON rq.fk_pergunta = pq.id_pergunta
+            AND rq.fk_usuario = ${idUsuario}
+
+        GROUP BY pq.tema;
     `;
 
     console.log("Executando SQL:\n" + instrucaoSql);
@@ -163,5 +163,5 @@ module.exports = {
     alterarTexturaCarro,
     quantidadeGamesJogados,
     ranking,
-    historicoXP
+    desempenhoPorTema
 };

@@ -170,7 +170,6 @@ function alterarTexturaCarro(req, res) {
     }
 }
 
-
 function quantidadeGamesJogados(req, res) {
     let idUsuario = req.params.idUsuario;
 
@@ -201,10 +200,10 @@ function ranking(req, res) {
         });
 }
 
-function historicoXP(req, res) {
+function desempenhoPorTema(req, res) {
     let idUsuario = req.params.idUsuario;
 
-    usuarioModel.historicoXP(idUsuario)
+    usuarioModel.desempenhoPorTema(idUsuario)
         .then(function (resultado) {
             res.json(resultado);
         })
@@ -223,5 +222,5 @@ module.exports = {
     alterarTexturaCarro,
     quantidadeGamesJogados,
     ranking,
-    historicoXP
+    desempenhoPorTema
 }
