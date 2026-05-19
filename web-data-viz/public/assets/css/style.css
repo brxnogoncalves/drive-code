@@ -780,6 +780,7 @@ a {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 50px;
+    align-items: stretch;
 }
 
 .game-card {
@@ -790,6 +791,10 @@ a {
     border: 1px solid rgb(123, 195, 255);
     text-align: center;
     transition: 0.3s ease;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .game-card.played {
@@ -821,6 +826,8 @@ a {
     line-height: 1.6;
     opacity: 0.85;
     margin-bottom: 20px;
+
+    min-height: 75px;
 }
 
 .xp-tag {
@@ -834,6 +841,7 @@ a {
 }
 
 .btn-jogar {
+    margin-top: auto;
     display: block;
     padding: 13px;
     border-radius: 12px;
