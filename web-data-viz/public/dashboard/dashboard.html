@@ -24,11 +24,66 @@
         </div>
 
         <div id="aba_geral" class="dashboard-aba">
-            visao geral
+            <div class="geral-hero">
+                <div class="hero-intro">
+                    <h2>Seja bem-vindo de volta, <span id="nome_usuario">Piloto</span></h2>
+                    <p>Tenha acesso ao seu desempenho na plataforma Drive & Code</p>
+                </div>
+            </div>
+
+            <div class="geral-kpis">
+                <div class="kpi-card">
+                    <span>Nível atual</span>
+                    <h3>Nível <b id="kpi_nivel">1</b></h3>
+                    <p id="kpi_xp">0 / 100 XP</p>
+
+                    <div class="xp-barra">
+                        <div id="xp_barra_fill"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="geral-graficos">
+                <div class="grafico-card">
+                    <h2>Tempo de resposta</h2>
+                    <p>Veja quanto tempo você levou em cada pergunta.</p>
+                    <div class="grafico-container">
+                        <canvas id="grafico_tempo_resposta"></canvas>
+                    </div>
+                </div>
+                <div class="grafico-card">
+                    <h2>Desempenho por tema</h2>
+                    <p>Veja em quais temas você manda melhor.</p>
+                    <div class="grafico-container">
+                        <canvas id="grafico_desempenho_tema"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="aba_ranking" class="dashboard-aba none">
-            ranking
+
+            <div class="geral-kpis">
+                <div class="kpi-card" id="card_proximo_colocado">
+                    <span>Próximo colocado</span>
+                    <h3 id="nome_proximo_colocado">--</h3>
+                    <p id="texto_proximo_colocado">Carregando...</p>
+                </div>
+            </div>
+
+            <div class="grafico-card">
+                <h2>Ranking dos Pilotos</h2>
+                <p>Veja os pilotos com maior pontuação total.</p>
+                <div class="grafico-container">
+                    <canvas id="grafico_ranking"></canvas>
+                </div>
+            </div>
+
+            <div class="feed-xp-card">
+                <h3>Últimos ganhos de XP</h3>
+                <div id="feed_xp"></div>
+            </div>
+
         </div>
 
         <div id="aba_loja" class="dashboard-aba none">
@@ -40,8 +95,10 @@
         </div>
     </div>
 </body>
-<script src="assets/js/utils.js"></script>
+<script src="../assets/js/utils.js"></script>
 <script>
+    carregarAbaGeral();
+
     alterarNavBar();
     function alterarNavBar() {
         const navbar = document.querySelector('.navbar');
@@ -81,6 +138,282 @@
         }
 
         botao.classList.add("aba-ativa");
+
+        if (idAba == 'aba_geral') {
+            carregarAbaGeral();
+        } else if (idAba == 'aba_ranking') {
+            carregarAbaRanking();
+        }
+    }
+
+    let graficoTempoResposta = null;
+    let graficoTemas = null;
+    function carregarAbaGeral() {
+        nome_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+
+        // buscar nivel do usuario
+        fetch("/usuarios/ranking/" + sessionStorage.ID_USUARIO)
+            .then((resultado) => {
+                resultado.json()
+                    .then((ranking) => {
+                        console.log(ranking)
+                        kpi_nivel.innerHTML = ranking[0].nivel;
+                        kpi_xp.innerHTML = ranking[0].xp + " / 100";
+                        xp_barra_fill.style.width = ranking[0].xp + "%";
+                    })
+            })
+
+        // carregar tempo de resposta
+        fetch("/usuarios/tempoResposta/" + sessionStorage.ID_USUARIO)
+            .then((resposta) => {
+                resposta.json()
+                    .then((respostasQuiz) => {
+                        let labelsPerguntas = [];
+                        let games = [];
+
+                        for (let i = 0; i < respostasQuiz.length; i++) {
+                            let item = respostasQuiz[i];
+
+                            let perguntaLabel = "P" + item.numero_pergunta;
+
+                            if (!labelsPerguntas.includes(perguntaLabel)) {
+                                labelsPerguntas.push(perguntaLabel);
+                            }
+
+                            if (!games[item.nome_game]) {
+                                games[item.nome_game] = {
+                                    tempos: [],
+                                    cores: []
+                                };
+                            }
+
+                            games[item.nome_game].tempos.push(item.tempo_resposta);
+
+                            if (item.acertou == 1) {
+                                games[item.nome_game].cores.push("#22c55e");
+                            } else {
+                                games[item.nome_game].cores.push("#ef4444");
+                            }
+                        }
+
+                        let datasets = [];
+                        for (let nomeGame in games) {
+
+                            datasets.push({
+                                label: nomeGame,
+
+                                data: games[nomeGame].tempos,
+
+                                pointBackgroundColor: games[nomeGame].cores,
+                                pointBorderColor: games[nomeGame].cores,
+
+                                pointRadius: 6,
+                                pointHoverRadius: 8,
+
+                                tension: 0.4,
+                                fill: false
+                            });
+                        }
+
+                        const ctx = document.getElementById("grafico_tempo_resposta");
+
+                        if (graficoTempoResposta != null) {
+                            graficoTempoResposta.destroy();
+                        }
+
+                        graficoTempoResposta = new Chart(ctx, {
+                            type: "line",
+
+                            data: {
+                                labels: labelsPerguntas,
+                                datasets: datasets
+                            },
+
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+
+                                plugins: {
+                                    legend: {
+                                        display: true
+                                    }
+                                },
+
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        title: {
+                                            display: true,
+                                            text: "Tempo (s)"
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    })
+            })
+
+
+        fetch("/usuarios/desempenhoPorTema/" + sessionStorage.ID_USUARIO)
+            .then((resposta) => {
+                resposta.json()
+                    .then((temas) => {
+                        let labelsTemas = [];
+                        let taxaAcerto = [];
+
+                        for (let i = 0; i < temas.length; i++) {
+                            labelsTemas.push(temas[i].tema);
+                            taxaAcerto.push(temas[i].taxa_acerto || 0);
+                        }
+
+                        const ctx = document.getElementById("grafico_desempenho_tema");
+
+                        if (graficoTemas != null) {
+                            graficoTemas.destroy();
+                        }
+
+                        graficoTemas = new Chart(ctx, {
+                            type: "radar",
+                            data: {
+                                labels: labelsTemas,
+                                datasets: [{
+                                    label: "Taxa de acerto (%)",
+                                    data: taxaAcerto,
+                                    borderWidth: 2,
+                                    pointRadius: 5,
+                                    backgroundColor: "rgba(123, 195, 255, 0.15)",
+                                    borderColor: "rgb(123, 195, 255)",
+                                    pointBackgroundColor: "rgb(123, 195, 255)"
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    r: {
+                                        beginAtZero: true,
+                                        max: 100,
+                                        ticks: {
+                                            color: "blue",
+                                            backdropColor: "transparent"    
+                                        },
+                                        grid: {
+                                            color: "rgba(255, 0, 0, 0.15)"
+                                        },
+                                        angleLines: {
+                                            color: "rgba(255, 0, 0, 0.15)"
+                                        },
+                                        pointLabels: {
+                                            color: "white"
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    })
+            })
+    }
+
+    let graficoRanking = null;
+    async function carregarAbaRanking() {
+        let idUsuario = Number(sessionStorage.ID_USUARIO);
+
+        // rota de ranking preenche
+        let indiceUsuario = -1;
+        let usuarioAtual = null;
+        let proximoUsuario = null;
+
+        // ranking
+        let resposta = await fetch("/usuarios/ranking")
+        let ranking = await resposta.json();
+        console.log(ranking);
+
+        let nomes = [];
+        let pontuacoes = [];
+
+        for (let i = 0; i < ranking.length; i++) {
+            if (i < 5) { // MOSTRA TOP 5 NO GRAFICO
+                if (i == 0) {
+                    nomes.push("🥇 " + ranking[i].nome_carro + "( " + ranking[i].nome_usuario + " )");
+                } else if (i == 1) {
+                    nomes.push("🥈 " + ranking[i].nome_carro + "( " + ranking[i].nome_usuario + " )");
+                } else if (i == 2) {
+                    nomes.push("🥉 " + ranking[i].nome_carro + "( " + ranking[i].nome_usuario + " )");
+                } else {
+                    nomes.push(ranking[i].nome_carro + "( " + ranking[i].nome_usuario + " )");
+                }
+
+                pontuacoes.push((ranking[i].nivel * 100) + ranking[i].xp); // calcula xp total (1 nivel == 100xp)
+            }
+
+            if (ranking[i].fk_usuario == idUsuario) {
+                indiceUsuario = i;
+                usuarioAtual = ranking[i];
+                proximoUsuario = ranking[i - 1];
+                if (i >= 5) break; // sai do laço apenas se ja preencheu grafico
+            }
+        }
+
+        const ctx = document.getElementById("grafico_ranking");
+        // recarrega gráfico (destroy para não construir outro por cima)
+        if (graficoRanking != null) {
+            graficoRanking.destroy();
+        }
+
+        graficoRanking = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: nomes,
+                datasets: [{
+                    label: "XP Total",
+                    data: pontuacoes,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: "y",
+                responsive: true,
+                maintainAspectRatio: false,
+            }
+        })
+
+        // preenche proximo colocado
+        if (indiceUsuario == 0) {
+            card_proximo_colocado.style.borderColor = "green";
+            nome_proximo_colocado.innerHTML = "Você está no topo 🏅";
+            texto_proximo_colocado.innerHTML = "Ninguém está acima de você! Parabéns!";
+        }
+        else {
+            let pontuacaoAtual = (usuarioAtual.nivel * 100) + usuarioAtual.xp;
+            let pontuacaoProximo = (proximoUsuario.nivel * 100) + proximoUsuario.xp;
+
+            let diferenca = pontuacaoProximo - pontuacaoAtual;
+
+            nome_proximo_colocado.innerHTML = proximo.nome_usuario;
+            texto_proximo_colocado.innerHTML = `Faltam ${diferenca} XP para ultrapassar`;
+        }
+
+
+        // carrega feed
+        fetch("/usuarios/feedXp")
+            .then((res) => {
+                res.json()
+                    .then((feed) => {
+                        feed_xp.innerHTML = "";
+
+                        for (let i = 0; i < feed.length; i++) {
+                            feed_xp.innerHTML += `
+                                <div class="feed-xp-item">
+                                    <span>+${feed[i].xp_ganho} XP</span>
+                                    <p>
+                                        <b>${feed[i].nome_usuario}</b> ganhou XP em 
+                                        <b>${feed[i].nome_game}</b>
+                                    </p>
+                                </div>
+                            `;
+                        }
+                    });
+            })
     }
 </script>
 

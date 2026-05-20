@@ -35,4 +35,12 @@ router.get("/desempenhoPorTema/:idUsuario", function(req, res) {
     usuarioController.desempenhoPorTema(req, res);
 });
 
+router.get("/feedXp", function (req, res) {
+    usuarioController.buscarFeedXP(req, res);
+});
+
+router.get("/tempoResposta/:idUsuario", function (req, res) {
+    usuarioController.buscarTempoResposta(req, res);
+});
+
 module.exports = router;

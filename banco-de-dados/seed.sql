@@ -61,12 +61,11 @@ CREATE TABLE resposta_quiz (
     CONSTRAINT fkRespostaPergunta FOREIGN KEY (fk_pergunta) REFERENCES pergunta_quiz(id_pergunta)
 );
 
+-- QUIZ 1
 INSERT INTO game (nome, descricao, xp_recompensa) VALUES
-('Quiz Automotivo', 'Perguntas sobre carros, tecnologia embarcada e programação.', 120),
-('Corrida Lógica', 'Responda perguntas de lógica e avance com seu carro.', 40),
-('Oficina de Debug', 'Encontre erros em códigos e conserte problemas.', 60),
-('CAN Hacker', 'Resolva desafios simples sobre rede CAN, módulos automotivos e tecnologia dos carros modernos.', 80);
+('Quiz Geral', 'Perguntas sobre carros, tecnologia embarcada e programação.', 120);
 
+-- QUIZ 1
 INSERT INTO pergunta_quiz 
 (pergunta, alternativa_a, alternativa_b, alternativa_c, alternativa_d, alternativa_correta, tema, fk_game)
 VALUES
@@ -77,7 +76,7 @@ VALUES
  'Sistema de som',
  'Tipo de combustível',
  'A',
- 'Sensores',
+ 'Automotivo',
  1),
 
 ('Qual é a função da ECU?',
@@ -86,7 +85,7 @@ VALUES
  'Melhorar o design do carro',
  'Controlar o volante',
  'A',
- 'Eletrônica embarcada',
+ 'Eletrônica',
  1),
 
 ('O que o protocolo CAN faz?',
@@ -95,7 +94,7 @@ VALUES
  'Controla o rádio',
  'Liga os faróis automaticamente',
  'A',
- 'Comunicação',
+ 'Eletrônica',
  1),
 
 ('O que é uma variável?',
@@ -131,7 +130,7 @@ VALUES
  'Atuador → Sensor → ECU',
  'Motor → ECU → Sensor',
  'A',
- 'Lógica',
+ 'Eletrônica',
  1),
 
 ('O que um atuador faz?',
@@ -140,7 +139,7 @@ VALUES
  'Armazena dados',
  'Controla o usuário',
  'A',
- 'Eletrônica embarcada',
+ 'Eletrônica',
  1),
 
 ('Qual componente armazena energia elétrica?',
@@ -161,14 +160,13 @@ VALUES
  'Automotivo',
  1),
 
-
 ('O que acontece se um sensor falhar?',
  'A ECU pode tomar decisões erradas',
  'O carro fica mais rápido',
  'Nada acontece',
  'O rádio para de funcionar',
  'A',
- 'Diagnóstico',
+ 'Eletrônica',
  1),
 
 ('O que significa IoT em carros?',
@@ -180,5 +178,119 @@ VALUES
  'Tecnologia',
  1);
  
-    
+ -- QUIZ 2
+INSERT INTO game (nome, descricao, xp_recompensa) VALUES
+('Quiz PowerUp', 'Quiz rápido com powerups como tempo extra, eliminar alternativas, pular pergunta e XP dobrado.', 150);
 
+INSERT INTO pergunta_quiz 
+(pergunta, alternativa_a, alternativa_b, alternativa_c, alternativa_d, alternativa_correta, tema, fk_game)
+VALUES
+
+('Qual item ajuda um carro a se movimentar?',
+ 'Motor',
+ 'Banco',
+ 'Volante parado',
+ 'Porta',
+ 'A',
+ 'Automotivo',
+ 2),
+
+('Qual combustível é comum em carros no Brasil?',
+ 'Gasolina',
+ 'Água',
+ 'Óleo de cozinha',
+ 'Suco',
+ 'A',
+ 'Automotivo',
+ 2),
+
+('Qual peça é usada para controlar a direção do carro?',
+ 'Volante',
+ 'Pneu',
+ 'Farol',
+ 'Banco',
+ 'A',
+ 'Automotivo',
+ 2),
+
+('Qual destes é um meio de guardar dados em JavaScript?',
+ 'Variável',
+ 'Pneu',
+ 'Retrovisor',
+ 'Farol',
+ 'A',
+ 'Programação',
+ 2),
+
+('Qual comando mostra algo no console do navegador?',
+ 'console.log()',
+ 'print.carro()',
+ 'mostrarBanco()',
+ 'alertaBanco()',
+ 'A',
+ 'Programação',
+ 2),
+
+('O que HTML normalmente estrutura?',
+ 'O conteúdo da página',
+ 'O motor do carro',
+ 'A bateria do carro',
+ 'A senha do Wi-Fi',
+ 'A',
+ 'Web',
+ 2),
+
+('O que CSS normalmente altera?',
+ 'A aparência da página',
+ 'O banco de dados',
+ 'O motor',
+ 'A placa do carro',
+ 'A',
+ 'Web',
+ 2),
+
+('O que JavaScript ajuda a criar?',
+ 'Interações na página',
+ 'Gasolina',
+ 'Pneus',
+ 'Óleo do motor',
+ 'A',
+ 'Web',
+ 2),
+
+('Qual destes representa uma cor em HEX?',
+ '#FF0000',
+ 'vermelho forte muito',
+ 'cor(azul)',
+ 'rgb texto',
+ 'A',
+ 'Web',
+ 2),
+
+('O que significa XP em um sistema gamificado?',
+ 'Experiência',
+ 'Xícara de pão',
+ 'Extintor principal',
+ 'Extra porta',
+ 'A',
+ 'Gamificação',
+ 2),
+
+('Se o usuário acerta uma pergunta, o que normalmente acontece?',
+ 'Ganha pontos ou XP',
+ 'Perde a conta',
+ 'O banco apaga tudo',
+ 'O carro some',
+ 'A',
+ 'Gamificação',
+ 2),
+
+('Qual powerup combina com uma pergunta com tempo?',
+ 'Adicionar segundos',
+ 'Trocar o banco de dados',
+ 'Apagar o usuário',
+ 'Fechar o navegador',
+ 'A',
+ 'Gamificação',
+ 2);
+ 

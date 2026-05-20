@@ -125,8 +125,7 @@ function ranking(idUsuario) {
             FROM carro_usuario c
             JOIN usuario u
                 ON c.fk_usuario = u.id_usuario
-            ORDER BY posicao
-            LIMIT 5;
+            ORDER BY posicao;
         `;
     }
 
@@ -154,6 +153,61 @@ function desempenhoPorTema(idUsuario) {
     return database.executar(instrucaoSql);
 }
 
+function buscarFeedXP() {
+    var instrucaoSql = `
+        SELECT 
+            h.id_historico_xp,
+            h.xp_ganho,
+            h.data_ganho,
+            u.nome AS nome_usuario,
+            c.nome_carro,
+            g.nome AS nome_game
+        FROM historico_xp h
+        JOIN usuario u
+            ON h.fk_usuario = u.id_usuario
+        JOIN carro_usuario c
+            ON c.fk_usuario = u.id_usuario
+        JOIN game g
+            ON h.fk_game = g.id_game
+        ORDER BY h.data_ganho DESC
+        LIMIT 8;
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
+function buscarTempoResposta(idUsuario) {
+    var instrucaoSql = `
+        SELECT 
+            g.nome AS nome_game,
+            
+            ROW_NUMBER() OVER (
+                PARTITION BY g.id_game
+                ORDER BY p.id_pergunta
+            ) AS numero_pergunta,
+
+            p.id_pergunta,
+            p.pergunta,
+            r.tempo_resposta,
+            r.acertou,
+            r.data_resposta
+
+        FROM resposta_quiz r
+
+        JOIN pergunta_quiz p
+            ON r.fk_pergunta = p.id_pergunta
+
+        JOIN game g
+            ON p.fk_game = g.id_game
+
+        WHERE r.fk_usuario = ${idUsuario}
+
+        ORDER BY g.id_game, p.id_pergunta;
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     logar,
     cadastrar,
@@ -163,5 +217,7 @@ module.exports = {
     alterarTexturaCarro,
     quantidadeGamesJogados,
     ranking,
-    desempenhoPorTema
+    desempenhoPorTema,
+    buscarFeedXP,
+    buscarTempoResposta
 };

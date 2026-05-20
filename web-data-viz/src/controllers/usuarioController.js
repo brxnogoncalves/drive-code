@@ -214,6 +214,31 @@ function desempenhoPorTema(req, res) {
 
 }
 
+function buscarFeedXP(req, res) {
+    usuarioModel.buscarFeedXP()
+        .then(resultado => {
+            res.json(resultado);
+        })
+        .catch(erro => {
+            console.log("Erro ao buscar feed de XP:", erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+function buscarTempoResposta(req, res) {
+    var idUsuario = req.params.idUsuario;
+
+    usuarioModel.buscarTempoResposta(idUsuario)
+        .then(resultado => {
+            res.status(200).json(resultado);
+        })
+        .catch(erro => {
+            console.log("Erro ao buscar tempo de resposta:", erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+
 module.exports = {
     logar,
     cadastrar,
@@ -222,5 +247,7 @@ module.exports = {
     alterarTexturaCarro,
     quantidadeGamesJogados,
     ranking,
-    desempenhoPorTema
+    desempenhoPorTema,
+    buscarFeedXP,
+    buscarTempoResposta
 }

@@ -20,6 +20,7 @@
 
 body {
     background-color: #0d0d0d;
+    font-family: "Poppins", sans-serif;
 }
 
 
@@ -142,4 +143,129 @@ a {
     background: linear-gradient(to right,rgba(0, 89, 255, 0.85),rgba(123, 195, 255, 0.85));
     color: white;
     box-shadow: 0 10px 25px rgba(0, 89, 255, 0.25);
+}
+
+.geral-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to right,rgba(0, 89, 255, 0.85),rgba(123, 195, 255, 0.85));
+    color: white;
+    padding: 50px;
+    border-radius: 20px;
+    margin-bottom: 30px;
+}
+
+.hero-intro h2 {
+    font-size: 30px;
+    font-weight: 300;
+}
+
+.hero-intro span {
+    font-weight: bold;
+}
+
+.hero-ranking {
+    font-size: 20px;
+}
+
+.hero-ranking span {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.geral-kpis {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 22px;
+    margin-bottom: 30px;
+}
+
+.kpi-card {
+    flex: 1;
+    padding: 28px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(123, 195, 255, 0.15);
+}
+
+.kpi-card h3 {
+    font-size: 30px;
+    margin: 12px 0 8px;
+}
+
+.kpi-card p {
+    opacity: 0.75;
+    font-size: 14px;
+}
+
+.xp-barra {
+    width: 100%;
+    height: 10px;
+    margin-top: 18px;
+    border-radius: 20px;
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#xp_barra_fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 20px;
+
+    background: linear-gradient(
+        to right,
+        blue,
+        rgb(123, 195, 255)
+    );
+
+    transition: 0.4s ease;
+}
+
+.geral-graficos {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 22px;
+    align-items: stretch;
+}
+
+.grafico-card,
+.feed-xp-card {
+    padding: 28px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(123, 195, 255, 0.15);
+    color: white;
+    margin-bottom: 30px;
+}
+
+.grafico-container {
+    height: 320px;
+    width: 100%;
+}
+
+.grafico-container canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.feed-xp-card {
+    margin-top: 30px;
+}
+
+.feed-xp-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid rgba(123, 195, 255, 0.15);
+    padding: 14px 0;
+}
+
+.feed-xp-item span {
+    background: linear-gradient(to right, rgb(41, 41, 136), rgb(35, 67, 94));
+    padding: 8px 12px;
+    border-radius: 50px;
+    font-weight: bold;
 }
