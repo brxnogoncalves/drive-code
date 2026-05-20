@@ -43,4 +43,12 @@ router.get("/tempoResposta/:idUsuario", function (req, res) {
     usuarioController.buscarTempoResposta(req, res);
 });
 
+router.get("/loja/:idUsuario", function (req, res) {
+    usuarioController.buscarItensLoja(req, res);
+});
+
+router.post("/liberarItem", function (req, res) {
+    usuarioController.liberarItem(req, res);
+});
+
 module.exports = router;

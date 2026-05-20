@@ -87,11 +87,38 @@
         </div>
 
         <div id="aba_loja" class="dashboard-aba none">
-            loja
+            <div class="loja-header">
+                <div>
+                    <h2>Lojinha</h2>
+                    <p>Desbloqueie customizações conforme sua evolução.</p>
+                </div>
+            </div>
+
+            <div id="lista_itens_loja" class="loja-grid"></div>
         </div>
 
         <div id="aba_garagem" class="dashboard-aba none">
-            garagem
+            <div class="garagem-carro">
+                <h2>Garagem</h2>
+                <p>Customize seu carro do Drive & Code.</p>
+
+                <div class="carro">
+                    <div class="neon"></div>
+
+                    <div class="carro-teto">
+                        <div class="vidro vidro-frente"></div>
+                        <div class="vidro vidro-tras"></div>
+                    </div>
+
+                    <div class="carro-corpo">
+                        <div class="farol farol-frente"></div>
+                        <div class="farol farol-tras"></div>
+                    </div>
+
+                    <div class="roda roda-tras"></div>
+                    <div class="roda roda-frente"></div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
@@ -143,6 +170,8 @@
             carregarAbaGeral();
         } else if (idAba == 'aba_ranking') {
             carregarAbaRanking();
+        } else if (idAba == 'aba_loja') {
+            carregarAbaLoja();
         }
     }
 
@@ -295,7 +324,7 @@
                                         max: 100,
                                         ticks: {
                                             color: "blue",
-                                            backdropColor: "transparent"    
+                                            backdropColor: "transparent"
                                         },
                                         grid: {
                                             color: "rgba(255, 0, 0, 0.15)"
@@ -414,6 +443,94 @@
                         }
                     });
             })
+    }
+
+    function carregarAbaLoja() {
+        fetch("/usuarios/loja/" + sessionStorage.ID_USUARIO)
+            .then((resposta) => {
+                resposta.json()
+                    .then((itens) => {
+                        lista_itens_loja.innerHTML = "";
+
+                        let xpTotal = Number((sessionStorage.NIVEL_CARRO * 100)) + Number(sessionStorage.XP_CARRO);
+                        console.log(xpTotal);
+
+                        for (let i = 0; i < itens.length; i++) {
+                            let item = itens[i];
+                            let desbloqueado = item.desbloqueado == 1;
+
+                            let classe = "";
+
+                            if (!desbloqueado) {
+                                classe = "bloqueado";
+                            }
+
+                            if (item.adquirido == 1) {
+                                classe = "adquirido";
+                            }
+
+                            let textoBotao = "Liberar";
+
+                            if (!desbloqueado) {
+                                textoBotao = "Bloqueado";
+                            }
+
+                            if (item.adquirido == 1) {
+                                textoBotao = "Adquirido";
+                            }
+
+                            lista_itens_loja.innerHTML += `
+                                <div class="item-loja-card ${classe}">
+                                    <h3>${item.nome}</h3>
+                                    <p>${item.descricao}</p>
+
+                                    <span class="item-preco">Requer ${item.xp_minimo} XP</span>
+
+                                    <div class="item-loja-footer">
+                                        ${!desbloqueado ? `<span class='item-loja-xpFalta'>Faltam ${item.xp_minimo - xpTotal} XP para liberar acesso</span>` : ""}
+
+                                        ${desbloqueado ?
+                                    `
+                                            <button 
+                                                ${desbloqueado && item.adquirido == 0
+                                        ? `onclick="liberarItem(${item.id_item})"`
+                                        : ""
+                                    }
+
+                                                class="${item.adquirido == 1 ? 'btn-adquirido' : ''}"
+                                                ${item.adquirido == 1 ? "disabled" : ""}
+                                            >
+                                                ${textoBotao}
+                                            </button>
+                                        ` : ""}
+                                    </div>
+                                </div>
+                            `;
+                        }
+
+                    });
+            });
+    }
+
+    function liberarItem(idItem) {
+
+        fetch("/usuarios/liberarItem", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idUsuarioServer: sessionStorage.ID_USUARIO,
+                idItemServer: idItem
+            })
+        })
+            .then(resposta => {
+                if (resposta.ok) {
+                    carregarAbaLoja();
+                } else {
+                    console.log("Erro ao liberar item");
+                }
+            });
     }
 </script>
 

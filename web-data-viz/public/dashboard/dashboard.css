@@ -269,3 +269,220 @@ a {
     border-radius: 50px;
     font-weight: bold;
 }
+
+
+
+
+.loja-header {
+    margin-bottom: 28px;
+}
+
+.loja-header h2 {
+    font-size: 32px;
+}
+
+.loja-header p {
+    opacity: 0.75;
+}
+
+.loja-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.item-loja-card {
+    padding: 24px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(123, 195, 255, 0.15);
+    color: white;
+}
+
+.item-loja-card h3 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.item-loja-card p {
+    opacity: 0.75;
+    font-size: 14px;
+    min-height: 42px;
+}
+
+.item-loja-card .item-preco {
+    display: inline-block;
+    margin: 18px 0;
+    padding: 7px 12px;
+    border-radius: 50px;
+    background: rgba(123, 195, 255, 0.12);
+    color: var(--cor-primaria);
+    font-size: 13px;
+}
+
+.item-loja-card .item-loja-xpFalta {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    padding: 7px 12px;
+    border-radius: 50px;
+    background: rgba(255, 5, 5, 0.644);
+    color: white;
+    font-size: 13px;
+}
+
+.item-loja-card button {
+    width: 100%;
+    font-family: "Poppins", sans-serif;
+    font-size: 15px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(to right, rgb(41, 41, 136), rgb(35, 67, 94));
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.item-loja-card button.btn-adquirido {
+    background: linear-gradient(to right, rgb(41, 136, 80), rgb(35, 94, 48));
+    cursor: default;
+}
+
+.item-loja-card.bloqueado {
+    opacity: 0.5;
+    border-color: rgba(255, 5, 5, 0.644);
+}
+
+.item-loja-card.adquirido {
+    border-color: rgba(34, 197, 94, 0.6);
+}
+
+
+.garagem-carro {
+    padding: 28px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(123, 195, 255, 0.15);
+    color: white;
+}
+.garagem-carro h2 {
+    font-size: 30px;
+}
+
+.garagem-carro p {
+    opacity: 0.75;
+    margin-top: 5px;
+}
+
+.carro {
+    position: relative;
+    width: 520px;
+    height: 250px;
+    margin: 60px auto 20px;
+}
+
+.carro-corpo {
+    position: absolute;
+    left: 40px;
+    bottom: 55px;
+    width: 440px;
+    height: 95px;
+    background: #3498db;
+    border-radius: 80px 120px 45px 45px;
+}
+
+.carro-teto {
+    position: absolute;
+    left: 150px;
+    bottom: 125px;
+    width: 210px;
+    height: 90px;
+    background: #3498db;
+    border-radius: 120px 120px 20px 20px;
+}
+
+.roda {
+    position: absolute;
+    bottom: 25px;
+    width: 82px;
+    height: 82px;
+    background: #050505;
+    border-radius: 50%;
+    border: 8px solid #2c2c2c;
+}
+
+.roda::after {
+    content: "";
+    position: absolute;
+    inset: 18px;
+    background: #b8c7d9;
+    border-radius: 50%;
+}
+
+.roda-tras {
+    left: 115px;
+}
+
+.roda-frente {
+    right: 115px;
+}
+
+.vidro {
+    position: absolute;
+    top: 18px;
+    height: 48px;
+    background: rgba(8, 20, 35, 0.95);
+    border: 2px solid rgba(123, 195, 255, 0.45);
+}
+
+.vidro-frente {
+    right: 22px;
+    width: 75px;
+    border-radius: 12px 60px 8px 8px;
+}
+
+.vidro-tras {
+    left: 24px;
+    width: 70px;
+    border-radius: 60px 12px 8px 8px;
+}
+
+.farol {
+    position: absolute;
+    top: 35px;
+    width: 22px;
+    height: 18px;
+    border-radius: 50%;
+}
+
+.farol-frente {
+    right: 18px;
+    background: #fff7a8;
+    box-shadow: 0 0 16px #fff7a8;
+}
+
+.farol-tras {
+    left: 18px;
+    background: #ff3b3b;
+    box-shadow: 0 0 14px #ff3b3b;
+}
+
+.neon {
+    position: absolute;
+    left: 95px;
+    bottom: 42px;
+    width: 330px;
+    height: 12px;
+    border-radius: 50px;
+    background: rgb(123, 195, 255);
+    box-shadow: 0 0 25px rgb(123, 195, 255);
+    filter: blur(5px);
+    z-index: 0;
+}
+
+.carro-corpo,
+.carro-teto,
+.roda {
+    z-index: 2;
+}

@@ -226,7 +226,7 @@ function buscarFeedXP(req, res) {
 }
 
 function buscarTempoResposta(req, res) {
-    var idUsuario = req.params.idUsuario;
+    let idUsuario = req.params.idUsuario;
 
     usuarioModel.buscarTempoResposta(idUsuario)
         .then(resultado => {
@@ -238,6 +238,32 @@ function buscarTempoResposta(req, res) {
         });
 }
 
+function buscarItensLoja(req, res) {
+    let idUsuario = req.params.idUsuario;
+
+    usuarioModel.buscarItensLoja(idUsuario)
+        .then(resultado => {
+            res.status(200).json(resultado);
+        })
+        .catch(erro => {
+            console.log("Erro ao buscar itens da loja:", erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+function liberarItem(req, res) {
+    let idUsuario = req.body.idUsuarioServer;
+    let idItem = req.body.idItemServer;
+
+    usuarioModel.liberarItem(idUsuario, idItem)
+        .then(resultado => {
+            res.status(200).json(resultado);
+        })
+        .catch(erro => {
+            console.log("Erro ao liberar item:", erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
 
 module.exports = {
     logar,
@@ -249,5 +275,7 @@ module.exports = {
     ranking,
     desempenhoPorTema,
     buscarFeedXP,
-    buscarTempoResposta
+    buscarTempoResposta,
+    buscarItensLoja,
+    liberarItem
 }

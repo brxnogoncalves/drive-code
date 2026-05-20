@@ -208,6 +208,54 @@ function buscarTempoResposta(idUsuario) {
     return database.executar(instrucaoSql);
 }
 
+function buscarItensLoja(idUsuario) {
+    var instrucaoSql = `
+        SELECT 
+            i.id_item,
+            i.nome,
+            i.tipo,
+            i.valor,
+            i.descricao,
+            i.xp_minimo,
+
+            CASE 
+                WHEN ui.id_usuario_item IS NOT NULL THEN 1
+                ELSE 0
+            END AS adquirido,
+
+            CASE 
+                WHEN ((c.nivel * 100) + c.xp) >= i.xp_minimo THEN 1
+                ELSE 0
+            END AS desbloqueado,
+
+            ((c.nivel * 100) + c.xp) AS xp_total
+
+        FROM item_customizacao i
+
+        JOIN carro_usuario c
+            ON c.fk_usuario = ${idUsuario}
+
+        LEFT JOIN usuario_item ui
+            ON ui.fk_item = i.id_item
+            AND ui.fk_usuario = ${idUsuario}
+
+        ORDER BY i.xp_minimo ASC;
+    `;
+
+    return database.executar(instrucaoSql);
+}
+
+function liberarItem(idUsuario, idItem) {
+    var instrucaoSql = `
+        INSERT INTO usuario_item (fk_usuario, fk_item)
+        VALUES (${idUsuario}, ${idItem});
+    `;
+
+    console.log("Executando SQL:\n" + instrucaoSql);
+
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     logar,
     cadastrar,
@@ -219,5 +267,7 @@ module.exports = {
     ranking,
     desempenhoPorTema,
     buscarFeedXP,
-    buscarTempoResposta
+    buscarTempoResposta,
+    buscarItensLoja,
+    liberarItem
 };
