@@ -167,9 +167,9 @@
 
                     onclick="
                         ${equipado
-                            ? `equiparTextura('nenhuma')`
-                            : `equiparTextura('${item.valor}')`
-                        }
+                    ? `equiparTextura('nenhuma')`
+                    : `equiparTextura('${item.valor}')`
+                }
                     "
 
                     class="${equipado ? 'btn-equipado' : ''}"
@@ -184,11 +184,12 @@
     }
 
     function aplicarCorCarro(cor) {
-        let carroBody = document.querySelector(".carro-body");
-        let carroRoof = document.querySelector(".carro-roof");
 
-        carroBody.style.backgroundColor = cor;
-        carroRoof.style.backgroundColor = cor;
+        sessionStorage.COR_CARRO = cor;
+
+        let texturaAtual = sessionStorage.TEXTURA_CARRO || "";
+
+        aplicarTexturaCarro(texturaAtual);
     }
 
     function aplicarTexturaCarro(texturaSelecionada) {
@@ -523,8 +524,13 @@
 
             let diferenca = pontuacaoProximo - pontuacaoAtual;
 
-            nome_proximo_colocado.innerHTML = proximoUsuario.nome_usuario;
-            texto_proximo_colocado.innerHTML = `Faltam ${diferenca} XP para ultrapassar`;
+            if (diferenca == 0) {
+                nome_proximo_colocado.innerHTML = "Você está empatado(a) com " + proximoUsuario.nome_usuario;
+                texto_proximo_colocado.innerHTML = `Jogue mais games para passar na frente!`;
+            } else {
+                nome_proximo_colocado.innerHTML = proximoUsuario.nome_usuario;
+                texto_proximo_colocado.innerHTML = `Faltam ${diferenca} XP para ultrapassar`;
+            }
         }
 
 
