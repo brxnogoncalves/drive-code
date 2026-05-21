@@ -287,14 +287,23 @@
         nome_usuario.innerHTML = sessionStorage.NOME_USUARIO;
 
         // buscar nivel do usuario
-        fetch("/usuarios/ranking/" + sessionStorage.ID_USUARIO)
+        fetch("/usuarios/ranking/")
             .then((resultado) => {
                 resultado.json()
                     .then((ranking) => {
+                        let usuarioPosicao = null;
+
+                        for (let i = 0; i < ranking.length; i++) {
+                            if (ranking[i].fk_usuario == sessionStorage.ID_USUARIO) {
+                                usuarioPosicao = ranking[i];
+                                break;
+                            }
+                        }
+
                         console.log(ranking)
-                        kpi_nivel.innerHTML = ranking[0].nivel;
-                        kpi_xp.innerHTML = ranking[0].xp + " / 100";
-                        xp_barra_fill.style.width = ranking[0].xp + "%";
+                        kpi_nivel.innerHTML = usuarioPosicao.nivel;
+                        kpi_xp.innerHTML = usuarioPosicao.xp + " / 100";
+                        xp_barra_fill.style.width = usuarioPosicao.xp + "%";
                     })
             })
 

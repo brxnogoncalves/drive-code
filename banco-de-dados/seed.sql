@@ -1,6 +1,6 @@
 	CREATE DATABASE drivecode;
 	USE drivecode;
-
+    
 	CREATE TABLE usuario (
 		id_usuario INT PRIMARY KEY AUTO_INCREMENT,
 		nome VARCHAR(30),
@@ -30,10 +30,9 @@
 	);
 	INSERT INTO item_customizacao (nome, tipo, valor, descricao, xp_minimo)  VALUES
 	('Mudar cor do carro', 'cor_livre', NULL, 'Libera o seletor de cor do carro', 0),
-	('Textura carbono', 'textura', './assets/glb/textures/texture_carbon.jpg', 'Aplica textura de carbono no carro', 150),
-	('Textura glitter', 'textura', './assets/glb/textures/texture_glitter.jpg', 'Aplica textura camuflada no carro', 250),
-	('Ativar neon', 'neon_toggle', NULL, 'Permite usar neon no carro', 300),
-	('Cor personalizada do neon', 'neon_color', NULL, 'Permite escolher qualquer cor para o neon', 450);
+	('Textura carbono', 'textura', '../assets/glb/textures/texture_carbon.jpg', 'Aplica textura de carbono no carro', 150),
+	('Textura glitter', 'textura', '../assets/glb/textures/texture_glitter.jpg', 'Aplica textura camuflada no carro', 250);
+
     
     CREATE TABLE usuario_item (
 		id_usuario_item INT PRIMARY KEY AUTO_INCREMENT,
@@ -319,6 +318,7 @@
 	 'A',
 	 'Gamificação',
 	 2);
+     
+     
 
-
-	select * from usuario;
+        

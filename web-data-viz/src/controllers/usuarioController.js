@@ -160,9 +160,7 @@ function quantidadeGamesJogados(req, res) {
 }
 
 function ranking(req, res) {
-    let idUsuario = req.params.idUsuario;
-
-    usuarioModel.ranking(idUsuario)
+    usuarioModel.ranking()
         .then(function (resultado) {
             res.json(resultado);
         })
