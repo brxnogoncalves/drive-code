@@ -98,26 +98,25 @@
         </div>
 
         <div id="aba_garagem" class="dashboard-aba none">
+            <h2>Garagem</h2>
+            <p>Customize seu carro do Drive & Code.</p>
+
             <div class="garagem-carro">
-                <h2>Garagem</h2>
-                <p>Customize seu carro do Drive & Code.</p>
-
-                <div class="carro">
-                    <div class="neon"></div>
-
-                    <div class="carro-teto">
-                        <div class="vidro vidro-frente"></div>
-                        <div class="vidro vidro-tras"></div>
-                    </div>
-
-                    <div class="carro-corpo">
-                        <div class="farol farol-frente"></div>
-                        <div class="farol farol-tras"></div>
-                    </div>
-
-                    <div class="roda roda-tras"></div>
-                    <div class="roda roda-frente"></div>
+                <div class="carro-container">
+                    <div class="carro-roof"></div>
+                    <div class="janela janela-esq"></div>
+                    <div class="janela janela-dir"></div>
+                    <div class="carro-body"></div>
+                    <div class="farol farol-esq"></div>
+                    <div class="farol farol-dir"></div>
+                    <div class="roda roda-esq"></div>
+                    <div class="roda roda-dir"></div>
                 </div>
+            </div>
+
+            <div class="garagem-itens">
+                <h3>Itens liberados</h3>
+                <div id="lista_itens_garagem" class="garagem-itens-grid"></div>
             </div>
         </div>
     </div>
@@ -125,6 +124,111 @@
 <script src="../assets/js/utils.js"></script>
 <script>
     carregarAbaGeral();
+
+    function liberarItem(idItem) {
+
+        fetch("/usuarios/liberarItem", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idUsuarioServer: sessionStorage.ID_USUARIO,
+                idItemServer: idItem
+            })
+        })
+            .then(resposta => {
+                if (resposta.ok) {
+                    carregarAbaLoja();
+                } else {
+                    console.log("Erro ao liberar item");
+                }
+            });
+    }
+
+    function gerarControleItem(item) {
+
+        if (item.tipo == "cor_livre") {
+            return `
+                <input 
+                    type="color" 
+                    onchange="mudarCorCarro(this.value)"
+                    value='${sessionStorage.COR_CARRO}'
+                >
+            `;
+        }
+
+        if (item.tipo == "textura") {
+
+            let equipado = sessionStorage.TEXTURA_CARRO == item.valor;
+
+            return `
+                <button 
+
+                    onclick="
+                        ${equipado
+                            ? `equiparTextura('nenhuma')`
+                            : `equiparTextura('${item.valor}')`
+                        }
+                    "
+
+                    class="${equipado ? 'btn-equipado' : ''}"
+
+                >
+                    ${equipado ? "Desequipar" : "Equipar textura"}
+                </button>
+            `;
+        }
+
+        return "";
+    }
+
+    function aplicarCorCarro(cor) {
+        let carroBody = document.querySelector(".carro-body");
+        let carroRoof = document.querySelector(".carro-roof");
+
+        carroBody.style.backgroundColor = cor;
+        carroRoof.style.backgroundColor = cor;
+    }
+
+    function aplicarTexturaCarro(texturaSelecionada) {
+
+        sessionStorage.TEXTURA_CARRO = texturaSelecionada;
+
+        let carroBody = document.querySelector(".carro-body");
+        let carroRoof = document.querySelector(".carro-roof");
+
+        let cor = sessionStorage.COR_CARRO || "#0066ff";
+
+        if (texturaSelecionada == "nenhuma" || texturaSelecionada == "") {
+
+            carroBody.style.background = cor;
+            carroRoof.style.background = cor;
+
+            return;
+        }
+
+        let backgroundFinal = `
+            linear-gradient(
+                rgba(0,0,0,0.25),
+                rgba(0,0,0,0.25)
+            ),
+            linear-gradient(
+                ${cor}cc,
+                ${cor}cc
+            ),
+            url(${texturaSelecionada})
+        `;
+
+        carroBody.style.background = backgroundFinal;
+        carroRoof.style.background = backgroundFinal;
+
+        carroBody.style.backgroundSize = "cover";
+        carroRoof.style.backgroundSize = "cover";
+
+        carroBody.style.backgroundBlendMode = "overlay";
+        carroRoof.style.backgroundBlendMode = "overlay";
+    }
 
     alterarNavBar();
     function alterarNavBar() {
@@ -146,7 +250,6 @@
             `;
         }
     }
-
 
     function abrirAba(idAba, botao) {
 
@@ -172,6 +275,8 @@
             carregarAbaRanking();
         } else if (idAba == 'aba_loja') {
             carregarAbaLoja();
+        } else if (idAba == 'aba_garagem') {
+            carregarAbaGaragem();
         }
     }
 
@@ -418,7 +523,7 @@
 
             let diferenca = pontuacaoProximo - pontuacaoAtual;
 
-            nome_proximo_colocado.innerHTML = proximo.nome_usuario;
+            nome_proximo_colocado.innerHTML = proximoUsuario.nome_usuario;
             texto_proximo_colocado.innerHTML = `Faltam ${diferenca} XP para ultrapassar`;
         }
 
@@ -512,25 +617,87 @@
             });
     }
 
-    function liberarItem(idItem) {
+    function carregarAbaGaragem() {
+        aplicarCorCarro(sessionStorage.COR_CARRO);
+        aplicarTexturaCarro(sessionStorage.TEXTURA_CARRO);
 
-        fetch("/usuarios/liberarItem", {
+        fetch("/usuarios/garagem/" + sessionStorage.ID_USUARIO)
+            .then(resposta => {
+                resposta.json()
+                    .then(itens => {
+                        lista_itens_garagem.innerHTML = "";
+
+                        for (let i = 0; i < itens.length; i++) {
+                            let item = itens[i];
+
+                            lista_itens_garagem.innerHTML += `
+                                <div class="item-garagem-card">
+                                    <h4>${item.nome}</h4>
+                                    <p>${item.descricao}</p>
+
+                                    ${gerarControleItem(item)}
+                                </div>
+                            `;
+                        }
+                    })
+            })
+    }
+
+
+    function equiparTextura(textura) {
+        sessionStorage.TEXTURA_CARRO = textura;
+
+        fetch("/usuarios/alterarTexturaCarro", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
                 idUsuarioServer: sessionStorage.ID_USUARIO,
-                idItemServer: idItem
+                novaTexturaServer: textura
             })
-        })
-            .then(resposta => {
-                if (resposta.ok) {
-                    carregarAbaLoja();
-                } else {
-                    console.log("Erro ao liberar item");
-                }
-            });
+        }).then(function (resposta) {
+            console.log("Estou no then do alterarTexturaCarro...");
+
+            if (resposta.ok) {
+                console.log(resposta);
+            } else {
+                throw "Houve um erro ao tentar realizar a alteração da textura!";
+            }
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+
+        carregarAbaGaragem();
+    }
+
+    function mudarCorCarro(novaCor) {
+        sessionStorage.COR_CARRO = novaCor;
+
+        fetch("/usuarios/alterarCorCarro", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                idUsuarioServer: sessionStorage.ID_USUARIO,
+                novaCorServer: novaCor
+            })
+        }).then(function (resposta) {
+
+            console.log("Estou no then do alterarCorCarro...");
+
+            if (resposta.ok) {
+                console.log(resposta);
+            } else {
+                throw "Houve um erro ao tentar realizar a alteração de cor!";
+            }
+
+        }).catch(function (resposta) {
+            console.log(`#ERRO: ${resposta}`);
+        });
+
+        aplicarCorCarro(novaCor);
     }
 </script>
 

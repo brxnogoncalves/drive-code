@@ -218,14 +218,12 @@ function buscarItensLoja(idUsuario) {
             i.descricao,
             i.xp_minimo,
 
-            CASE 
-                WHEN ui.id_usuario_item IS NOT NULL THEN 1
-                ELSE 0
+            CASE WHEN ui.id_usuario_item IS NOT NULL THEN 1
+            ELSE 0
             END AS adquirido,
 
-            CASE 
-                WHEN ((c.nivel * 100) + c.xp) >= i.xp_minimo THEN 1
-                ELSE 0
+            CASE WHEN ((c.nivel * 100) + c.xp) >= i.xp_minimo THEN 1
+            ELSE 0
             END AS desbloqueado,
 
             ((c.nivel * 100) + c.xp) AS xp_total
@@ -256,12 +254,32 @@ function liberarItem(idUsuario, idItem) {
     return database.executar(instrucaoSql);
 }
 
+function buscarItensGaragem(idUsuario) {
+    var instrucaoSql = `
+        SELECT 
+            i.id_item,
+            i.nome,
+            i.tipo,
+            i.valor,
+            i.descricao
+        FROM usuario_item ui
+        JOIN item_customizacao i
+            ON ui.fk_item = i.id_item
+        WHERE ui.fk_usuario = ${idUsuario}
+        ORDER BY i.id_item;
+    `;
+
+    console.log("Executando SQL:\n" + instrucaoSql);
+
+    return database.executar(instrucaoSql);
+}
+
+
 module.exports = {
     logar,
     cadastrar,
     cadastrarCarroUsuario,
     alterarCorCarro,
-    // alterarModeloCarro,
     alterarTexturaCarro,
     quantidadeGamesJogados,
     ranking,
@@ -269,5 +287,6 @@ module.exports = {
     buscarFeedXP,
     buscarTempoResposta,
     buscarItensLoja,
-    liberarItem
+    liberarItem,
+    buscarItensGaragem,
 };

@@ -114,34 +114,6 @@ function alterarCorCarro(req, res) {
     }
 }
 
-// function alterarModeloCarro(req, res) {
-//     let novoModelo = req.body.novoModeloServer;
-//     let idUsuario = req.body.idUsuarioServer;
-
-//     if (novoModelo == undefined) {
-//         res.status(400).send("Novo modelo está undefined!");
-//     } else if (idUsuario == undefined) {
-//         res.status(400).send("Id usuário está undefined!");
-//     }
-//     else {
-//         usuarioModel.alterarModeloCarro(novoModelo, idUsuario)
-//             .then(function (resultado) {
-//                 res.json({
-//                     mensagem: "Modelo alterado com sucesso!",
-//                     novoModelo: novoModelo
-//                 });
-//             })
-//             .catch(function (erro) {
-//                 console.log(erro);
-//                 console.log(
-//                     "\nHouve um erro ao realizar a alteração do modelo! Erro: ",
-//                     erro.sqlMessage
-//                 );
-//                 res.status(500).json(erro.sqlMessage);
-//             })
-//     }
-// }
-
 function alterarTexturaCarro(req, res) {
     let novaTextura = req.body.novaTexturaServer;
     let idUsuario = req.body.idUsuarioServer;
@@ -216,7 +188,7 @@ function desempenhoPorTema(req, res) {
 
 function buscarFeedXP(req, res) {
     usuarioModel.buscarFeedXP()
-        .then(resultado => {
+        .then((resultado) => {
             res.json(resultado);
         })
         .catch(erro => {
@@ -229,8 +201,8 @@ function buscarTempoResposta(req, res) {
     let idUsuario = req.params.idUsuario;
 
     usuarioModel.buscarTempoResposta(idUsuario)
-        .then(resultado => {
-            res.status(200).json(resultado);
+        .then((resultado) => {
+            res.json(resultado);
         })
         .catch(erro => {
             console.log("Erro ao buscar tempo de resposta:", erro);
@@ -242,8 +214,8 @@ function buscarItensLoja(req, res) {
     let idUsuario = req.params.idUsuario;
 
     usuarioModel.buscarItensLoja(idUsuario)
-        .then(resultado => {
-            res.status(200).json(resultado);
+        .then((resultado) => {
+            res.json(resultado);
         })
         .catch(erro => {
             console.log("Erro ao buscar itens da loja:", erro);
@@ -256,11 +228,24 @@ function liberarItem(req, res) {
     let idItem = req.body.idItemServer;
 
     usuarioModel.liberarItem(idUsuario, idItem)
-        .then(resultado => {
-            res.status(200).json(resultado);
+        .then((resultado) => {
+            res.json(resultado);
         })
         .catch(erro => {
             console.log("Erro ao liberar item:", erro);
+            res.status(500).json(erro.sqlMessage);
+        });
+}
+
+function buscarItensGaragem(req, res) {
+    let idUsuario = req.params.idUsuario;
+
+    usuarioModel.buscarItensGaragem(idUsuario)
+        .then(resultado => {
+            res.json(resultado);
+        })
+        .catch(erro => {
+            console.log("Erro ao buscar itens da garagem:", erro);
             res.status(500).json(erro.sqlMessage);
         });
 }
@@ -269,7 +254,6 @@ module.exports = {
     logar,
     cadastrar,
     alterarCorCarro,
-    // alterarModeloCarro,
     alterarTexturaCarro,
     quantidadeGamesJogados,
     ranking,
@@ -277,5 +261,6 @@ module.exports = {
     buscarFeedXP,
     buscarTempoResposta,
     buscarItensLoja,
-    liberarItem
+    liberarItem,
+    buscarItensGaragem,
 }

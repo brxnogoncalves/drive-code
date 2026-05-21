@@ -140,7 +140,7 @@ a {
 }
 
 .dashboard-tabs button.aba-ativa {
-    background: linear-gradient(to right,rgba(0, 89, 255, 0.85),rgba(123, 195, 255, 0.85));
+    background: linear-gradient(to right, rgba(0, 89, 255, 0.85), rgba(123, 195, 255, 0.85));
     color: white;
     box-shadow: 0 10px 25px rgba(0, 89, 255, 0.25);
 }
@@ -149,7 +149,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: linear-gradient(to right,rgba(0, 89, 255, 0.85),rgba(123, 195, 255, 0.85));
+    background: linear-gradient(to right, rgba(0, 89, 255, 0.85), rgba(123, 195, 255, 0.85));
     color: white;
     padding: 50px;
     border-radius: 20px;
@@ -215,11 +215,9 @@ a {
     width: 0%;
     border-radius: 20px;
 
-    background: linear-gradient(
-        to right,
-        blue,
-        rgb(123, 195, 255)
-    );
+    background: linear-gradient(to right,
+            blue,
+            rgb(123, 195, 255));
 
     transition: 0.4s ease;
 }
@@ -358,6 +356,15 @@ a {
     border-color: rgba(34, 197, 94, 0.6);
 }
 
+#aba_garagem h2 {
+    font-size: 30px;
+}
+
+#aba_garagem p {
+    opacity: 0.75;
+    margin-top: 5px;
+}
+
 
 .garagem-carro {
     padding: 28px;
@@ -365,124 +372,185 @@ a {
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(123, 195, 255, 0.15);
     color: white;
-}
-.garagem-carro h2 {
-    font-size: 30px;
+    margin-top: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.garagem-carro p {
-    opacity: 0.75;
-    margin-top: 5px;
-}
-
-.carro {
+.carro-container {
     position: relative;
     width: 520px;
-    height: 250px;
-    margin: 60px auto 20px;
+    height: 240px;
 }
 
-.carro-corpo {
+.carro-roof {
     position: absolute;
-    left: 40px;
-    bottom: 55px;
-    width: 440px;
-    height: 95px;
-    background: #3498db;
-    border-radius: 80px 120px 45px 45px;
-}
-
-.carro-teto {
-    position: absolute;
-    left: 150px;
-    bottom: 125px;
+    left: 155px;
+    top: 38px;
     width: 210px;
-    height: 90px;
-    background: #3498db;
+    height: 85px;
+
+    background: #0066ff;
     border-radius: 120px 120px 20px 20px;
+    border: 3px solid rgba(255, 255, 255, 0.25);
+    z-index: 2;
+}
+
+.carro-body {
+    position: absolute;
+    left: 45px;
+    top: 105px;
+    width: 430px;
+    height: 95px;
+
+    background: #0066ff;
+    border-radius: 90px 130px 45px 45px;
+    border: 3px solid rgba(255, 255, 255, 0.25);
+    z-index: 3;
+}
+
+.janela {
+    position: absolute;
+    top: 58px;
+    height: 45px;
+
+    background: rgba(5, 18, 35, 0.95);
+    border: 2px solid rgba(123, 195, 255, 0.55);
+    z-index: 4;
+}
+
+.janela-esq {
+    left: 185px;
+    width: 75px;
+    border-radius: 60px 10px 8px 8px;
+}
+
+.janela-dir {
+    left: 270px;
+    width: 80px;
+    border-radius: 10px 60px 8px 8px;
+}
+
+.farol {
+    position: absolute;
+    top: 135px;
+    width: 22px;
+    height: 18px;
+    border-radius: 50%;
+    z-index: 5;
+}
+
+.farol-esq {
+    left: 62px;
+    background: #ff3b3b;
+    box-shadow: 0 0 14px #ff3b3b;
+}
+
+.farol-dir {
+    right: 62px;
+    background: #fff7a8;
+    box-shadow: 0 0 16px #fff7a8;
 }
 
 .roda {
     position: absolute;
-    bottom: 25px;
+    top: 160px;
     width: 82px;
     height: 82px;
+
     background: #050505;
     border-radius: 50%;
     border: 8px solid #2c2c2c;
+    z-index: 6;
 }
 
 .roda::after {
     content: "";
     position: absolute;
     inset: 18px;
+
     background: #b8c7d9;
     border-radius: 50%;
 }
 
-.roda-tras {
+.roda-esq {
     left: 115px;
 }
 
-.roda-frente {
+.roda-dir {
     right: 115px;
 }
 
-.vidro {
-    position: absolute;
-    top: 18px;
-    height: 48px;
-    background: rgba(8, 20, 35, 0.95);
-    border: 2px solid rgba(123, 195, 255, 0.45);
+
+.garagem-itens {
+    margin-top: 35px;
 }
 
-.vidro-frente {
-    right: 22px;
-    width: 75px;
-    border-radius: 12px 60px 8px 8px;
+.garagem-itens h3 {
+    font-size: 24px;
+    margin-bottom: 18px;
 }
 
-.vidro-tras {
-    left: 24px;
-    width: 70px;
-    border-radius: 60px 12px 8px 8px;
+.garagem-itens-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
 }
 
-.farol {
-    position: absolute;
-    top: 35px;
-    width: 22px;
-    height: 18px;
-    border-radius: 50%;
+.item-garagem-card {
+    padding: 22px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(123, 195, 255, 0.15);
+    color: white;
+    transition: 0.3s ease;
 }
 
-.farol-frente {
-    right: 18px;
-    background: #fff7a8;
-    box-shadow: 0 0 16px #fff7a8;
+.item-garagem-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(123, 195, 255, 0.45);
+    box-shadow: 0 12px 28px rgba(0, 89, 255, 0.12);
 }
 
-.farol-tras {
-    left: 18px;
-    background: #ff3b3b;
-    box-shadow: 0 0 14px #ff3b3b;
+.item-garagem-card h4 {
+    font-size: 18px;
+    margin-bottom: 8px;
 }
 
-.neon {
-    position: absolute;
-    left: 95px;
-    bottom: 42px;
-    width: 330px;
-    height: 12px;
-    border-radius: 50px;
-    background: rgb(123, 195, 255);
-    box-shadow: 0 0 25px rgb(123, 195, 255);
-    filter: blur(5px);
-    z-index: 0;
+.item-garagem-card p {
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 1.5;
+    margin-bottom: 18px;
 }
 
-.carro-corpo,
-.carro-teto,
-.roda {
-    z-index: 2;
+.item-garagem-card button {
+    width: 100%;
+    padding: 12px 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(to right, rgb(56, 214, 90), rgb(0, 66, 39));
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.item-garagem-card button:hover {
+    transform: translateY(-2px);
+}
+
+.item-garagem-card button.btn-equipado {
+    background: linear-gradient(to right, #c53319, #630e08);
+}
+
+.item-garagem-card input[type="color"] {
+    width: 100%;
+    height: 42px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    cursor: pointer;
 }

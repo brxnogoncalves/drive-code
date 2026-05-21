@@ -15,10 +15,6 @@ router.post("/alterarCorCarro", function (req, res) {
     usuarioController.alterarCorCarro(req, res);
 })
 
-// router.post("/alterarModeloCarro", function (req, res) {
-//     usuarioController.alterarModeloCarro(req, res);
-// })
-
 router.post("/alterarTexturaCarro", function (req, res) {
     usuarioController.alterarTexturaCarro(req, res);
 })
@@ -49,6 +45,10 @@ router.get("/loja/:idUsuario", function (req, res) {
 
 router.post("/liberarItem", function (req, res) {
     usuarioController.liberarItem(req, res);
+});
+
+router.get("/garagem/:idUsuario", function (req, res) {
+    usuarioController.buscarItensGaragem(req, res);
 });
 
 module.exports = router;
