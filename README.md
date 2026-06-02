@@ -22,4 +22,4 @@ Além de ser informativo, o website permite que usuários se cadastrem e compart
 5. Inicie o servidor:
    `npm start`
 6. Acesse no navegador:
-   `http://localhost:3000`
+   `http://localhost:8080`
