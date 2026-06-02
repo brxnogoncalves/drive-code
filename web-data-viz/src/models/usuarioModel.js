@@ -157,28 +157,17 @@ function buscarTempoResposta(idUsuario) {
     var instrucaoSql = `
         SELECT 
             g.nome AS nome_game,
-            
-            ROW_NUMBER() OVER (
-                PARTITION BY g.id_game
-                ORDER BY p.id_pergunta
-            ) AS numero_pergunta,
-
             p.id_pergunta,
             p.pergunta,
             r.tempo_resposta,
             r.acertou,
             r.data_resposta
-
         FROM resposta_quiz r
-
         JOIN pergunta_quiz p
             ON r.fk_pergunta = p.id_pergunta
-
         JOIN game g
             ON p.fk_game = g.id_game
-
         WHERE r.fk_usuario = ${idUsuario}
-
         ORDER BY g.id_game, p.id_pergunta;
     `;
 

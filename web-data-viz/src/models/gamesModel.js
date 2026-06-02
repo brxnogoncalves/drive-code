@@ -68,7 +68,7 @@ function adicionarXP(idUsuario, idGame, xpGanho) {
             if (xp >= 100) {
                 let niveisGanhos = Math.floor(xp / 100);
                 let novoNivel = nivel + niveisGanhos;
-                let novoXP = xp % 100;
+                let novoXP = xp - (xp * (100 * niveisGanhos));
 
                 let instrucao4 = `
                     UPDATE carro_usuario

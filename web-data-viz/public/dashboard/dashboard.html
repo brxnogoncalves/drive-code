@@ -337,17 +337,11 @@
             .then((resposta) => {
                 resposta.json()
                     .then((respostasQuiz) => {
-                        let labelsPerguntas = [];
+                        let labelsPerguntas = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8', 'P9', 'P10', 'P11', 'P12'];
                         let games = [];
 
                         for (let i = 0; i < respostasQuiz.length; i++) {
                             let item = respostasQuiz[i];
-
-                            let perguntaLabel = "P" + item.numero_pergunta;
-
-                            if (!labelsPerguntas.includes(perguntaLabel)) {
-                                labelsPerguntas.push(perguntaLabel);
-                            }
 
                             if (!games[item.nome_game]) {
                                 games[item.nome_game] = {
@@ -677,7 +671,6 @@
                     })
             })
     }
-
 
     function equiparTextura(textura) {
         sessionStorage.TEXTURA_CARRO = textura;
