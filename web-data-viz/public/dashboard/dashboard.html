@@ -98,7 +98,7 @@
         </div>
 
         <div id="aba_garagem" class="dashboard-aba none">
-            <h2>Garagem</h2>
+            <h2 id="eastereggbutton">Garagem</h2>
             <p>Customize seu carro do Drive & Code.</p>
 
             <div class="garagem-carro">
@@ -124,6 +124,31 @@
 <script src="../assets/js/utils.js"></script>
 <script>
     carregarAbaGeral();
+
+    // let easterEggsClicks = 0;
+    // let ativado = false;
+    // eastereggbutton.addEventListener('click', () => {
+    //     easterEggsClicks++;
+
+    //     if (easterEggsClicks >= 5 && !ativado) {
+    //         ativado = true;
+    //         desbloquearEasterEgg();
+    //     }
+    // })
+    
+    // function desbloquearEasterEgg() {
+    //     document.documentElement.style.setProperty('--cor-glow', 'rgb(207, 35, 141)')
+    //     document.documentElement.style.setProperty('--cor-primaria-solid', 'rgb(207, 35, 141)')
+    //     document.documentElement.style.setProperty('--cor-primaria', 'rgb(207, 70, 141)')
+    //     document.documentElement.style.setProperty('--cor-secundaria', 'rgb(207, 35, 141)')
+    //     lista_itens_garagem.innerHTML = `
+    //         <div class="item-garagem-card" onmouseleave="mostrarBotao()">
+    //             <h4 style='color: rgb(207, 35, 141);'>Easter Egg da Man</h4>
+    //             <img src="../assets/video/y5.gif" alt="">
+    //         </div>
+    //     `;
+
+    // }
 
     function liberarItem(idItem) {
 
@@ -462,7 +487,6 @@
     async function carregarAbaRanking() {
         let idUsuario = Number(sessionStorage.ID_USUARIO);
 
-        // rota de ranking preenche
         let indiceUsuario = -1;
         let usuarioAtual = null;
         let proximoUsuario = null;
@@ -494,12 +518,12 @@
                 indiceUsuario = i;
                 usuarioAtual = ranking[i];
                 proximoUsuario = ranking[i - 1];
-                if (i >= 5) break; // sai do laço apenas se ja preencheu grafico
+                if (i >= 5) break;
             }
         }
 
         const ctx = document.getElementById("grafico_ranking");
-        // recarrega gráfico (destroy para não construir outro por cima)
+        // recarrega gráfico 
         if (graficoRanking != null) {
             graficoRanking.destroy();
         }
@@ -521,7 +545,6 @@
             }
         })
 
-        // preenche proximo colocado
         if (indiceUsuario == 0) {
             card_proximo_colocado.style.borderColor = "green";
             nome_proximo_colocado.innerHTML = "Você está no topo 🏅";
@@ -542,8 +565,6 @@
             }
         }
 
-
-        // carrega feed
         fetch("/usuarios/feedXp")
             .then((res) => {
                 res.json()
@@ -627,7 +648,6 @@
                                 </div>
                             `;
                         }
-
                     });
             });
     }

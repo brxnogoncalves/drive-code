@@ -69,7 +69,7 @@
       </div>
     </div>
 
-    <div class="participe">
+    <div class="participe" id="div_participe">
       <span class="participe-tag">Drive & Code</span>
 
       <h2>Crie sua conta e faça parte do projeto</h2>
@@ -79,7 +79,7 @@
         automotivas e acessar a dashboard com dados gerados pelos usuários.
       </p>
 
-      <div class="participe-botoes">
+      <div class="participe-botoes" id="div_participe_botoes">
         <a href="cadastro.html" class="btn-participe-criar-conta">Criar Conta</a>
         <a href="login.html" class="btn-participe-entrar">Entrar</a>
       </div>
@@ -97,16 +97,12 @@
 <script>
   alterarNavBar() // utils
   if (sessionStorage.getItem('ID_USUARIO')) {
-    const container = document.querySelector('.participe');
     const tag = `<span class="participe-tag">Drive & Code</span>`;
-    const div = document.querySelector('.participe-botoes');
-
-    div.innerHTML = `<a href="./dashboard/dashboard.html" class="btn-participe-criar-conta">Ir para a dashboard</a>`
-
-    container.innerHTML = `
+    div_participe_botoes.innerHTML = `<a href="./dashboard/dashboard.html" class="btn-participe-criar-conta">Ir para a dashboard</a>`
+    div_participe.innerHTML = `
       ${tag}
       <h2>Seja bem-vindo de volta ${sessionStorage.getItem('NOME_USUARIO')}!</h2> <br>
-      ${div.innerHTML}
+      ${div_participe_botoes.innerHTML}
     `
   }
 

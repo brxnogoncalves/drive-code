@@ -21,6 +21,8 @@
                 </div>
             </div>
 
+            <div id="resultado"></div>
+
             <div class="login-form">
                 <div class="campo">
                     <label>E-mail</label>
@@ -85,12 +87,20 @@
                     sessionStorage.COR_CARRO = json.cor_carro;
                     sessionStorage.TEXTURA_CARRO = json.textura_carro;
 
-                    window.location = "./index.html";
+                    resultado.innerHTML = "Login realizado com sucesso! <br> Redirecionando para a home..."
+                    resultado.style.color = "green";
+
+                    setTimeout(() => {
+                        window.location = "./index.html"
+                    }, 1500);
                 });
             } else {
                 btn_entrar.disabled = false;
                 texto_btn.innerHTML = "Entrar";
                 loading_btn.style.display = "none";
+
+                resultado.innerHTML = "Email ou senha inválidos!"
+                resultado.style.color = "red";
             }
         }).catch(function (erro) {
             console.log(erro);

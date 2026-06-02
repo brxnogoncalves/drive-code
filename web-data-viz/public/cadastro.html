@@ -73,34 +73,7 @@
 
 </body>
 <script>
-    // function listarCarros() {
-    //     const selectCarro = document.getElementById("select_carro");
-
-    //     fetch("/carros/listar", {
-    //         method: "GET"
-    //     }).then(function (resposta) {
-    //         console.log("Estou no then do listar carros...");
-
-    //         if (resposta.ok) {
-    //             resposta.json().then(function (carros) {
-    //                 for (let i = 0; i < carros.length; i++) {
-    //                     let option = document.createElement("option");
-
-    //                     option.value = carros[i].id_carro;
-    //                     option.textContent = carros[i].nome_carro + " (" + carros[i].marca + ")";
-
-    //                     selectCarro.appendChild(option);
-    //                 }
-    //             });
-    //         } else {
-    //             console.log("Erro ao buscar carros");
-    //         }
-    //     }).catch(function (erro) {
-    //         console.log("Erro na requisição:", erro);
-    //     });
-    // }
-
-    function cadastrar() {
+    async function cadastrar() {
         let nomeValue = ipt_nome.value;
         let emailValue = ipt_email.value;
         let senhaValue = ipt_senha.value;
@@ -137,7 +110,7 @@
                 dtNascimentoServer: dtNascimentoValue,
                 nomeCarroServer: nomeCarroValue
             })
-        }).then(function (resposta) {
+        }).then(async function (resposta) {
             console.log("Estou no then do cadastrar...");
 
             if (resposta.ok) {
@@ -148,7 +121,13 @@
                     window.location = "login.html";
                 }, 1500);
             } else {
-                throw "Houve um erro ao tentar realizar o cadastro!";
+                let mensagem_erro = await resposta.json();
+                if (mensagem_erro.includes("for key 'usuario.email'")) {
+                    console.log("email ja existe");
+                    status_msg_div.style.color = "red";
+                    status_msg_div.style.display = "block";
+                    status_msg_div.innerHTML = "Erro ao realizar cadastro! Email já existe!";
+                } 
             }
         }).catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);

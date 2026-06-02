@@ -6,23 +6,10 @@
     box-sizing: border-box;
 }
 
-:root {
-    --cor-primaria: rgb(123, 195, 255);
-    --cor-primaria-solid: #3498db;
-    --cor-secundaria: #7bc3ff;
-    --cor-glow: rgba(123, 195, 255, 0.35);
-    --cor-card: rgba(255, 255, 255, 0.04);
-    --cor-borda-fraca: rgba(123, 195, 255, 0.35);
-    --cor-grid: rgba(255, 255, 255, 0.02);
-    --cor-background: #111;
-    --cor-texto: white;
-}
-
 body {
     background-color: #0d0d0d;
     font-family: "Poppins", sans-serif;
 }
-
 
 .none {
     display: none;
@@ -39,7 +26,7 @@ a {
 }
 
 .logo-drive-code span {
-    color: var(--cor-primaria);
+    color: #3498db;
 }
 
 
@@ -51,8 +38,8 @@ a {
     padding: 10px 5% 10px 5%;
     border-bottom: 2px solid;
     border-image-source: linear-gradient(to right,
-            var(--cor-primaria-solid),
-            var(--cor-secundaria));
+            #3498db,
+            #7bc3ff);
     border-image-slice: 1;
     min-height: 9vh;
 }
@@ -71,11 +58,11 @@ a {
 }
 
 .navbar a.link-ativo {
-    border-bottom: 1px solid var(--cor-primaria);
+    border-bottom: 1px solid #3498db;
 }
 
 .navbar a:hover {
-    color: var(--cor-primaria);
+    color: rgb(123, 195, 255);
 }
 
 .usuario-logado {
@@ -102,12 +89,12 @@ a {
 .dashboard-page {
     min-height: 91vh;
     padding: 70px 10%;
-    background-color: var(--cor-background);
+    background-color: #111;
     background-image:
-        linear-gradient(var(--cor-grid) 1px, transparent 1px),
-        linear-gradient(90deg, var(--cor-grid) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
     background-size: 40px 40px;
-    color: var(--cor-texto);
+    color: white;
     font-family: "Poppins", sans-serif;
 }
 
@@ -118,7 +105,7 @@ a {
     padding: 12px;
     border-radius: 18px;
     background: rgba(19, 19, 19, 0.856);
-    border: 1px solid rgba(123, 195, 255, 0.15);
+    border: 1px solid rgba(123, 195, 255, 0.35);
 }
 
 .dashboard-tabs button {
@@ -140,9 +127,9 @@ a {
 }
 
 .dashboard-tabs button.aba-ativa {
-    background: linear-gradient(to right, rgba(0, 89, 255, 0.85), rgba(123, 195, 255, 0.85));
+    background: linear-gradient(to right, #3498db, rgb(123, 195, 255));
     color: white;
-    box-shadow: 0 10px 25px rgba(0, 89, 255, 0.25);
+    box-shadow: 0 10px 25px rgba(123, 195, 255, 0.35);
 }
 
 .geral-hero {
@@ -314,7 +301,7 @@ a {
     padding: 7px 12px;
     border-radius: 50px;
     background: rgba(123, 195, 255, 0.12);
-    color: var(--cor-primaria);
+    color: rgb(123, 195, 255);
     font-size: 13px;
 }
 
@@ -370,13 +357,13 @@ a {
     padding: 28px;
     border-radius: 22px;
     background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(123, 195, 255, 0.15);
+    border: 1px solid rgba(123, 195, 255, 0.35);
     color: white;
     margin-top: 20px;
 
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 }
 
 .carro-container {
@@ -384,7 +371,6 @@ a {
     width: 520px;
     height: 240px;
 }
-
 .carro-roof {
     position: absolute;
     left: 155px;
@@ -475,6 +461,7 @@ a {
     border-radius: 50%;
 }
 
+
 .roda-esq {
     left: 115px;
 }
@@ -502,16 +489,17 @@ a {
 .item-garagem-card {
     padding: 22px;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(123, 195, 255, 0.15);
+    background: rgba(228, 90, 175, 0.04);
+    border: 1px solid rgba(123, 195, 255, 0.35);
     color: white;
     transition: 0.3s ease;
 }
 
+
 .item-garagem-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(123, 195, 255, 0.45);
-    box-shadow: 0 12px 28px rgba(0, 89, 255, 0.12);
+    border-color: rgba(123, 195, 255, 0.35);
+    box-shadow: 0 12px 28px rgba(123, 195, 255, 0.35);
 }
 
 .item-garagem-card h4 {
